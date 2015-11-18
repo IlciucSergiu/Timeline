@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="MySecondTry1/css/jquery-ui-1.10.3.custom.css" type="text/css" charset="utf-8"/>
 <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css" charset="utf-8"/>
 <link rel="stylesheet" href="MySecondTry1/timeglider/timeglider.datepicker.css" type="text/css" charset="utf-8"/>
-        
+        <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" type="text/css" charset="utf-8"/>
         
            
 
@@ -49,7 +49,7 @@
          
          var jsonString = document.getElementById("Label1").textContent;
          if (jsonString != "Label") {
-             alert("adf");
+             
              var jsonData = JSON.parse(jsonString);
 
              
@@ -74,7 +74,10 @@
 
           <p id="info">Nu e nimic aici</p>
           <p>
-              <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label><br /><br />
+              
+              <div id="divHideLabel" style="visibility: hidden;overflow: hidden; height: 1px;" class="hide">
+             <asp:Label ID="Label1" runat="server" Text="Label"  ></asp:Label>
+                 </div>
               <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
           </p>
         </form>

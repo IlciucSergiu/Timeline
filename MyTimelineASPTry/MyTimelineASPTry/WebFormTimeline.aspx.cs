@@ -67,7 +67,8 @@ namespace MyTimelineASPTry
      "}]";
 
             Label1.Text = jsonData;
-
+            
+           
             
             // ViewState["keep"] += Label1.Text;
             // Label2.Text = (string)ViewState["keep"];
@@ -121,6 +122,7 @@ namespace MyTimelineASPTry
         protected void buttonAddData_Click(object sender, EventArgs e)
         {
             Response.Redirect("AddData.aspx");
+            Response.Write(" ");
         }
     }
 }
