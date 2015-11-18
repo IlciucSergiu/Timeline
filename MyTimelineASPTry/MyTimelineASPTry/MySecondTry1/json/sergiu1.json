@@ -1,0 +1,75 @@
+﻿[
+    {
+        "id": "sergiu-hystory",
+        "title": "My story",
+        "initial_zoom": "39",
+        "focus_date": "1998-03-11 12:00:00",
+        "image_lane_height": 50,
+        "events": [
+
+            {
+                "id": "event-2",
+                "title": "School",
+                "startdate": "1990-05-09 12:00:00",
+                "importance": "80",
+                "image": "http://weknowyourdreams.com/image.php?pic=/images/school/school-04.jpg"
+
+            },
+            {
+                "id": "event-1",
+                "title": "Birth",
+                "startdate": "1998-03-11 12:00:00",
+                "enddate": "1999-03-11 12:00:00",
+                "importance": "80",
+                "date_display": "ye",
+                "image": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Flower_jtca001.jpg"
+
+            },
+
+            {
+                "id": "jshist-ffconf",
+                "title": "Full Frontal Conference",
+                "description": "Released at the Boston JQuery Conference",
+                "startdate": "2009-11-20 12:00:00",
+                "link": "http://2009.full-frontal.org/",
+                "high_threshold": 50,
+                "date_display": "ye",
+                "importance": "30",
+                "icon": "circle_blue.png"
+            },
+
+            {
+                "id": "event-3",
+                "title": "HighSchool",
+                "startdate": "2011-3-09 12:00:00",
+                "importance": "60",
+                "image": "https://upload.wikimedia.org/wikipedia/commons/2/29/Exeter_High_School_(New_Hampshire).jpg"
+
+            },
+            {
+                "id": "_now",
+                "title": "nowEvent",
+                "date_display": "ho",
+                "description": "You can set a date to a \"floating\" current date by using either \"7777-12-31\" as the startdate, or \"now\". In an event span, either the start date or the end-date can be set this way to create living lifespans, or timespans with decreasing lengths (from the present) as time moves forward, such as a deal or a time-remaining episode.",
+                "startdate": "now",
+                "high_threshold": 100,
+                "importance": "40",
+                "css_class": "foo",
+                "icon": "triangle_red.png",
+                "keepCurrent": "start",
+                "tags": "mardigras"
+            }
+        ],
+        "tags": { "mardigras": 2, "chris": 2, "arizona": 2, "netscape": 2, "flop": 1 },
+        "legend": [
+            { "title": "libs &amp; frameworks", "icon": "triangle_orange.png" },
+            { "title": "engines", "icon": "square_gray.png" },
+            { "title": "browsers", "icon": "triangle_yellow.png" },
+            { "title": "JS evolution", "icon": "triangle_green.png" },
+            { "title": "languages", "icon": "circle_green.png" },
+            { "title": "standards", "icon": "square_blue.png" },
+            { "title": "conferences", "icon": "circle_blue.png" },
+            { "title": "milestones", "icon": "circle_purple.png" }
+        ]
+    }
+]

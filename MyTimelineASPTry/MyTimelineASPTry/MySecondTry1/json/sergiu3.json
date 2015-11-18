@@ -1,0 +1,31 @@
+﻿[ { "id": "sergiu-hystory",
+    "title": "My story",
+    "initial_zoom": "39",
+    "focus_date": "1998-03-11 12:00:00",
+    "image_lane_height": 50,
+    "events": [
+        {
+            "id": "beethoven",
+            "title": "L V Beethoven",
+            "startdate": "1770-12-17 12:00:00",
+            "enddate": "1827-3-26 12:00:00",
+            "description": "A very good musician.",
+            "importance": "80",
+            "link": "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Beethoven.jpg"
+        },
+        {
+           
+            "id": "mozart",
+            "title": "Wolfgang Amadeus",
+            "startdate": "1756-1-27 12:00:00",
+            "enddate": "1791-12-5 12:00:00",
+            "description": "A verry good musician.",
+            "importance": "80",
+            "link": "https://en.wikipedia.org/wiki/Wolfgang_Amadeus_Mozart",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Wolfgang-amadeus-mozart_1.jpg"
+        }
+
+    ] 
+
+  } ]
