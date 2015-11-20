@@ -1,5 +1,5 @@
 ﻿body {
-   background-color:aqua;
+   
 }
 /*AddData page*/
 #buttonSubmit {
@@ -14,12 +14,6 @@
 }
 
 #divHideLabel {
-    visibility: hidden; 
-    overflow: hidden; 
-    height: 1px;
-
-}
-.hide {
     visibility: hidden; 
     overflow: hidden; 
     height: 1px;

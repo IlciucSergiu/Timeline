@@ -13,20 +13,26 @@ namespace MyTimelineASPTry
 {
     public partial class WebFormTimeline : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected async void Page_Load(object sender, EventArgs e)
         {
-            //MongoClient mclient = new MongoClient();
-            //var db = mclient.GetDatabase("test");
-
-            //var collection = db.GetCollection<Persons>("people");
-            //var nume = "Adi";
-            //var data = collection.Find();
-            //Label1.Text = data.ToString();
+            LoadTimeline();
+            
         }
 
-        public string jsonData,jsString; //{get;set;}
+        public string jsonData {get;set;}
+        
+        public string  jsString;
 
         protected async void buttonLoadTimeline_Click(object sender, EventArgs e)
+        {
+
+            LoadTimeline();
+            
+            
+           
+        }
+        
+         protected async void LoadTimeline ()
         {
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
@@ -54,7 +60,7 @@ namespace MyTimelineASPTry
             var filter = Builders<BsonDocument>.Filter.Eq("name", "gigel");
 
             //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
-            await collection.Find(_ => true).ForEachAsync(d => jsString += d+",");
+            await collection.Find(_ => true).ForEachAsync(d => jsString += d + ",");
             // await collection.Find(filter).ForEachAsync(d => jsString += d+",");
 
             jsonData = "[{" +
@@ -66,15 +72,7 @@ namespace MyTimelineASPTry
          "\"events\":[" + jsString.TrimEnd(',') + "]" +
      "}]";
 
-            Label1.Text = jsonData;
-            
-           
-            
-            // ViewState["keep"] += Label1.Text;
-            // Label2.Text = (string)ViewState["keep"];
-        }
-        
-
+  }
         protected void buttonCreate_Click(object sender, EventArgs e)
         {
             Persons person1 = new Persons();
@@ -115,14 +113,14 @@ namespace MyTimelineASPTry
          "\"events\":" + jsString + "" +
      "}]";
             
-            Label1.Text = jsonData;
+            
 
         }
 
         protected void buttonAddData_Click(object sender, EventArgs e)
         {
             Response.Redirect("AddData.aspx");
-            Response.Write(" ");
+           
         }
     }
 }

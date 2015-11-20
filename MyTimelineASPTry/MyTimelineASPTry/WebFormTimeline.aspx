@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="MySecondTry1/css/jquery-ui-1.10.3.custom.css" type="text/css" charset="utf-8"/>
 <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css" charset="utf-8"/>
 <link rel="stylesheet" href="MySecondTry1/timeglider/timeglider.datepicker.css" type="text/css" charset="utf-8"/>
-        <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" type="text/css" charset="utf-8"/>
+        <link rel="stylesheet"  type="text/css" href="MySecondTry1/css/MyTimeline.css"   charset="utf-8"/>
         
            
 
@@ -44,22 +44,19 @@
 <script src="MySecondTry1/timeglider/timeglider.datepicker.js" type="text/javascript" charset="utf-8"></script>
            <script>
 
+               var jsonString = '<%=jsonData%>';
                
      $(document).ready(function () { 
-         
-         var jsonString = document.getElementById("Label1").textContent;
-         if (jsonString != "Label") {
-             
+     
+         if (jsonString != "") {
+             alert(jsonString);
              var jsonData = JSON.parse(jsonString);
-
-             
-
 
              var tg1 = $("#placement").timeline({
 
                  "data_source": jsonData, //"MySecondTry1/json/sergiu3.json",
                  "min_zoom": 15,
-                 "max_zoom": 60,
+                 "max_zoom": 60
              }
          );
          }
@@ -75,9 +72,7 @@
           <p id="info">Nu e nimic aici</p>
           <p>
               
-              <div id="divHideLabel" style="visibility: hidden;overflow: hidden; height: 1px;" class="hide">
-             <asp:Label ID="Label1" runat="server" Text="Label"  ></asp:Label>
-                 </div>
+              
               <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
           </p>
         </form>
