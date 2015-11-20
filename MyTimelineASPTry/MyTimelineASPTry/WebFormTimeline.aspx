@@ -64,7 +64,7 @@
     </script>
         
           
-          <br />
+          <br /> 
           <asp:Button ID="buttonCreate" runat="server" OnClick="buttonCreate_Click" Text="Creaza JSON" /><br />
 
           <asp:Button ID="buttonAddData" runat="server" Text="Add data" OnClick="buttonAddData_Click" />
