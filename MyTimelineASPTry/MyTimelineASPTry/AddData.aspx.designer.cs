@@ -58,22 +58,13 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlInputText dateDeath;
         
         /// <summary>
-        /// labelDescription control.
+        /// CheckBox1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelDescription;
-        
-        /// <summary>
-        /// textBoxDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textBoxDescription;
+        protected global::System.Web.UI.WebControls.CheckBox CheckBox1;
         
         /// <summary>
         /// labelImportance control.
@@ -94,22 +85,58 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inputImportance;
         
         /// <summary>
-        /// labelLink control.
+        /// RadioButtonListGender control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelLink;
+        protected global::System.Web.UI.WebControls.RadioButtonList RadioButtonListGender;
         
         /// <summary>
-        /// textBoxLink control.
+        /// textBoxProfession control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textBoxLink;
+        protected global::System.Web.UI.WebControls.TextBox textBoxProfession;
+        
+        /// <summary>
+        /// textBoxNationality control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBoxNationality;
+        
+        /// <summary>
+        /// textBoxReligion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBoxReligion;
+        
+        /// <summary>
+        /// labelDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelDescription;
+        
+        /// <summary>
+        /// textBoxDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBoxDescription;
         
         /// <summary>
         /// labelImage control.
@@ -128,6 +155,24 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox textBoxImage;
+        
+        /// <summary>
+        /// labelLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelLink;
+        
+        /// <summary>
+        /// textBoxLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBoxLink;
         
         /// <summary>
         /// buttonSubmit control.

@@ -4,18 +4,24 @@
 /*AddData page*/
 #buttonSubmit {
     position: absolute;
-    left: 300px;
-    
+    left: 371px;
+    top: 614px;
+    height: 27px;
 }
 
-#Label1
-{
-    overflow:hidden;
+#datesPosition p {
+    display: inline;
 }
 
-#divHideLabel {
-    visibility: hidden; 
-    overflow: hidden; 
-    height: 1px;
-
+#gender {
+    display: inline;
 }
+
+#form1{
+    position:absolute;
+    left: 3%;
+    top: 15px;
+    margin-left: 0px;
+}
+
+

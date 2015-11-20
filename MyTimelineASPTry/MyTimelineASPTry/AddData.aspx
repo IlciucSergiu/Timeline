@@ -21,19 +21,48 @@
         <p>&nbsp;&nbsp; First name:&nbsp;&nbsp;&nbsp;&nbsp; <asp:TextBox ID="firstName" runat="server"></asp:TextBox></p>
         <p>Last name(s):&nbsp;&nbsp; <asp:TextBox ID="lastName" runat="server"></asp:TextBox></p>
         
+       
         
-         <p>Date of birth: <input type="text" class="datepicker" id="dateBirth" runat="server"/></p>
-         <p>Date of death <input type="text" class="datepicker" id="dateDeath" runat="server"/></p>
+        <div id="datesPosition">
+         <p>Date of birth: <input type="text" class="datepicker" id="dateBirth" runat="server"/></p>&nbsp;&nbsp;&nbsp;
+         <p>   Date of death <input type="text" class="datepicker" id="dateDeath" runat="server"/></p>&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="CheckBox1" runat="server" Text="Contemporary" /><br /><br />
+         </div>
+         <asp:Label ID="labelImportance" runat="server" Text="Importance"></asp:Label>&nbsp;&nbsp;
+        <input id="inputImportance" type="number" runat ="server" max="100" min="0" placeholder="importance" style="width: 72px" /><br /><br />
+        
+
+        <div id="notEssential">
+        <div id="gender">
+        <p>Gender:&nbsp;&nbsp;</p>
+           <asp:RadioButtonList ID="RadioButtonListGender"  runat="server">
+               <asp:ListItem>Male</asp:ListItem> 
+                <asp:ListItem>Female</asp:ListItem>
+            </asp:RadioButtonList>
+            </div>
+            <p>&nbsp;Profession : <asp:TextBox ID="textBoxProfession" runat="server"></asp:TextBox>
+            <p>&nbsp;Nationality : <asp:TextBox ID="textBoxNationality" runat="server"></asp:TextBox>
+         <p>&nbsp;Religion : <asp:TextBox ID="textBoxReligion" runat="server"></asp:TextBox>
+        </p>
+            </div>
+
+
         <asp:Label ID="labelDescription" runat="server" Text="Description"></asp:Label><br />
         <asp:TextBox ID="textBoxDescription" TextMode="MultiLine" runat="server" Height="121px" Width="353px"></asp:TextBox><br />
-        <asp:Label ID="labelImportance" runat="server" Text="Importance"></asp:Label><br />
-        <input id="inputImportance" type="number" runat ="server" max="100" min="0" placeholder="importance" style="width: 84px" /><br />
+       
+        <asp:Label ID="labelImage" runat="server" Text="Link to image"></asp:Label><br />
+        <asp:TextBox ID="textBoxImage" runat="server" Width="345px"></asp:TextBox><br/>
+
         <asp:Label ID="labelLink" runat="server" Text="Link to aditional resources"></asp:Label><br />
         <asp:TextBox ID="textBoxLink" runat="server" Width="345px"></asp:TextBox><br />  
-        <asp:Label ID="labelImage" runat="server" Text="Link to image"></asp:Label><br />
-        <asp:TextBox ID="textBoxImage" runat="server" Width="345px"></asp:TextBox>
+        
         
         <br />
+       
+         
+  
+        <asp:Button id="buttonSubmit" runat="server" Text="Submit" OnClick="buttonSubmit_Click" />
+       
+         
         <br />
 
         <script>
@@ -50,9 +79,6 @@
        
          
   
-        <asp:Button id="buttonSubmit" runat="server" Text="Submit" OnClick="buttonSubmit_Click" />
-       
-         
     </form>
 </body>
 </html>

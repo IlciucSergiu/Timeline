@@ -28,9 +28,7 @@ namespace MyTimelineASPTry
 
             LoadTimeline();
             
-            
-           
-        }
+ }
         
          protected async void LoadTimeline ()
         {
@@ -55,7 +53,7 @@ namespace MyTimelineASPTry
 
             // var doc = collection.Find( _=> true);
             //var data = collection.FindAll();
-            var documents = await collection.Find(new BsonDocument()).FirstAsync();
+            //var documents = await collection.Find(new BsonDocument()).FirstAsync();
 
             var filter = Builders<BsonDocument>.Filter.Eq("name", "gigel");
 
@@ -73,45 +71,70 @@ namespace MyTimelineASPTry
      "}]";
 
   }
-        protected void buttonCreate_Click(object sender, EventArgs e)
+         protected async void LoadBasic()
+         {
+             MongoClient mgClient = new MongoClient();
+
+             var db = mgClient.GetDatabase("test");
+             var collection = db.GetCollection<PersonBasic>("TimelineTest2");
+
+             //var filter = Builders<BsonDocument>.Filter.Eq("name", "gigel");
+             var filter = Builders<BsonDocument>.Filter.Eq("name", "gigel");
+             
+             await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d.ToJson() + ",");
+             // await collection.Find(filter).ForEachAsync(d => jsString += d+",");
+
+            
+
+             jsonData = "[{" +
+          "\"id\": \"important_personalities\"," +
+          "\"title\": \"Important Personalities\"," +
+          "\"initial_zoom\": \"40\"," +
+                 //"\"focus_date\": \"1998-03-11 12:00:00\","+
+          "\"image_lane_height\": 50," +
+          "\"events\":[" + jsString.TrimEnd(',') + "]" +
+      "}]";
+
+         }
+       protected void buttonCreate_Click(object sender, EventArgs e)
         {
-            Persons person1 = new Persons();
-            person1.id = "beethoven";
-            person1.title = "L V Beethoven";
-            person1.startdate = "1770-12-17 ";
-            person1.enddate = "1827-3-26 12:00:00";
-            person1.importance = "70";
-            person1.image = "https://upload.wikimedia.org/wikipedia/commons/6/6f/Beethoven.jpg";
-            person1.description = "A very good musician.";
-            person1.link = "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven";
-            person1.profesion = "Dentist";
+     //       Persons person1 = new Persons();
+     //       person1.id = "beethoven";
+     //       person1.title = "L V Beethoven";
+     //       person1.startdate = "1770-12-17 ";
+     //       person1.enddate = "1827-3-26 12:00:00";
+     //       person1.importance = "70";
+     //       person1.image = "https://upload.wikimedia.org/wikipedia/commons/6/6f/Beethoven.jpg";
+     //       person1.description = "A very good musician.";
+     //       person1.link = "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven";
+     //       person1.profesion = "Dentist";
 
-            Persons person2 = new Persons();
-            person2.id = "mozart";
-            person2.title = "W A Mozart";
-            person2.startdate = "1756-1-27 12:00:00";
-            person2.enddate = "1791-12-5 12:00:00";
-            person2.importance = "70";
-            person2.image = "https://upload.wikimedia.org/wikipedia/commons/1/1e/Wolfgang-amadeus-mozart_1.jpg";
-            person2.description = "A verry good musician.";
-            person2.link = "https://en.wikipedia.org/wiki/Wolfgang_Amadeus_Mozart";
+     //       Persons person2 = new Persons();
+     //       person2.id = "mozart";
+     //       person2.title = "W A Mozart";
+     //       person2.startdate = "1756-1-27 12:00:00";
+     //       person2.enddate = "1791-12-5 12:00:00";
+     //       person2.importance = "70";
+     //       person2.image = "https://upload.wikimedia.org/wikipedia/commons/1/1e/Wolfgang-amadeus-mozart_1.jpg";
+     //       person2.description = "A verry good musician.";
+     //       person2.link = "https://en.wikipedia.org/wiki/Wolfgang_Amadeus_Mozart";
 
-            List<Persons> listPersons = new List<Persons>();
-            listPersons.Add(person1);
-            listPersons.Add(person2);
+     //       List<Persons> listPersons = new List<Persons>();
+     //       listPersons.Add(person1);
+     //       listPersons.Add(person2);
 
-            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+     //       JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
 
-            string jsString = jsSerializer.Serialize(listPersons);
+     //       string jsString = jsSerializer.Serialize(listPersons);
 
-            jsonData = "[{" +
-         "\"id\": \"sergiu-hystory\"," +
-         "\"title\": \"My story\"," +
-         "\"initial_zoom\": \"39\"," +
-                //"\"focus_date\": \"1998-03-11 12:00:00\","+
-         "\"image_lane_height\": 50," +
-         "\"events\":" + jsString + "" +
-     "}]";
+     //       jsonData = "[{" +
+     //    "\"id\": \"sergiu-hystory\"," +
+     //    "\"title\": \"My story\"," +
+     //    "\"initial_zoom\": \"39\"," +
+     //           //"\"focus_date\": \"1998-03-11 12:00:00\","+
+     //    "\"image_lane_height\": 50," +
+     //    "\"events\":" + jsString + "" +
+     //"}]";
             
             
 
@@ -119,7 +142,7 @@ namespace MyTimelineASPTry
 
         protected void buttonAddData_Click(object sender, EventArgs e)
         {
-            Response.Redirect("AddData.aspx");
+            Response.Redirect("AddData.aspx",false);
            
         }
     }

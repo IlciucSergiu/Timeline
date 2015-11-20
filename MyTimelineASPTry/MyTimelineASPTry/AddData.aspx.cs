@@ -25,7 +25,8 @@ namespace MyTimelineASPTry
             if(firstName.Text != "" && lastName.Text != ""){
                 Response.Write("O mers");
                 Response.Write(inputImportance.Value + "adsasdg");
-                
+                //if(RadioButtonListGende)
+
                 BsonDocument document = new BsonDocument
             {
                 { "_id", firstName.Text.ToLower() +"_"+lastName.Text.ToLower() },
@@ -38,10 +39,13 @@ namespace MyTimelineASPTry
                 { "importance", inputImportance.Value },
                 { "link", textBoxLink.Text },
                 { "image", textBoxImage.Text },
+                { "profession", textBoxProfession.Text },
+                { "nationality", textBoxNationality.Text },
+                { "religion", textBoxReligion.Text }
             };
 
                 collection.InsertOneAsync(document);
-                Response.Redirect("WebFormTimeline.aspx");
+                Response.Redirect("WebFormTimeline.aspx", false);
 
             }
             else
