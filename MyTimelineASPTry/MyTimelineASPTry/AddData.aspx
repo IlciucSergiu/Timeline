@@ -33,11 +33,11 @@
 
         <div id="notEssential">
         <div id="gender">
-        <p>Gender:&nbsp;&nbsp;</p>
-           <asp:RadioButtonList ID="RadioButtonListGender"  runat="server">
+        <p>Gender:&nbsp;&nbsp;<asp:RadioButtonList ID="RadioButtonListGender"  runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
                <asp:ListItem>Male</asp:ListItem> 
                 <asp:ListItem>Female</asp:ListItem>
             </asp:RadioButtonList>
+            </p>
             </div>
             <p>&nbsp;Profession : <asp:TextBox ID="textBoxProfession" runat="server"></asp:TextBox>
             <p>&nbsp;Nationality : <asp:TextBox ID="textBoxNationality" runat="server"></asp:TextBox>

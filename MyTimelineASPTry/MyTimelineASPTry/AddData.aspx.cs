@@ -15,7 +15,7 @@ namespace MyTimelineASPTry
         {
 
         }
-
+        string gender;
         protected void buttonSubmit_Click(object sender, EventArgs e)
         {
             MongoClient mgClient = new MongoClient();
@@ -23,9 +23,20 @@ namespace MyTimelineASPTry
             var collection = db.GetCollection<BsonDocument>("Personalities");
 
             if(firstName.Text != "" && lastName.Text != ""){
-                Response.Write("O mers");
-                Response.Write(inputImportance.Value + "adsasdg");
-                //if(RadioButtonListGende)
+                Response.Write("O mers  ");
+                Response.Write(inputImportance.Value );
+
+                
+
+                if(RadioButtonListGender.SelectedIndex != -1)
+                {
+                    //Response.Write(RadioButtonListGender.SelectedIndex.ToString() + "    ");
+                if(RadioButtonListGender.SelectedValue == "Male")
+                {gender = "male"; }
+                else { gender="female"; }
+                }
+                else { Response.Write("Please select a gender."); }
+
 
                 BsonDocument document = new BsonDocument
             {
@@ -41,11 +52,12 @@ namespace MyTimelineASPTry
                 { "image", textBoxImage.Text },
                 { "profession", textBoxProfession.Text },
                 { "nationality", textBoxNationality.Text },
-                { "religion", textBoxReligion.Text }
+                { "religion", textBoxReligion.Text },
+                { "gender", gender }
             };
 
                 collection.InsertOneAsync(document);
-                Response.Redirect("WebFormTimeline.aspx", false);
+               Response.Redirect("WebFormTimeline.aspx", false);
 
             }
             else
