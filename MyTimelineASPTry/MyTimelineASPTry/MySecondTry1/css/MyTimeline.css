@@ -3,10 +3,7 @@
 }
 /*AddData page*/
 #buttonSubmit {
-    position: absolute;
-    left: 371px;
-    top: 614px;
-    height: 27px;
+    
 }
 
 #datesPosition p {
@@ -17,11 +14,39 @@
     display: inline;
 }
 
-#form1{
+form{
+    display:compact;
+}
+#divAddEssentials{
     position:absolute;
     left: 3%;
-    top: 15px;
+    top: 0px;
     margin-left: 0px;
+    display:none;
 }
 
+#divMainInfo {
+    
+}
 
+.essentialLabels {
+    
+    padding-left: 20px;
+
+    line-height: 170%;
+
+}
+
+div.imageInline{
+    display:inline;
+
+}
+div.imageInline {
+  float: left;
+    height: 182px;
+    width: 160px;
+}
+  
+#ckEditor{
+    float:left;
+}

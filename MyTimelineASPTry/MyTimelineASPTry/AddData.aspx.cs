@@ -6,6 +6,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using HtmlAgilityPack;
+using CsQuery;
 
 namespace MyTimelineASPTry
 {
@@ -57,13 +59,30 @@ namespace MyTimelineASPTry
             };
 
                 collection.InsertOneAsync(document);
-               Response.Redirect("WebFormTimeline.aspx", false);
+
+                
+
+                
+                 Response.Write("O mers !?");
+               //Response.Redirect("WebFormTimeline.aspx", false);
 
             }
             else
             {
                 Response.Write("Fill the neccesary fields.");
             }
+        }
+
+        protected  void buttonCancel_Click(object sender, EventArgs e)
+        {
+           // Response.Write(HttpRequest.RawUrl);
+           string urlCurrent =  Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath + "AddData";
+
+            var dom = CQ.CreateFromUrl(urlCurrent);
+            
+            var formEssential = dom["#divAddEssentials"];
+            divAddEssentials.Visible = false;
+            Response.Write("O mers !?");
         }
     }
 }
