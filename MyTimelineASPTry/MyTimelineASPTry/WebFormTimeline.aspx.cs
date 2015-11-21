@@ -92,7 +92,7 @@ namespace MyTimelineASPTry
              var filter = Builders<PersonInfo>.Filter;
 
              //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
-             jsString = "";
+             jsString = ""; 
              await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
              // await collection.Find(filter).ForEachAsync(d => jsString += d+",");
 
