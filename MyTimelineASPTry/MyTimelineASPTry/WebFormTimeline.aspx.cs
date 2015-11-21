@@ -16,7 +16,7 @@ namespace MyTimelineASPTry
     {
         protected async void Page_Load(object sender, EventArgs e)
         {
-            LoadTimeline();
+            LoadTimelineConcat();
             
         }
 
@@ -27,7 +27,7 @@ namespace MyTimelineASPTry
         protected async void buttonLoadTimeline_Click(object sender, EventArgs e)
         {
             
-           // LoadBasic();
+          
             LoadTimelineConcat();
             
  }
@@ -39,19 +39,7 @@ namespace MyTimelineASPTry
 
             var collection = db.GetCollection<BsonDocument>("Personalities");
 
-            BsonDocument document = new BsonDocument
-            {
-                { "name", "Gigel" },
-                { "type", "Database" },
-                { "count", 1 },
-                { "info", new BsonDocument
-              {
-                  { "x", 203 },
-                  { "y", 102 }
-              }}
-            };
-
-            //collection.InsertOneAsync(document);
+             //collection.InsertOneAsync(document);
 
             // var doc = collection.Find( _=> true);
             //var data = collection.FindAll();
@@ -78,9 +66,9 @@ namespace MyTimelineASPTry
          protected async void LoadTimelineConcat()
          {
              MongoClient mclient = new MongoClient();
-             var db = mclient.GetDatabase("test");
+             var db = mclient.GetDatabase("Timeline");
 
-             var collection = db.GetCollection<PersonInfo>("TimelineTest2");
+             var collection = db.GetCollection<PersonInfo>("Personalities");
 
            
 
@@ -89,23 +77,13 @@ namespace MyTimelineASPTry
              
              //var documents = await collection.Find(new BsonDocument()).FirstAsync();
 
-             var filter = Builders<PersonInfo>.Filter;
+             var filter = Builders<PersonInfo>.Filter.Eq("name", "Ilciuc");;
 
              //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
              jsString = ""; 
              await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
-             // await collection.Find(filter).ForEachAsync(d => jsString += d+",");
+             //await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
-//             "{\"id\" : \""+db.id+"\",
-//    "id" : "beethoven",
-//    "\"title\" : \""+L V Beethoven+"\"",
-//    "startdate" : "1770-12-17 12:00:00",
-//    "enddate" : "1827-3-26 12:00:00",
-//    "description" : "A very good musician.",
-//    "importance" : "80",
-//    "link" : "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven",
-//    "image" : "https://upload.wikimedia.org/wikipedia/commons/6/6f/Beethoven.jpg"
-//}
 
              jsonData = "[{" +
           "\"id\": \"important_personalities\"," +
@@ -118,36 +96,7 @@ namespace MyTimelineASPTry
 
          }
 
-         protected async void LoadBasic()
-         {
-             MongoClient mgClient = new MongoClient();
-
-             var db = mgClient.GetDatabase("test");
-             var collection = db.GetCollection<PersonBasic>("TimelineTest2");
-
-             //var filter = Builders<BsonDocument>.Filter.Eq("name", "gigel");
-             var filter = Builders<BsonDocument>.Filter.Eq("name", "gigel");
-
-             jsString = "";
-             await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d.ToJson() + ",");
-             // await collection.Find(filter).ForEachAsync(d => jsString += d+",");
-
-             var collection2 = db.GetCollection<PersonInfo>("TimelineTest2");
-           // var data3 = collection2.FindAllAs<PersonInfo>().SetFields(Fields.Include(user => user.,
-                                   //            user => user.LastName)
-                               //       .Exclude(user => user.SSN)
-              // .ToArray();
-
-             jsonData = "[{" +
-          "\"id\": \"important_personalities\"," +
-          "\"title\": \"Important Personalities\"," +
-          "\"initial_zoom\": \"40\"," +
-                 //"\"focus_date\": \"1998-03-11 12:00:00\","+
-          "\"image_lane_height\": 50," +
-          "\"events\":[" + jsString.TrimEnd(',') + "]" +
-      "}]";
-
-         }
+         
        protected void buttonCreate_Click(object sender, EventArgs e)
         {
      //       Persons person1 = new Persons();

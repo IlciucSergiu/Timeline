@@ -40,7 +40,7 @@ namespace MyTimelineASPTry
 
                 BsonDocument document = new BsonDocument
             {
-                { "_id", firstName.Text.ToLower() +"_"+lastName.Text.ToLower() },
+                //{ "_id", firstName.Text.ToLower() +"_"+lastName.Text.ToLower() },
                 { "id", firstName.Text.ToLower() +"_"+lastName.Text.ToLower() },
                 { "name",new BsonArray{ firstName.Text,lastName.Text} },
                 { "title", firstName.Text+" "+lastName.Text },

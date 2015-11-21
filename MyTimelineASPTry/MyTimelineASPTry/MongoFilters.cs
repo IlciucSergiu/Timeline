@@ -33,6 +33,7 @@ namespace MyTimelineASPTry
         [BsonId]
         public ObjectId _id { get; set; }
 
+        public BsonArray name { get; set; }
         public string id { get; set; }
         public string title { get; set; }
         public string startdate { get; set; }
@@ -43,7 +44,7 @@ namespace MyTimelineASPTry
         public string importance { get; set; }
 
         public string gender { get; set; }
-        public string profesion { get; set; }
+        public string profession { get; set; }
         public string religion { get; set; }
         public string nationality { get; set; }
     }
