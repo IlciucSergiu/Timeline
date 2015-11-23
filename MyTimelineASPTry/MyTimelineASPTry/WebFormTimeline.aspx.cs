@@ -68,7 +68,7 @@ namespace MyTimelineASPTry
              MongoClient mclient = new MongoClient();
              var db = mclient.GetDatabase("Timeline");
 
-             var collection = db.GetCollection<PersonInfo>("Personalities");
+             var collection = db.GetCollection<PersonInfo>("Persons");
 
            
 

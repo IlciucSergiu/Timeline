@@ -18,14 +18,15 @@ form{
     display:compact;
 }
 #divAddEssentials{
-    position:absolute;
+    position:relative;
     left: 3%;
     top: 0px;
     margin-left: 0px;
-    display:none;
+   display:block;
 }
 
 #divMainInfo {
+    clear: left;
     
 }
 

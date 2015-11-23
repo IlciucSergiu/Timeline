@@ -24,7 +24,7 @@ namespace MyTimelineASPTry
         {
             MongoClient mgClient = new MongoClient();
             var db = mgClient.GetDatabase("Timeline");
-            var collection = db.GetCollection<BsonDocument>("Personalities");
+            var collection = db.GetCollection<BsonDocument>("Persons");
 
             if(firstName.Text != "" && lastName.Text != ""){
                 Response.Write("O mers  ");

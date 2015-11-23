@@ -115,6 +115,10 @@
 
         <div id="divMainInfo" runat="server">
             <br />
+            <asp:TextBox ID="TextBox1" runat="server" Width="128px"></asp:TextBox>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button ID="Button1" runat="server" Text="Search ID" />
+            <br />
 
             <div id="divEssentialInfo" class="imageInline">
                 <asp:Image ID="Image1" runat="server" />
@@ -133,6 +137,17 @@
         <div id="ckEditor">
             <CKEditor:CKEditorControl ID="CKEditor1" BasePath="/ckeditor/" runat="server" Height="350" Width="1000"></CKEditor:CKEditorControl>
         </div>
+
+        
+            &nbsp;</p>
+        <p>
+            <asp:LinkButton ID="LinkButton2" runat="server">Add additional resources</asp:LinkButton>
+        </p>
+        <p>
+
+        
+            <asp:LinkButton ID="LinkButton1" runat="server">Add links to external resources</asp:LinkButton>
+        </p>
 
     </form>
 
