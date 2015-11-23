@@ -15,7 +15,9 @@ namespace MyTimelineASPTry
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            CKEditor1.ResizeEnabled = true;
+            CKEditor1.ResizeMaxHeight = 500;
+           
         }
         string gender;
         protected void buttonSubmit_Click(object sender, EventArgs e)
@@ -82,6 +84,8 @@ namespace MyTimelineASPTry
             
             var formEssential = dom["#divAddEssentials"];
             divAddEssentials.Visible = false;
+
+            
             Response.Write("O mers !?");
         }
     }

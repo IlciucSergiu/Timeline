@@ -130,9 +130,9 @@
             <br />
 
         </div>
-        
-            <CKEditor:CKEditorControl ID="CKEditor1" BasePath="/ckeditor/" runat="server"></CKEditor:CKEditorControl>
-        
+        <div id="ckEditor">
+            <CKEditor:CKEditorControl ID="CKEditor1" BasePath="/ckeditor/" runat="server" Height="350" Width="1000"></CKEditor:CKEditorControl>
+        </div>
 
     </form>
 

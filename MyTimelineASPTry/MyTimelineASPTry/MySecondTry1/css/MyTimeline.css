@@ -45,8 +45,10 @@ div.imageInline {
   float: left;
     height: 182px;
     width: 160px;
+
 }
   
 #ckEditor{
-    float:left;
+    clear: left;
+    padding-left: 3%;
 }
