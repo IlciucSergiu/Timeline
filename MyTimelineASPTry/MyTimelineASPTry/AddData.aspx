@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddData.aspx.cs" Inherits="MyTimelineASPTry.AddData" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddData.aspx.cs" Inherits="MyTimelineASPTry.AddData" Async="true" %>
 
 <%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>
 
@@ -45,7 +45,7 @@
                 <br />
             </div>
             <asp:Label ID="labelImportance" runat="server" Text="Importance"></asp:Label>&nbsp;&nbsp;
-        <input id="inputImportance" type="number" runat="server" max="100" min="0" placeholder="importance" style="width: 72px" /><br />
+        <input id="inputImportance" type="number" runat="server" max="100" min="0" style="width: 72px" /><br />
             <br />
 
 
@@ -103,6 +103,11 @@
                     $(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
 
                 });
+
+                function setDate() {
+                    $("#dateBirth").datepicker("setDate", '<%=dateBirth.Value.ToString()%>');
+                    alert('<%=dateBirth.Value%>');
+                }
             </script>
         </div>
 
@@ -115,20 +120,22 @@
 
         <div id="divMainInfo" runat="server">
             <br />
-            <asp:TextBox ID="TextBox1" runat="server" Width="128px"></asp:TextBox>
+            <asp:TextBox ID="textBoxId" runat="server" Width="128px"></asp:TextBox>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button ID="Button1" runat="server" Text="Search ID" />
+            <asp:Button ID="Button1" runat="server" Text="Search ID" OnClick="Button1_Click" />
             <br />
 
             <div id="divEssentialInfo" class="imageInline">
-                <asp:Image ID="Image1" runat="server" />
+                <asp:Image ID="imageProfile" runat="server" Height="177px" Width="151px" />
             </div>
-            <div class="imageInline">
-                <asp:Label ID="labelName" runat="server" Text="Name" CssClass="essentialLabels"></asp:Label><br />
-                <asp:Label ID="labelDates" runat="server" Text="Dates" CssClass="essentialLabels"></asp:Label><br />
-                <asp:Label ID="labelProfession" runat="server" Text="Profession" CssClass="essentialLabels"></asp:Label><br />
-                <asp:Label ID="labelNationality" runat="server" Text="Nationality" CssClass="essentialLabels"></asp:Label><br />
-                <asp:Label ID="labelReligion" runat="server" Text="Religion" CssClass="essentialLabels"></asp:Label><br />
+            <div class="imageInline" id="labelsInfo">
+                <asp:Label ID="labelName" runat="server" Text="Name" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+                <asp:Label ID="labelDates" runat="server" Text="Dates" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+                <asp:Label ID="labelProfession" runat="server" Text="Profession" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+                <asp:Label ID="labelNationality" runat="server" Text="Nationality" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+                <asp:Label ID="labelReligion" runat="server" Text="Religion" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+
+                <asp:LinkButton ID="linkButtonEdit" runat="server" CssClass="linkLabel" OnClick="linkButtonEdit_Click"  OnClientClick="setDate()">edit</asp:LinkButton>
 
             </div>
             <br />

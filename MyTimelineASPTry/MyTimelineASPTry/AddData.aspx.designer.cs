@@ -211,13 +211,13 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMainInfo;
         
         /// <summary>
-        /// TextBox1 control.
+        /// textBoxId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox textBoxId;
         
         /// <summary>
         /// Button1 control.
@@ -229,13 +229,13 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Button Button1;
         
         /// <summary>
-        /// Image1 control.
+        /// imageProfile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image Image1;
+        protected global::System.Web.UI.WebControls.Image imageProfile;
         
         /// <summary>
         /// labelName control.
@@ -281,6 +281,15 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label labelReligion;
+        
+        /// <summary>
+        /// linkButtonEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton linkButtonEdit;
         
         /// <summary>
         /// CKEditor1 control.

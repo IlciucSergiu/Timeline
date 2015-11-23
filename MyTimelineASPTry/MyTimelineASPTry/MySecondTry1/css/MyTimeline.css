@@ -35,7 +35,7 @@ form{
     padding-left: 20px;
 
     line-height: 170%;
-
+    
 }
 
 div.imageInline{
@@ -45,11 +45,20 @@ div.imageInline{
 div.imageInline {
   float: left;
     height: 182px;
-    width: 160px;
+    width: 153px;
 
 }
   
 #ckEditor{
     clear: left;
     padding-left: 3%;
+}
+
+#labelsInfo {
+    width:300px;
+}
+
+.linkLabel {
+
+    padding-left: 275px;
 }
