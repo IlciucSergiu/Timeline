@@ -69,7 +69,7 @@ namespace MyTimelineASPTry
              var db = mclient.GetDatabase("Timeline");
 
              var collection = db.GetCollection<PersonInfo>("Persons");
-
+              
            
 
             
