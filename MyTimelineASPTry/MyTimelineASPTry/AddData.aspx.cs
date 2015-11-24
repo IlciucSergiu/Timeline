@@ -18,17 +18,15 @@ namespace MyTimelineASPTry
             CKEditor1.ResizeEnabled = true;
             CKEditor1.ResizeMaxHeight = 500;
 
-            if (IsPostBack)
-                dateBirth.Value = ViewState["dateBirth"].ToString();
-            else
+            if (setDate)
             {
-                ViewState["dateBirth"] = "10/12/2012";
                 dateBirth.Value = ViewState["dateBirth"].ToString();
+                dateDeath.Value = ViewState["dateDeath"].ToString();
             }
 
         }
 
-        bool setDate = false;
+       public bool setDate = false, showEssential = false;
         string gender;
         protected void buttonSubmit_Click(object sender, EventArgs e)
         {
@@ -70,9 +68,30 @@ namespace MyTimelineASPTry
                 { "religion", textBoxReligion.Text },
                 { "gender", gender }
             };
-
                 collection.InsertOneAsync(document);
 
+
+                //PersonInfo person1 = new PersonInfo();
+                //person1.id = firstName.Text.ToLower() + "_" + lastName.Text.ToLower();
+                //person1.name = new BsonArray { firstName.Text, lastName.Text };
+                //person1.title = firstName.Text + " " + lastName.Text;
+                //person1.startdate = dateBirth.Value;
+                //person1.enddate = dateDeath.Value;
+                //person1.importance = inputImportance.Value;
+                //person1.image = textBoxImage.Text;
+                //person1.description = "A very good musician.";
+                //person1.link = textBoxLink.Text;
+
+                //if (textBoxNationality.Text != "")
+                //person1.nationality = textBoxNationality.Text;
+                //if (textBoxProfession.Text != "")
+                //person1.profession = textBoxProfession.Text;
+                //if (textBoxReligion.Text != "")
+                //person1.religion = textBoxReligion.Text;
+                //if (gender != "")
+                //person1.gender = gender;
+
+                //collection.InsertOneAsync(person1);
 
 
 
@@ -125,6 +144,8 @@ namespace MyTimelineASPTry
 
         protected async void linkButtonEdit_Click(object sender, EventArgs e)
         {
+            setDate = true;
+            showEssential = true;
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
 
@@ -141,7 +162,7 @@ namespace MyTimelineASPTry
             dateBirth.Value = documents.startdate;
             ViewState["dateBirth"] = dateBirth.Value;
             dateDeath.Value = documents.enddate;
-            ViewState["dateBirth"] = dateDeath.Value;
+            ViewState["dateDeath"] = dateDeath.Value;
             Response.Write(dateBirth.Value);
             textBoxDescription.Text = documents.description;
             
@@ -162,6 +183,41 @@ namespace MyTimelineASPTry
                 else
                     RadioButtonListGender.SelectedIndex = 1;
             
+        }
+
+        protected async void buttonMonify_Click(object sender, EventArgs e)
+        {
+            showEssential = false;
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+            var collection = db.GetCollection<PersonInfo>("Persons");
+
+            if (RadioButtonListGender.SelectedIndex != -1)
+            {
+                //Response.Write(RadioButtonListGender.SelectedIndex.ToString() + "    ");
+                if (RadioButtonListGender.SelectedValue == "Male")
+                { gender = "male"; }
+                else { gender = "female"; }
+            }
+            else { Response.Write("Please select a gender."); }
+
+            var filter = Builders<PersonInfo>.Filter.Eq("id", textBoxId.Text);
+            
+            var update = Builders<PersonInfo>.Update
+                .Set("name", new BsonArray { firstName.Text, lastName.Text })
+                .Set("title", firstName.Text + " " + lastName.Text)
+                .Set("startdate", dateBirth.Value)
+                .Set("enddate", dateDeath.Value)
+                .Set("description", textBoxDescription.Text)
+                .Set("importance", inputImportance.Value)
+                .Set("link", textBoxLink.Text)
+                .Set("image", textBoxImage.Text)
+                .Set("profession", textBoxProfession.Text)
+                .Set("nationality", textBoxNationality.Text)
+                .Set("religion", textBoxReligion.Text)
+                .Set("gender", gender);
+            var result = await collection.UpdateOneAsync(filter, update);
         }
     }
 }

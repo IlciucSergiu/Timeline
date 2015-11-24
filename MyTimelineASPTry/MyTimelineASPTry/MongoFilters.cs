@@ -34,7 +34,8 @@ namespace MyTimelineASPTry
         public ObjectId _id { get; set; }
 
         public BsonArray name { get; set; }
-        
+
+        public string owner { get; set; }
         public string id { get; set; }
         public string title { get; set; }
         public string startdate { get; set; }
@@ -44,9 +45,13 @@ namespace MyTimelineASPTry
         public string image { get; set; }
         public string importance { get; set; }
 
+        [BsonIgnoreIfNull]
         public string gender { get; set; }
+        [BsonIgnoreIfNull]
         public string profession { get; set; }
+        [BsonIgnoreIfNull]
         public string religion { get; set; }
+        [BsonIgnoreIfNull]
         public string nationality { get; set; }
     }
 }

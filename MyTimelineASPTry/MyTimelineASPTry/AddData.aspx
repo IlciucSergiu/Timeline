@@ -52,20 +52,20 @@
             <div id="notEssential">
                 <div id="gender">
                     <p>
-                        Gender:&nbsp;&nbsp;<asp:RadioButtonList ID="RadioButtonListGender" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                        *Gender:&nbsp;&nbsp;<asp:RadioButtonList ID="RadioButtonListGender" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
                             <asp:ListItem>Male</asp:ListItem>
                             <asp:ListItem>Female</asp:ListItem>
                         </asp:RadioButtonList>
                     </p>
                 </div>
                 <p>
-                    &nbsp;Profession :
+                    &nbsp;*Profession :
                 <asp:TextBox ID="textBoxProfession" runat="server"></asp:TextBox>
                     <p>
-                        &nbsp;Nationality :
+                        &nbsp;*Nationality :
                     <asp:TextBox ID="textBoxNationality" runat="server"></asp:TextBox>
                         <p>
-                            &nbsp;Religion :
+                            &nbsp;*Religion :
                         <asp:TextBox ID="textBoxReligion" runat="server"></asp:TextBox>
                         </p>
             </div>
@@ -83,8 +83,11 @@
             <br />
 
 
-            <asp:Button ID="buttonCancel" runat="server" Text="Cancel" OnClick="buttonCancel_Click" />
-            <asp:Button ID="buttonSubmit" runat="server" Text="Submit" OnClick="buttonSubmit_Click" />
+            <asp:Button ID="buttonCancel" runat="server" Text="Cancel" OnClick="buttonCancel_Click" CssClass="essentialButtons"/>
+            <asp:Button ID="buttonSubmit" runat="server" Text="Submit" OnClick="buttonSubmit_Click" Width="82px" CssClass="essentialButtons"/>
+
+
+            <asp:Button ID="buttonModify" runat="server" Text="Modify" CssClass="essentialButtons" OnClick="buttonMonify_Click" Width="90px"/>
 
 
             <br />
@@ -104,10 +107,26 @@
 
                 });
 
-                function setDate() {
-                    $("#dateBirth").datepicker("setDate", '<%=dateBirth.Value.ToString()%>');
-                    alert('<%=dateBirth.Value%>');
-                }
+                $(document).ready(function () {
+                    if ('<%=setDate%>' == "True") {
+                        $("#dateBirth").datepicker("setDate", '<%=dateBirth.Value.ToString()%>');
+                        $("#dateDeath").datepicker("setDate", '<%=dateDeath.Value.ToString()%>');
+                        //alert('<%=dateBirth.Value%>' + "" + '<%=dateDeath.Value%>');
+                        //alert('<%=setDate%>');
+                    }
+                    if ('<%=showEssential%>' == "True")
+                    {
+                        $("#divAddEssentials").css("display", "block");
+                        $("#divMainInfo").css("display", "none");
+                    }
+                    else {
+                        $("#divAddEssentials").css("display", "none");
+                        $("#divMainInfo").css("display", "block");
+                    }
+                });
+                
+                    
+                
             </script>
         </div>
 
@@ -140,7 +159,7 @@
             </div>
             <br />
 
-        </div>
+        
         <div id="ckEditor">
             <CKEditor:CKEditorControl ID="CKEditor1" BasePath="/ckeditor/" runat="server" Height="350" Width="1000"></CKEditor:CKEditorControl>
         </div>
@@ -155,7 +174,7 @@
         
             <asp:LinkButton ID="LinkButton1" runat="server">Add links to external resources</asp:LinkButton>
         </p>
-
+        </div>
     </form>
 
 

@@ -722,6 +722,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
+    <Content Include="UserManaging.aspx" />
     <Content Include="WebFormTimeline.aspx" />
     <Content Include="MySecondTry1\css\.DS_Store" />
     <Content Include="MySecondTry1\json\idaho.json" />
@@ -955,6 +956,13 @@
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="UserManaging.aspx.cs">
+      <DependentUpon>UserManaging.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserManaging.aspx.designer.cs">
+      <DependentUpon>UserManaging.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
