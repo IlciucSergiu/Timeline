@@ -24,8 +24,31 @@ namespace MyTimelineASPTry
                 dateDeath.Value = ViewState["dateDeath"].ToString();
             }
 
-        }
+             //itemId = Session["itemId"].ToString();
+            // userId = Session["userId"].ToString();
+           
 
+        }
+        protected void Page_PreLoad(object sender, EventArgs e)
+        {
+           
+            if (!IsPostBack)
+            {
+
+                ViewState["itemId"] = Request.QueryString["itemId"];
+                //Response.Write(ViewState["itemId"].ToString());
+
+                ViewState["userId"] = Request.QueryString["userId"];
+            }
+
+            itemId = ViewState["itemId"].ToString();
+            userId = ViewState["userId"].ToString();
+
+            InitializeItem(userId, itemId);
+
+        }
+        
+        string userId, itemId;
        public bool setDate = false, showEssential = false;
         string gender;
         protected void buttonSubmit_Click(object sender, EventArgs e)
@@ -50,6 +73,13 @@ namespace MyTimelineASPTry
                 }
                 else { Response.Write("Please select a gender."); }
 
+                string endDate;
+                if (checkBoxContemporary.Checked == true)
+                {
+                    endDate = "contemporary";
+                }
+                else
+                    endDate = dateDeath.Value;
 
                 BsonDocument document = new BsonDocument
             {
@@ -58,7 +88,7 @@ namespace MyTimelineASPTry
                 { "name",new BsonArray{ firstName.Text,lastName.Text} },
                 { "title", firstName.Text+" "+lastName.Text },
                 { "startdate", dateBirth.Value },
-                { "enddate", dateDeath.Value },
+                { "enddate", endDate},
                 { "description", textBoxDescription.Text },
                 { "importance", inputImportance.Value },
                 { "link", textBoxLink.Text },
@@ -107,16 +137,17 @@ namespace MyTimelineASPTry
 
         protected void buttonCancel_Click(object sender, EventArgs e)
         {
-            // Response.Write(HttpRequest.RawUrl);
-            string urlCurrent = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath + "AddData";
+            //// Response.Write(HttpRequest.RawUrl);
+            //string urlCurrent = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath + "AddData";
 
-            var dom = CQ.CreateFromUrl(urlCurrent);
+            //var dom = CQ.CreateFromUrl(urlCurrent);
 
-            var formEssential = dom["#divAddEssentials"];
-            divAddEssentials.Visible = false;
+            //var formEssential = dom["#divAddEssentials"];
+            //divAddEssentials.Visible = false;
 
 
-            Response.Write("O mers !?");
+            //Response.Write("O mers !?");
+            showEssential = false;
         }
         string jsString;
 
@@ -152,7 +183,7 @@ namespace MyTimelineASPTry
             var collection = db.GetCollection<PersonInfo>("Persons");
             //var documents = await collection.Find(new BsonDocument()).FirstAsync();
 
-            var filter = Builders<PersonInfo>.Filter.Eq("id", textBoxId.Text); ;
+            var filter = Builders<PersonInfo>.Filter.Eq("id", itemId); ;
             var documents = await collection.Find(filter).FirstAsync();
             firstName.Text = documents.name[0].ToString();
 
@@ -185,7 +216,7 @@ namespace MyTimelineASPTry
             
         }
 
-        protected async void buttonMonify_Click(object sender, EventArgs e)
+        protected async void buttonModify_Click(object sender, EventArgs e)
         {
             showEssential = false;
             MongoClient mclient = new MongoClient();
@@ -202,13 +233,21 @@ namespace MyTimelineASPTry
             }
             else { Response.Write("Please select a gender."); }
 
-            var filter = Builders<PersonInfo>.Filter.Eq("id", textBoxId.Text);
+            string endDate;
+            if (checkBoxContemporary.Checked == true)
+            {
+                endDate = "contemporary";
+            }
+            else
+                endDate = dateDeath.Value;
+
+            var filter = Builders<PersonInfo>.Filter.Eq("id", itemId);
             
             var update = Builders<PersonInfo>.Update
                 .Set("name", new BsonArray { firstName.Text, lastName.Text })
                 .Set("title", firstName.Text + " " + lastName.Text)
                 .Set("startdate", dateBirth.Value)
-                .Set("enddate", dateDeath.Value)
+                .Set("enddate", endDate)
                 .Set("description", textBoxDescription.Text)
                 .Set("importance", inputImportance.Value)
                 .Set("link", textBoxLink.Text)
@@ -219,5 +258,30 @@ namespace MyTimelineASPTry
                 .Set("gender", gender);
             var result = await collection.UpdateOneAsync(filter, update);
         }
+
+        protected async void  InitializeItem(string userId, string itemId)
+        {
+            {
+                labelId.Text = userId;
+                MongoClient mclient = new MongoClient();
+                var db = mclient.GetDatabase("Timeline");
+
+                var collection = db.GetCollection<PersonInfo>("Persons");
+                //var documents = await collection.Find(new BsonDocument()).FirstAsync();
+
+                var filter = Builders<PersonInfo>.Filter.Eq("id", itemId); ;
+                var documents = await collection.Find(filter).FirstAsync();
+                labelName.Text = documents.name.ToString();
+                labelDates.Text = documents.startdate + "-" + documents.enddate;
+                labelProfession.Text = documents.profession;
+                labelNationality.Text = documents.nationality;
+                labelReligion.Text = documents.religion;
+                imageProfile.ImageUrl = documents.image;
+                //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
+                // jsString = "";
+                // await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
+            }
+        }
     }
+
 }

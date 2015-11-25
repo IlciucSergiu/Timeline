@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -16,7 +17,10 @@
         <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
         
         <br />
-        <asp:ListBox ID="listBoxOwns" runat="server"></asp:ListBox>
+        <asp:ListBox ID="listBoxOwns" runat="server" Height="131px" Width="132px" AutoPostBack="True" OnSelectedIndexChanged="listBoxOwns_SelectedIndexChanged" ViewStateMode="Enabled"></asp:ListBox><br /><br />
+    
+        <asp:Button ID="buttonEdit" runat="server" Text="Edit" CssClass="userManButton" Enabled="False" OnClick="buttonEdit_Click" Width="67px" />
+        <asp:Button ID="buttonCreate" runat="server" Text="Create new" CssClass="userManButton" Width="81px" />
     
     </div>
     </form>

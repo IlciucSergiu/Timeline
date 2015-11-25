@@ -36,5 +36,20 @@ namespace MyTimelineASPTry
             //labelReligion.Text = documents.religion;
             //imageProfile.ImageUrl = documents.image;
         }
+
+        protected void listBoxOwns_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxOwns.SelectedIndex.ToString() != "")
+                buttonEdit.Enabled = true;
+            else
+                buttonEdit.Enabled = false;
+        }
+
+        protected void buttonEdit_Click(object sender, EventArgs e)
+        {
+            Session["userId"] = textBoxSearchId.Text;
+            Session["itemId"] = listBoxOwns.SelectedValue;
+            Response.Redirect("AddData.aspx?userId="+textBoxSearchId.Text+"&itemId="+listBoxOwns.SelectedValue);
+        }
     }
 }
