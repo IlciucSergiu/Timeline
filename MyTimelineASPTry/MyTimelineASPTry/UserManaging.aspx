@@ -20,7 +20,7 @@
         <asp:ListBox ID="listBoxOwns" runat="server" Height="131px" Width="132px" AutoPostBack="True" OnSelectedIndexChanged="listBoxOwns_SelectedIndexChanged" ViewStateMode="Enabled"></asp:ListBox><br /><br />
     
         <asp:Button ID="buttonEdit" runat="server" Text="Edit" CssClass="userManButton" Enabled="False" OnClick="buttonEdit_Click" Width="67px" />
-        <asp:Button ID="buttonCreate" runat="server" Text="Create new" CssClass="userManButton" Width="81px" />
+        <asp:Button ID="buttonCreate" runat="server" Text="Create new" CssClass="userManButton" Width="81px" OnClick="buttonCreate_Click" />
     
     </div>
     </form>

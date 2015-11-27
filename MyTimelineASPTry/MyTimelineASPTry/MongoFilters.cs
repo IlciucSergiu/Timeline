@@ -54,4 +54,23 @@ namespace MyTimelineASPTry
         [BsonIgnoreIfNull]
         public string nationality { get; set; }
     }
+
+    public class IndividualData
+    {
+        [BsonId]
+        public ObjectId _id { get; set; }
+
+       
+
+        //public string owner { get; set; }
+        public string id { get; set; }
+
+        public BsonArray events { get; set; }
+
+        public string htmlInformation { get; set; }
+
+        public BsonArray additionalResources { get; set; }
+
+        public BsonArray additionalLinks { get; set; }
+    }
 }

@@ -310,13 +310,13 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.LinkButton linkButtonEdit;
         
         /// <summary>
-        /// CKEditor1 control.
+        /// CKEditorInformation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CKEditor.NET.CKEditorControl CKEditor1;
+        protected global::CKEditor.NET.CKEditorControl CKEditorInformation;
         
         /// <summary>
         /// LinkButton2 control.
@@ -335,5 +335,14 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+        
+        /// <summary>
+        /// buttomSaveChanges control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttomSaveChanges;
     }
 }

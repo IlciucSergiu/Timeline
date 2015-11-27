@@ -49,7 +49,12 @@ namespace MyTimelineASPTry
         {
             Session["userId"] = textBoxSearchId.Text;
             Session["itemId"] = listBoxOwns.SelectedValue;
-            Response.Redirect("AddData.aspx?userId="+textBoxSearchId.Text+"&itemId="+listBoxOwns.SelectedValue);
+            Response.Redirect("AddData.aspx?userId=" + textBoxSearchId.Text + "&itemId=" + listBoxOwns.SelectedValue + "&scope=modify");
+        }
+
+        protected void buttonCreate_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AddData.aspx?scope=create&userId=" + textBoxSearchId.Text );
         }
     }
 }
