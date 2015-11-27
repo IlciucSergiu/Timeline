@@ -62,7 +62,7 @@ namespace MyTimelineASPTry
 
        
 
-        //public string owner { get; set; }
+        public string owner { get; set; }
         public string id { get; set; }
 
         public BsonArray events { get; set; }

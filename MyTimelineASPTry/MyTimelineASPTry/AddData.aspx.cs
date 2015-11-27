@@ -311,6 +311,17 @@ namespace MyTimelineASPTry
                 //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
                 // jsString = "";
                 // await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
+               
+                //MongoClient mgClient = new MongoClient();
+                //var db1 = mgClient.GetDatabase("Timeline");
+                if (ItemExists(itemId))
+                {
+                    var collection1 = db.GetCollection<IndividualData>("IndividualData");
+                    var filter1 = Builders<IndividualData>.Filter.Eq("id", itemId);
+                    var item = await collection1.Find(filter1).FirstAsync();
+                
+                CKEditorInformation.Text = item.htmlInformation;
+                }
             }
         }
 
