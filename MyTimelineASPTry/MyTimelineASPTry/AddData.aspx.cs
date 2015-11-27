@@ -228,7 +228,7 @@ namespace MyTimelineASPTry
             textBoxDescription.Text = documents.description;
 
             inputImportance.Value = documents.importance;
-            textBoxLink.Text = documents.link;
+            textBoxLink.Text = documents.link; 
             textBoxImage.Text = documents.image;
             textBoxProfession.Text = documents.profession;
             textBoxNationality.Text = documents.nationality;
