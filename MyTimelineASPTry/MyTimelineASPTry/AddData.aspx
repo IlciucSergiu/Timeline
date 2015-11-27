@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddData.aspx.cs" Inherits="MyTimelineASPTry.AddData" Async="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddData.aspx.cs" Inherits="MyTimelineASPTry.AddData" Async="true" ViewStateMode="Enabled" %>
 
 <%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>
 
@@ -17,7 +17,9 @@
 </head>
 <body>
 
+    <asp:Label ID="labelId" runat="server" Text="Label"></asp:Label>
     <form runat="server" id="formMainForm">
+        
         <div id="divAddEssentials" runat="server">
 
             <p>
@@ -41,7 +43,7 @@
              Date of death
              <input type="text" class="datepicker" id="dateDeath" runat="server" />
          </p>
-                &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="CheckBox1" runat="server" Text="Contemporary" /><br />
+                &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" OnCheckedChanged="checkBoxContemporary_CheckedChanged"  /><br />
                 <br />
             </div>
             <asp:Label ID="labelImportance" runat="server" Text="Importance"></asp:Label>&nbsp;&nbsp;
@@ -84,10 +86,10 @@
 
 
             <asp:Button ID="buttonCancel" runat="server" Text="Cancel" OnClick="buttonCancel_Click" CssClass="essentialButtons"/>
-            <asp:Button ID="buttonSubmit" runat="server" Text="Submit" OnClick="buttonSubmit_Click" Width="82px" CssClass="essentialButtons"/>
+            <asp:Button ID="buttonSubmit" runat="server" Text="Save" OnClick="buttonSubmit_Click" Width="82px" CssClass="essentialButtons"/>
 
 
-            <asp:Button ID="buttonModify" runat="server" Text="Modify" CssClass="essentialButtons" OnClick="buttonMonify_Click" Width="90px"/>
+            <asp:Button ID="buttonModify" runat="server" Text="Modify" CssClass="essentialButtons" OnClick="buttonModify_Click" Width="90px"/>
 
 
             <br />
@@ -125,7 +127,7 @@
                     }
                 });
                 
-                    
+                
                 
             </script>
         </div>
@@ -139,9 +141,9 @@
 
         <div id="divMainInfo" runat="server">
             <br />
-            <asp:TextBox ID="textBoxId" runat="server" Width="128px"></asp:TextBox>
+            <asp:TextBox ID="textBoxId" runat="server" Width="128px" Visible="False"></asp:TextBox>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button ID="Button1" runat="server" Text="Search ID" OnClick="Button1_Click" />
+            <asp:Button ID="Button1" runat="server" Text="Search ID" OnClick="Button1_Click" Visible="False" />
             <br />
 
             <div id="divEssentialInfo" class="imageInline">
@@ -161,7 +163,7 @@
 
         
         <div id="ckEditor">
-            <CKEditor:CKEditorControl ID="CKEditor1" BasePath="/ckeditor/" runat="server" Height="350" Width="1000"></CKEditor:CKEditorControl>
+            <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000"></CKEditor:CKEditorControl>
         </div>
 
         
@@ -174,7 +176,13 @@
         
             <asp:LinkButton ID="LinkButton1" runat="server">Add links to external resources</asp:LinkButton>
         </p>
+            <p>
+
+        
+                &nbsp;</p>
+            <asp:Button ID="buttomSaveChanges" runat="server" Text="Save" OnClick="buttomSaveChanges_Click" Width="83px" />
         </div>
+        
     </form>
 
 

@@ -16,6 +16,8 @@ namespace MyTimelineASPTry
     {
         protected async void Page_Load(object sender, EventArgs e)
         {
+            Page prevPage = Page.PreviousPage;
+            
             LoadTimelineConcat();
             
         }
@@ -81,9 +83,13 @@ namespace MyTimelineASPTry
 
              //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
              jsString = ""; 
-             await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
+             await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\"" 
+                 + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate 
+                 + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \"" 
+                 + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" 
+                 + d.link + "\",\"image\" : \"" + d.image + "\"},");
              //await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
-
+             
 
              jsonData = "[{" +
           "\"id\": \"important_personalities\"," +
@@ -96,7 +102,13 @@ namespace MyTimelineASPTry
 
          }
 
-         
+         string endDate(string date)
+             {
+                 if (date == "contemporary" || date == "now")
+                     
+                     return DateTime.Now.ToString("yyyy-MM-dd");
+                     return date;
+             }
        protected void buttonCreate_Click(object sender, EventArgs e)
         {
      //       Persons person1 = new Persons();
@@ -143,7 +155,7 @@ namespace MyTimelineASPTry
 
         protected void buttonAddData_Click(object sender, EventArgs e)
         {
-            Response.Redirect("AddData.aspx",false);
+            Response.Redirect("UserManaging.aspx",false);
            
         }
     }

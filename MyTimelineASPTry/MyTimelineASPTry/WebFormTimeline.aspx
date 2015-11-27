@@ -19,9 +19,12 @@
     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/testSergiu.js" type="text/javascript" charset="utf-8"></script>
     <h1>MyTry</h1>
-    <div id='placement' style="height: 400px"></div>
     <form runat="server">
-        <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" />
+    <asp:Button ID="buttonAddData" runat="server" Text="Login" OnClick="buttonAddData_Click" Width="88px" />
+    <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" /><br /><br />
+    <div id='placement' style="height: 400px"></div>
+    
+        
 
         <script src="MySecondTry1/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
 
@@ -65,9 +68,11 @@
 
 
         <br />
-        <asp:Button ID="buttonCreate" runat="server" OnClick="buttonCreate_Click" Text="Creaza JSON" /><br />
+        <asp:Button ID="buttonCreate" runat="server" OnClick="buttonCreate_Click" Text="Creaza JSON" />
+        <br />
+        <br />
 
-        <asp:Button ID="buttonAddData" runat="server" Text="Add data" OnClick="buttonAddData_Click" />
+        
 
         <p id="info">Nu e nimic aici</p>
         <p>
