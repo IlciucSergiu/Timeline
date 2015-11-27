@@ -7,7 +7,7 @@
 <head>
     <title>MyTry</title>
     <link rel="stylesheet" href="MySecondTry1/css/jquery-ui-1.10.3.custom.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css" charset="utf-8" /> 
     <link rel="stylesheet" href="MySecondTry1/timeglider/timeglider.datepicker.css" type="text/css" charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="MySecondTry1/css/MyTimeline.css" charset="utf-8" />
 
