@@ -72,5 +72,7 @@ namespace MyTimelineASPTry
         public BsonArray additionalResources { get; set; }
 
         public BsonArray additionalLinks { get; set; }
+
+        public BsonArray additionalBooks { get; set; }
     }
 }

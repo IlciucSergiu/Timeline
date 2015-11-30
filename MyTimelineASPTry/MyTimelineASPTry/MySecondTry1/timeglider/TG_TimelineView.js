@@ -3658,7 +3658,9 @@ tg.TG_TimelinePlayer.prototype = {
 				html += "<li><a href='" + lUrl + "' target='_blank'>" + lLab + "</a></li>"
 		  	}
 		}
+		
 		return html;
+        
 	},
   
   

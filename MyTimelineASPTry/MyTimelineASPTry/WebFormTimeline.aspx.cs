@@ -19,6 +19,16 @@ namespace MyTimelineASPTry
             Page prevPage = Page.PreviousPage;
             
             LoadTimelineConcat();
+
+            //if(IsPostBack)
+            //{
+            //    if (hiddenId.Value != null)
+            //    { 
+            //        eventId = hiddenId.Value;
+            //        Response.Write(eventId);
+                
+            //    }
+            //}
             
         }
 
@@ -157,6 +167,113 @@ namespace MyTimelineASPTry
         {
             Response.Redirect("UserManaging.aspx",false);
            
+        }
+
+        //string eventId;
+        protected async void buttonSearchId_Click(object sender, EventArgs e)
+        {
+            InitializeData();
+            //string itemId = hiddenId.Value;
+            //MongoClient mclient = new MongoClient();
+            //var db = mclient.GetDatabase("Timeline");
+
+            //var collection = db.GetCollection<PersonInfo>("Persons");
+            ////var documents = await collection.Find(new BsonDocument()).FirstAsync();
+
+            //var filter = Builders<PersonInfo>.Filter.Eq("id", itemId); ;
+            //var documents = await collection.Find(filter).FirstAsync();
+            //labelName.Text = documents.name.ToString();
+            //labelDates.Text = documents.startdate + " - " + documents.enddate;
+            //labelProfession.Text = documents.profession;
+            //labelNationality.Text = documents.nationality;
+            //labelReligion.Text = documents.religion;
+            //imageProfile.ImageUrl = documents.image;
+
+            //if (ItemExists(itemId))
+            //{
+            //    var collection1 = db.GetCollection<IndividualData>("IndividualData");
+            //    var filter1 = Builders<IndividualData>.Filter.Eq("id", itemId);
+            //    var item = await collection1.Find(filter1).FirstAsync();
+
+            //    htmlInfo.InnerHtml = item.htmlInformation;
+            //    // listBoxLinks.Items.Clear();
+               
+            //        additionalResources.InnerHtml = "Additional resources";
+            //        if (item.additionalBooks != null)
+            //            foreach (var book in item.additionalBooks)
+            //            {
+            //                additionalResources.InnerHtml +="<br />"+ book.ToString();
+            //            }
+
+            //        additionalLinks.InnerHtml = "Additional links";
+            //        if (item.additionalLinks != null)
+            //            foreach (var links in item.additionalLinks)
+            //            {
+            //                additionalLinks.InnerHtml += "<br /><a href=" + links.ToString() + ">" + links.ToString() + "<a/>";
+
+            //            }
+
+            //}
+        }
+
+        async void InitializeData()
+        {
+         string itemId = hiddenId.Value;
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+            var collection = db.GetCollection<PersonInfo>("Persons");
+            //var documents = await collection.Find(new BsonDocument()).FirstAsync();
+
+            var filter = Builders<PersonInfo>.Filter.Eq("id", itemId); ;
+            var documents = await collection.Find(filter).FirstAsync();
+            labelName.Text = documents.name.ToString();
+            labelDates.Text = documents.startdate + " - " + documents.enddate;
+            labelProfession.Text = documents.profession;
+            labelNationality.Text = documents.nationality;
+            labelReligion.Text = documents.religion;
+            imageProfile.ImageUrl = documents.image;
+
+            if (ItemExists(itemId))
+            {
+                var collection1 = db.GetCollection<IndividualData>("IndividualData");
+                var filter1 = Builders<IndividualData>.Filter.Eq("id", itemId);
+                var item = await collection1.Find(filter1).FirstAsync();
+
+                htmlInfo.InnerHtml = item.htmlInformation;
+                // listBoxLinks.Items.Clear();
+               
+                    additionalResources.InnerHtml = "Additional resources";
+                    if (item.additionalBooks != null)
+                        foreach (var book in item.additionalBooks)
+                        {
+                            additionalResources.InnerHtml +="<br />"+ book.ToString();
+                        }
+
+                    additionalLinks.InnerHtml = "Additional links";
+                    if (item.additionalLinks != null)
+                        foreach (var links in item.additionalLinks)
+                        {
+                            additionalLinks.InnerHtml += "<br /><a href=" + links.ToString() + ">" + links.ToString() + "<a/>";
+
+                        }
+
+            }
+        }
+
+        bool ItemExists(string id)
+        {
+            MongoClient mgClient = new MongoClient();
+            var db = mgClient.GetDatabase("Timeline");
+            var collection = db.GetCollection<IndividualData>("IndividualData");
+            var filter = Builders<IndividualData>.Filter.Eq("id", id);
+            var count = collection.Find(filter).CountAsync();
+
+            Response.Write(count.Result);
+            if (Convert.ToInt32(count.Result) != 0)
+                return true;
+            else
+                return false;
         }
     }
 }

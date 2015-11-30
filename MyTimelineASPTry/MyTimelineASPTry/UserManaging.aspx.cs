@@ -35,6 +35,9 @@ namespace MyTimelineASPTry
             //labelNationality.Text = documents.nationality;
             //labelReligion.Text = documents.religion;
             //imageProfile.ImageUrl = documents.image;
+            Session["userId"] = textBoxSearchId.Text;
+
+            buttonCreate.Enabled = true;
         }
 
         protected void listBoxOwns_SelectedIndexChanged(object sender, EventArgs e)
@@ -49,12 +52,12 @@ namespace MyTimelineASPTry
         {
             Session["userId"] = textBoxSearchId.Text;
             Session["itemId"] = listBoxOwns.SelectedValue;
-            Response.Redirect("AddData.aspx?userId=" + textBoxSearchId.Text + "&itemId=" + listBoxOwns.SelectedValue + "&scope=modify");
+            Response.Redirect("AddData.aspx?itemId=" + listBoxOwns.SelectedValue + "&scope=modify");
         }
 
         protected void buttonCreate_Click(object sender, EventArgs e)
         {
-            Response.Redirect("AddData.aspx?scope=create&userId=" + textBoxSearchId.Text );
+            Response.Redirect("AddData.aspx?scope=create");
         }
     }
 }

@@ -169,20 +169,57 @@
         
             &nbsp;</p>
         <p>
-            <asp:LinkButton ID="LinkButton2" runat="server">Add additional resources</asp:LinkButton>
+           <!-- <asp:LinkButton ID="LinkButton2" runat="server">Add additional resources</asp:LinkButton> -->
+            <asp:Label ID="labelAddResources" runat="server" Text="Add additional resources"></asp:Label>
+            <br />
+            <asp:LinkButton ID="LinkButton1" runat="server"> Add book </asp:LinkButton>
+
+            
+        </p>
+            <p>
+            
+            Title : 
+            <asp:TextBox ID="textBoxAddBooks" runat="server" Width="147px"></asp:TextBox>
+
+               &nbsp; <asp:Button ID="buttonAddBook" runat="server" Text="Add book" OnClick="buttonAddBook_Click" />
+
+            
         </p>
         <p>
 
         
-            <asp:LinkButton ID="LinkButton1" runat="server">Add links to external resources</asp:LinkButton>
+          <!--  <asp:LinkButton ID="linkButtonAddLink" runat="server" OnClientClick="showAddLink();return false" >Add links to external resources</asp:LinkButton> -->
+        
+            <asp:ListBox ID="listBoxBooks" runat="server"  Width="185px"></asp:ListBox>
+        
         </p>
             <p>
 
         
-                &nbsp;</p>
+            <asp:Label ID="labelAddLinks" runat="server" Text="Add links to external resources"></asp:Label>
+        
+        </p>
+            <div id="addLinks" >
+                <asp:TextBox ID="textBoxAddLink" runat="server" Width="256px"></asp:TextBox>
+                <asp:Button ID="buttonAddLink" runat="server" Text="Add" OnClick="buttonAddLink_Click" Width="74px"/>
+            </div>
+            <p>
+
+            <asp:ListBox ID="listBoxLinks" runat="server" Height="53px" Width="300px"></asp:ListBox>
+            </p>
             <asp:Button ID="buttomSaveChanges" runat="server" Text="Save" OnClick="buttomSaveChanges_Click" Width="83px" />
         </div>
         
+        <script>
+            
+
+           function showAddLink()
+            {
+               $("#addLinks").css("display", "block");
+            }
+
+        </script>
+            
     </form>
 
 

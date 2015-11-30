@@ -13,6 +13,8 @@
     
         <asp:TextBox ID="textBoxSearchId" runat="server"></asp:TextBox>
         <asp:Button ID="buttonSearchId" runat="server" Text="SearchID" OnClick="buttonSearchId_Click" /><br /><br />
+        
+
         <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
         <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
         
@@ -20,7 +22,7 @@
         <asp:ListBox ID="listBoxOwns" runat="server" Height="131px" Width="132px" AutoPostBack="True" OnSelectedIndexChanged="listBoxOwns_SelectedIndexChanged" ViewStateMode="Enabled"></asp:ListBox><br /><br />
     
         <asp:Button ID="buttonEdit" runat="server" Text="Edit" CssClass="userManButton" Enabled="False" OnClick="buttonEdit_Click" Width="67px" />
-        <asp:Button ID="buttonCreate" runat="server" Text="Create new" CssClass="userManButton" Width="81px" OnClick="buttonCreate_Click" />
+        <asp:Button ID="buttonCreate" runat="server" Text="Create new" CssClass="userManButton" Width="81px" OnClick="buttonCreate_Click" Enabled="False" />
     
     </div>
     </form>
