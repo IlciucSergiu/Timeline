@@ -124,10 +124,17 @@
                     else {
                         $("#divAddEssentials").css("display", "none");
                         $("#divMainInfo").css("display", "block");
+                        
                     }
                 });
-                
-                
+               
+               // $(document).ready(function () {
+                 //   $(document).dblclick(function () {
+                        // alert(ckEditor.textContent);
+                 //       alert($(ckEditor).toString());
+                        //alert(ckEditor.id);
+                //    });
+               // });
                 
             </script>
         </div>
@@ -163,10 +170,10 @@
 
         
         <div id="ckEditor">
-            <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000"></CKEditor:CKEditorControl>
+            <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000" ></CKEditor:CKEditorControl>
         </div>
 
-        
+            <asp:HiddenField ID="hiddenFieldCk" runat="server" />
             &nbsp;</p>
         <p>
            <!-- <asp:LinkButton ID="LinkButton2" runat="server">Add additional resources</asp:LinkButton> -->

@@ -75,7 +75,10 @@
                         e.stopPropagation();
                         $("div").css("pointer-events", "none");
                         secondClick = false;
-
+                      //  $(e.target).mousemove(function (e) {
+                      //      if(firstClick)
+                       //     firstClick = false;
+                      //  });
                     setTimeout(function () {
 
                         $("div").css("pointer-events", "auto");
@@ -91,7 +94,9 @@
                     
                     if (firstClick) {
                         secondClick = true;
-                        
+                        document.getElementById('hiddenId').value = theId;
+                        // alert(divId);
+                        document.getElementById("buttonSearchId").click();
                         // alert(theId);
                         
                    // if ( e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner" || e.target.className == "tg-event-hoverline") {

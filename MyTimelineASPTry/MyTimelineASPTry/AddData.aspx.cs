@@ -324,10 +324,15 @@ namespace MyTimelineASPTry
                     var filter1 = Builders<IndividualData>.Filter.Eq("id", itemId);
                     var item = await collection1.Find(filter1).FirstAsync();
 
-                    CKEditorInformation.Text = item.htmlInformation;
+                    
+                    
+
                     // listBoxLinks.Items.Clear();
                     if (!IsPostBack)
                     {
+
+                        CKEditorInformation.Text = item.htmlInformation;
+
                         if (item.additionalLinks != null)
                             foreach (var links in item.additionalLinks)
                             {
@@ -349,6 +354,7 @@ namespace MyTimelineASPTry
         {
             if (ItemExists(itemId))
             {
+                
                 MongoClient mclient = new MongoClient();
                 var db = mclient.GetDatabase("Timeline");
 
@@ -369,7 +375,7 @@ namespace MyTimelineASPTry
                 }
 
                 var filter = Builders<IndividualData>.Filter.Eq("id", itemId);
-
+                Response.Write(CKEditorInformation.Text);
                 var update = Builders<IndividualData>.Update
                     .Set("htmlInformation", CKEditorInformation.Text)
                     .Set("additionalLinks", linksArray)
@@ -448,6 +454,8 @@ namespace MyTimelineASPTry
         {
             listBoxBooks.Items.Add(textBoxAddBooks.Text);
         }
+
+       
 
 
     }
