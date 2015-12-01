@@ -27,6 +27,104 @@
 
 
 
+        
+        <script>
+
+            var jsonString = '<%=jsonData%>';
+
+            $(document).ready(function () {
+
+
+                if (jsonString != "") {
+                    //alert(jsonString);
+                    var jsonData = JSON.parse(jsonString);
+
+                    var tg1 = $("#placement").timeline({
+
+                        "data_source": jsonData, //"MySecondTry1/json/sergiu3.json",
+                        "min_zoom": 15,
+                        "max_zoom": 60
+                    }
+                );
+                }
+
+            });
+
+            $(function () {
+                $('div').click(function (e) {
+                   // $("div").off("click");
+                    // setTimeout(function () { $("div").on("click"); }, 1000);
+
+                   // $(e.target.className).off("click");
+
+                    //$("div").css("pointer-events", "none");
+
+                   // setTimeout(function () { $("div").css("pointer-events", "auto"); }, 1000);
+                    
+                   
+                });
+                var firstClick = false; var secondClick = false; var theId;
+                $('div').mousedown(function (e) {
+                    if (e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner" || e.target.className == "tg-event-hoverline")
+                    {
+                        firstClick = true;
+                        var eventId = $(e.target).closest('div[id]').attr("id");
+                        eventId = eventId.replace("_modal", "");
+                       // alert(eventId);
+                        theId = eventId;
+                        e.stopPropagation();
+                        $("div").css("pointer-events", "none");
+                        secondClick = false;
+
+                    setTimeout(function () {
+
+                        $("div").css("pointer-events", "auto");
+                        if (secondClick == false) {
+                           // alert("should of");
+                            $(e.target).trigger("click");
+                        }
+                        firstClick = false;
+                    }, 501);
+                }
+                });
+                $(document).dblclick(function (e) {
+                    
+                    if (firstClick) {
+                        secondClick = true;
+                        
+                        // alert(theId);
+                        
+                   // if ( e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner" || e.target.className == "tg-event-hoverline") {
+                        
+                       // var eventId = $(e.target).closest('div[id]').attr("id");
+                      //  eventId = eventId.replace("_modal", "");
+                      //  alert(eventId);
+                      //  e.stopPropagation();
+                    }
+                    //  if (e.target.className == "timeglider-event-title" || "timeglider-event-spanner")
+                    //   {   
+
+                    //$('#<% =hiddenLabel.ClientID %>').text(e.target.parentElement.id);
+                    //      var child = e.target.id;
+                    //      var parent = e.target.parentElement;
+                    //        var grandParent = parent.parentElement.id;
+
+
+                    //       var parent2 = parent.id.replace("_modal", "");
+                    //       alert(child+"///"+parent.id + "----" + parent2 + "----" + grandParent);
+                    //     }
+                });
+
+                //var element = e.target;
+
+
+                // if(element.hasClass("timeglider-timeline-event") || element.hasClass("timeglider-event-spanning"))
+                //  aler("it has");
+            });
+
+        </script>
+
+
         <script src="MySecondTry1/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
 
         <script src="MySecondTry1/js/underscore-min.js" type="text/javascript" charset="utf-8"></script>
@@ -46,46 +144,6 @@
         <script src="MySecondTry1/timeglider/TG_Mediator.js" type="text/javascript" charset="utf-8"></script>
         <script src="MySecondTry1/timeglider/timeglider.timeline.widget.js" type="text/javascript" charset="utf-8"></script>
         <script src="MySecondTry1/timeglider/timeglider.datepicker.js" type="text/javascript" charset="utf-8"></script>
-        <script>
-            
-            var jsonString = '<%=jsonData%>';
-
-            $(document).ready(function () {
-
-
-                if (jsonString != "") {
-                    //alert(jsonString);
-                    var jsonData = JSON.parse(jsonString);
-
-                    var tg1 = $("#placement").timeline({
-
-                        "data_source": jsonData, //"MySecondTry1/json/sergiu3.json",
-                        "min_zoom": 15,
-                        "max_zoom": 60
-                    }
-                );}
-
-            });
-                
-            $(function () {
-
-                $('div').dblclick(function (e) {
-                    if (e.target.className == "timeglider-event-title" || "timeglider-event-spanner")
-                    {   
-                        
-                        //$('#<% =hiddenLabel.ClientID %>').text(e.target.parentElement.id);
-                        var divId = e.target.parentElement.id;
-                        document.getElementById('hiddenId').value = divId;
-                       // alert(divId);
-                       document.getElementById("buttonSearchId").click();
-                       
-                    }
-                });
-
-            });
-            
-        </script>
-
 
         <br />
         <asp:Button ID="buttonCreate" runat="server" OnClick="buttonCreate_Click" Text="Creaza JSON" />

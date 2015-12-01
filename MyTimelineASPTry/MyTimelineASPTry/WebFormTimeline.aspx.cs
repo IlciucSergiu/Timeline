@@ -14,7 +14,7 @@ namespace MyTimelineASPTry
 {
     public partial class WebFormTimeline : System.Web.UI.Page
     {
-        protected async void Page_Load(object sender, EventArgs e)
+        protected  void Page_Load(object sender, EventArgs e)
         {
             Page prevPage = Page.PreviousPage;
             
@@ -36,7 +36,7 @@ namespace MyTimelineASPTry
         
         public string  jsString;
 
-        protected async void buttonLoadTimeline_Click(object sender, EventArgs e)
+        protected  void buttonLoadTimeline_Click(object sender, EventArgs e)
         {
             
           
@@ -170,50 +170,10 @@ namespace MyTimelineASPTry
         }
 
         //string eventId;
-        protected async void buttonSearchId_Click(object sender, EventArgs e)
+        protected  void buttonSearchId_Click(object sender, EventArgs e)
         {
             InitializeData();
-            //string itemId = hiddenId.Value;
-            //MongoClient mclient = new MongoClient();
-            //var db = mclient.GetDatabase("Timeline");
-
-            //var collection = db.GetCollection<PersonInfo>("Persons");
-            ////var documents = await collection.Find(new BsonDocument()).FirstAsync();
-
-            //var filter = Builders<PersonInfo>.Filter.Eq("id", itemId); ;
-            //var documents = await collection.Find(filter).FirstAsync();
-            //labelName.Text = documents.name.ToString();
-            //labelDates.Text = documents.startdate + " - " + documents.enddate;
-            //labelProfession.Text = documents.profession;
-            //labelNationality.Text = documents.nationality;
-            //labelReligion.Text = documents.religion;
-            //imageProfile.ImageUrl = documents.image;
-
-            //if (ItemExists(itemId))
-            //{
-            //    var collection1 = db.GetCollection<IndividualData>("IndividualData");
-            //    var filter1 = Builders<IndividualData>.Filter.Eq("id", itemId);
-            //    var item = await collection1.Find(filter1).FirstAsync();
-
-            //    htmlInfo.InnerHtml = item.htmlInformation;
-            //    // listBoxLinks.Items.Clear();
-               
-            //        additionalResources.InnerHtml = "Additional resources";
-            //        if (item.additionalBooks != null)
-            //            foreach (var book in item.additionalBooks)
-            //            {
-            //                additionalResources.InnerHtml +="<br />"+ book.ToString();
-            //            }
-
-            //        additionalLinks.InnerHtml = "Additional links";
-            //        if (item.additionalLinks != null)
-            //            foreach (var links in item.additionalLinks)
-            //            {
-            //                additionalLinks.InnerHtml += "<br /><a href=" + links.ToString() + ">" + links.ToString() + "<a/>";
-
-            //            }
-
-            //}
+           
         }
 
         async void InitializeData()
