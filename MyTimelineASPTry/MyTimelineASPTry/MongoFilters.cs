@@ -75,4 +75,16 @@ namespace MyTimelineASPTry
 
         public BsonArray additionalBooks { get; set; }
     }
+
+    public class UserData
+    {
+        [BsonId]
+        public ObjectId _id { get; set; }
+
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string password { get; set; }
+        public string email { get; set; }
+        public string gender { get; set; }
+    }
 }

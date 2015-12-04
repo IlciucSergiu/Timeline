@@ -11,10 +11,47 @@ namespace MyTimelineASPTry
 {
     public partial class UserManaging : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected async void Page_Load(object sender, EventArgs e)
         {
+            Response.Write(listBoxOwns.Items.Count);
+            if (listBoxOwns.Items.Count == 0)
+            {
+                listBoxOwns.Items.Clear();
+                MongoClient mclient = new MongoClient();
+                var db = mclient.GetDatabase("Timeline");
 
+                var collection = db.GetCollection<PersonInfo>("Persons");
+
+
+                var filter = Builders<PersonInfo>.Filter.Eq("owner", Session["userId"].ToString());
+                await collection.Find(filter).ForEachAsync(d => listBoxOwns.Items.Add(d.id.ToString()));
+
+
+            }
+            
+
+            
         }
+
+        //protected async void Page_Unload(object sender, EventArgs e)
+        //{
+        //    Response.Write(listBoxOwns.Items.Count);
+        //    if (listBoxOwns.Items.Count == 0)
+        //    {
+        //        listBoxOwns.Items.Clear();
+        //        MongoClient mclient = new MongoClient();
+        //        var db = mclient.GetDatabase("Timeline");
+
+        //        var collection = db.GetCollection<PersonInfo>("Persons");
+
+
+        //        var filter = Builders<PersonInfo>.Filter.Eq("owner", Session["userId"].ToString());
+        //        await collection.Find(filter).ForEachAsync(d => listBoxOwns.Items.Add(d.id.ToString()));
+
+
+        //    }
+
+        //}
 
         protected async void buttonSearchId_Click(object sender, EventArgs e)
         {
@@ -50,14 +87,22 @@ namespace MyTimelineASPTry
 
         protected void buttonEdit_Click(object sender, EventArgs e)
         {
+            //Response.Write("ai selectat :" + listBoxOwns.SelectedIndex.ToString());
             Session["userId"] = textBoxSearchId.Text;
-            Session["itemId"] = listBoxOwns.SelectedValue;
-            Response.Redirect("AddData.aspx?itemId=" + listBoxOwns.SelectedValue + "&scope=modify");
+           Session["itemId"] = listBoxOwns.SelectedValue;
+            Response.Redirect("AddData.aspx?itemId=" + listBoxOwns.SelectedValue + "&scope=modify",false);
         }
 
         protected void buttonCreate_Click(object sender, EventArgs e)
         {
-            Response.Redirect("AddData.aspx?scope=create");
+            Response.Redirect("AddData.aspx?scope=create",false);
         }
+
+        protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+        {
+            Response.Redirect("WebFormTimeline.aspx", false);
+        }
+
+       
     }
 }

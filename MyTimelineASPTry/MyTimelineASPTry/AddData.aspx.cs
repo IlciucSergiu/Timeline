@@ -32,7 +32,7 @@ namespace MyTimelineASPTry
         protected void Page_PreLoad(object sender, EventArgs e)
         {
             scope = Request.QueryString["scope"];
-            Response.Write(scope);
+           // Response.Write(scope);
             if (scope == "create")
             {
                 showEssential = true;
@@ -46,16 +46,17 @@ namespace MyTimelineASPTry
                 }
 
             }
-            else
+            else if (scope == "modify")
             {
                 if (!IsPostBack)
                 {
 
                     buttonSubmit.Visible = false;
-                    ViewState["itemId"] = Request.QueryString["itemId"];
-
-                    Response.Write(Session["userId"].ToString());
-
+                    if (Session["itemId"] != null)
+                    ViewState["itemId"] = Session["itemId"].ToString();
+                   // ViewState["itemId"] = Request.QueryString["itemId"];
+                    //Response.Write("user : "+Session["userId"].ToString());
+                   // Response.Write("item : " + Request.QueryString["itemId"]);
                     //ViewState["userId"] = Request.QueryString["userId"];
                     cancelRequest = "hide";
                 }
@@ -81,8 +82,8 @@ namespace MyTimelineASPTry
 
             if (firstName.Text != "" && lastName.Text != "")
             {
-                Response.Write("O mers  ");
-                Response.Write(inputImportance.Value);
+                //Response.Write("O mers  ");
+               // Response.Write(inputImportance.Value);
 
 
 
@@ -152,7 +153,7 @@ namespace MyTimelineASPTry
 
                 //InitializeItem(Session["userId"].ToString(), saveId);
 
-
+                Session["itemId"] = saveId;
                 Response.Redirect("AddData.aspx?itemId=" + saveId + "&scope=modify");
                 //Response.Redirect("WebFormTimeline.aspx", false);
 
@@ -297,7 +298,7 @@ namespace MyTimelineASPTry
         protected async void InitializeItem(string initUserId, string initItemId)
         {
             {
-                labelId.Text = initUserId;
+                
                 MongoClient mclient = new MongoClient();
                 var db = mclient.GetDatabase("Timeline");
 
@@ -375,7 +376,7 @@ namespace MyTimelineASPTry
                 }
 
                 var filter = Builders<IndividualData>.Filter.Eq("id", itemId);
-                Response.Write(CKEditorInformation.Text);
+                //Response.Write(CKEditorInformation.Text);
                 var update = Builders<IndividualData>.Update
                     .Set("htmlInformation", CKEditorInformation.Text)
                     .Set("additionalLinks", linksArray)
@@ -438,7 +439,7 @@ namespace MyTimelineASPTry
             var filter = Builders<IndividualData>.Filter.Eq("id", id);
             var count = collection.Find(filter).CountAsync();
 
-            Response.Write(count.Result);
+           // Response.Write(count.Result);
             if (Convert.ToInt32(count.Result) != 0)
                 return true;
             else
@@ -453,6 +454,11 @@ namespace MyTimelineASPTry
         protected void buttonAddBook_Click(object sender, EventArgs e)
         {
             listBoxBooks.Items.Add(textBoxAddBooks.Text);
+        }
+
+        protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+        {
+            Response.Redirect("WebFormTimeline.aspx",false);
         }
 
        

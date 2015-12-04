@@ -40,15 +40,6 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Button buttonCreate;
         
         /// <summary>
-        /// textBoxId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textBoxId;
-        
-        /// <summary>
         /// buttonSearchId control.
         /// </summary>
         /// <remarks>
@@ -65,15 +56,6 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hiddenId;
-        
-        /// <summary>
-        /// hiddenLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label hiddenLabel;
         
         /// <summary>
         /// imageProfile control.

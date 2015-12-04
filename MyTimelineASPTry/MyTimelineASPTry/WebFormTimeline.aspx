@@ -14,20 +14,31 @@
 
 
 
+    <style type="text/css">
+        #header {
+            height: 23px;
+        }
+    </style>
+
+
+
 </head>
 <body>
     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/testSergiu.js" type="text/javascript" charset="utf-8"></script>
-    <h1>MyTry</h1>
+
     <form runat="server">
-        <asp:Button ID="buttonAddData" runat="server" Text="Login" OnClick="buttonAddData_Click" Width="88px" />
-        <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" /><br />
+        <div id="header">
+            <h1 class="inHeader" id="bigTitle">MyTry</h1>
+            <asp:Button ID="buttonAddData" runat="server" Text="Login" OnClick="buttonAddData_Click" Width="88px" CssClass="inHeader buttonInHeader" />
+            <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" CssClass="inHeader buttonInHeader" /><br />
+        </div>
         <br />
         <div id='placement' style="height: 400px"></div>
 
 
 
-        
+
         <script>
 
             var jsonString = '<%=jsonData%>';
@@ -47,69 +58,69 @@
                     }
                 );
                 }
-
+                 if ('<%=showIndividual%>' == "True") 
+                $("#individualInfo").css("display", "block");
             });
 
             $(function () {
                 $('div').click(function (e) {
-                   // $("div").off("click");
+                    // $("div").off("click");
                     // setTimeout(function () { $("div").on("click"); }, 1000);
 
-                   // $(e.target.className).off("click");
+                    // $(e.target.className).off("click");
 
                     //$("div").css("pointer-events", "none");
 
-                   // setTimeout(function () { $("div").css("pointer-events", "auto"); }, 1000);
-                    
-                   
+                    // setTimeout(function () { $("div").css("pointer-events", "auto"); }, 1000);
+
+
                 });
                 var firstClick = false; var secondClick = false; var theId;
                 $('div').mousedown(function (e) {
-                    if (e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner" || e.target.className == "tg-event-hoverline")
-                    {
+                    if (e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner" || e.target.className == "tg-event-hoverline") {
                         firstClick = true;
                         var eventId = $(e.target).closest('div[id]').attr("id");
                         eventId = eventId.replace("_modal", "");
-                       // alert(eventId);
+                        // alert(eventId);
                         theId = eventId;
                         e.stopPropagation();
                         $("div").css("pointer-events", "none");
                         secondClick = false;
-                      //  $(e.target).mousemove(function (e) {
-                      //      if(firstClick)
-                       //     firstClick = false;
-                      //  });
-                    setTimeout(function () {
+                        //  $(e.target).mousemove(function (e) {
+                        //      if(firstClick)
+                        //     firstClick = false;
+                        //  });
+                        setTimeout(function () {
 
-                        $("div").css("pointer-events", "auto");
-                        if (secondClick == false) {
-                           // alert("should of");
-                            $(e.target).trigger("click");
-                        }
-                        firstClick = false;
-                    }, 501);
-                }
+                            $("div").css("pointer-events", "auto");
+                            if (secondClick == false) {
+                                // alert("should of");
+                                $(e.target).trigger("click");
+                            }
+                            firstClick = false;
+                        }, 501);
+                    }
                 });
                 $(document).dblclick(function (e) {
-                    
+
                     if (firstClick) {
                         secondClick = true;
                         document.getElementById('hiddenId').value = theId;
                         // alert(divId);
+                        $("#individualInfo").css("display", "block");
                         document.getElementById("buttonSearchId").click();
                         // alert(theId);
-                        
-                   // if ( e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner" || e.target.className == "tg-event-hoverline") {
-                        
-                       // var eventId = $(e.target).closest('div[id]').attr("id");
-                      //  eventId = eventId.replace("_modal", "");
-                      //  alert(eventId);
-                      //  e.stopPropagation();
+
+                        // if ( e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner" || e.target.className == "tg-event-hoverline") {
+
+                        // var eventId = $(e.target).closest('div[id]').attr("id");
+                        //  eventId = eventId.replace("_modal", "");
+                        //  alert(eventId);
+                        //  e.stopPropagation();
                     }
                     //  if (e.target.className == "timeglider-event-title" || "timeglider-event-spanner")
                     //   {   
 
-                    //$('#<% =hiddenLabel.ClientID %>').text(e.target.parentElement.id);
                     //      var child = e.target.id;
                     //      var parent = e.target.parentElement;
                     //        var grandParent = parent.parentElement.id;
@@ -151,18 +162,12 @@
         <script src="MySecondTry1/timeglider/timeglider.datepicker.js" type="text/javascript" charset="utf-8"></script>
 
         <br />
-        <asp:Button ID="buttonCreate" runat="server" OnClick="buttonCreate_Click" Text="Creaza JSON" />
-        <br />
-        <br />
-
-
-
-        <asp:TextBox ID="textBoxId" runat="server"></asp:TextBox>
-        <asp:Button ID="buttonSearchId" runat="server" Text="Search Id" OnClick="buttonSearchId_Click" />
+        <asp:Button ID="buttonCreate" runat="server" OnClick="buttonCreate_Click" Text="Creaza JSON" Visible="False" CssClass="hideButton" />
+        <asp:Button ID="buttonSearchId" runat="server" Text="Search Id" OnClick="buttonSearchId_Click" CssClass="hideButton" />
 
         <asp:HiddenField ID="hiddenId" runat="server" />
 
-        <asp:Label ID="hiddenLabel" runat="server" Text="mozart"></asp:Label>
+
         <div id="individualInfo">
 
             <div id="divEssentialInfo" class="imageInline">
@@ -181,7 +186,6 @@
             <br />
             <div id="afterImage">
                 <div id="htmlInfo" runat="server">
-                    html info
                 </div>
 
                 <div id="additionalResources" runat="server">

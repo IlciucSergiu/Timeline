@@ -165,13 +165,15 @@ namespace MyTimelineASPTry
 
         protected void buttonAddData_Click(object sender, EventArgs e)
         {
-            Response.Redirect("UserManaging.aspx",false);
+            Response.Redirect("LoginUser.aspx",false);
            
         }
 
+        public bool showIndividual = false;
         //string eventId;
         protected  void buttonSearchId_Click(object sender, EventArgs e)
         {
+            showIndividual = true;
             InitializeData();
            
         }
@@ -229,7 +231,7 @@ namespace MyTimelineASPTry
             var filter = Builders<IndividualData>.Filter.Eq("id", id);
             var count = collection.Find(filter).CountAsync();
 
-            Response.Write(count.Result);
+           // Response.Write(count.Result);
             if (Convert.ToInt32(count.Result) != 0)
                 return true;
             else

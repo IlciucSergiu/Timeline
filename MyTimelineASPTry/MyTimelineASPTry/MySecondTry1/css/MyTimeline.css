@@ -18,7 +18,7 @@ form{
     display:compact;
 }
 #divAddEssentials{
-    position:relative;
+   
     left: 3%;
     top: 0px;
     margin-left: 0px;
@@ -118,3 +118,70 @@ form{
     #Div1 {
         height:50px;
     }
+
+    #header .inHeader {
+       
+        /*display:inline;*/
+        float:left;
+       margin-left:30px;
+       
+    }
+    #bigTitle {
+        margin-top:0px;
+    }
+
+   .buttonInHeader {
+      
+        /*vertical-align:baseline;*/
+        position:relative;
+        margin-top:11px;
+    }
+
+    #individualInfo {
+       display:none;
+    }
+
+    .hideButton {
+        display:none;
+    }
+
+    #placement {
+        clear:left;
+    }
+    .linkMain {
+        font-size:30pt;
+        padding-bottom: 20px;
+    }
+
+    #loginDiv {
+        margin-top:10%;
+        margin-left:40%;
+        width: 300px;
+    }
+
+    .loginTextBox {
+        margin-top:10px;
+        margin-left:5px;
+    }
+
+    .loginLabel {
+        
+        margin-left:30px;
+    }
+
+    .loginButton {
+        float:right;
+        margin-top: 5px;
+    height: 26px;
+}
+
+#signUpForm {
+     margin-top:3%;
+        margin-left:30%;
+        width: 400px;
+}
+
+.buttonCreateAccount {
+    
+    margin-left: 255px;
+}

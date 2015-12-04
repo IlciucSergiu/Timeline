@@ -16,9 +16,13 @@
     <link rel="stylesheet" href="/resources/demos/style.css" />
 </head>
 <body>
-
-    <asp:Label ID="labelId" runat="server" Text="Label"></asp:Label>
     <form runat="server" id="formMainForm">
+        
+    <div id="header">
+           
+        <asp:ImageButton ID="ImageButton1" runat="server" Height="73px" Width="211px" AlternateText="The name" OnClick="ImageButton1_Click" CssClass="linkMain" />
+           
+        </div>
         
         <div id="divAddEssentials" runat="server">
 
