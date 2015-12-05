@@ -26,13 +26,13 @@
         
         <div id="divAddEssentials" runat="server">
 
-            <p>
+          <!--  <p>
                 &nbsp;&nbsp; First name:&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:TextBox ID="firstName" runat="server"></asp:TextBox>
-            </p>
+            </p> -->
             <p>
-                Last name(s):&nbsp;&nbsp;
-            <asp:TextBox ID="lastName" runat="server"></asp:TextBox>
+                Complete name:&nbsp;&nbsp;
+            <asp:TextBox ID="textBoxCompleteName" runat="server" Width="244px" Height="21px"></asp:TextBox>
             </p>
 
 

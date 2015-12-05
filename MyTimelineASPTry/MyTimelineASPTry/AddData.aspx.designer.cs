@@ -49,13 +49,13 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.TextBox firstName;
         
         /// <summary>
-        /// lastName control.
+        /// textBoxCompleteName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox lastName;
+        protected global::System.Web.UI.WebControls.TextBox textBoxCompleteName;
         
         /// <summary>
         /// dateBirth control.

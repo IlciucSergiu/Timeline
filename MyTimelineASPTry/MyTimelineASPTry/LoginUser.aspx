@@ -13,13 +13,18 @@
     <div id="loginDiv">
         
         
-        <asp:Label ID="Label1" runat="server" Text="User name" CssClass="loginLabel"></asp:Label>
+        <asp:Label ID="Label1" runat="server" Text="User name" CssClass="labelLoginUsername"></asp:Label>
         
          <asp:TextBox ID="textBoxSearchId" runat="server" CssClass="loginTextBox" Width="150px"></asp:TextBox> 
         <br />
+        <asp:Label ID="labelEmailVerification" runat="server" CssClass="loginLabel" ForeColor="Red" Text="Email verif" Visible="False"></asp:Label>
+        <br />
         <asp:Label ID="Label2" runat="server" Text="Password     " CssClass="loginLabel"></asp:Label>
-        <asp:TextBox ID="TextBox1" runat="server" CssClass="loginTextBox" Width="152px"></asp:TextBox>
+        <asp:TextBox ID="textBoxPassword" runat="server" CssClass="loginTextBox" Width="152px" TextMode="Password"></asp:TextBox>
+        <br />
+        <asp:Label ID="labelPasswordVerification" runat="server" CssClass="loginLabel" ForeColor="Red" Text="Password verif" Visible="False"></asp:Label>
         <br /><br />
+        <asp:LinkButton ID="linkButtonSignUp" runat="server" CssClass="signUpLink" PostBackUrl="~/SignUpUser.aspx">Create account</asp:LinkButton>
         <asp:Button ID="buttonSearchId" runat="server" Text="SearchID" OnClick="buttonSearchId_Click"  CssClass="loginButton"/>
     </div>
     </form>

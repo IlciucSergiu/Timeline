@@ -80,7 +80,7 @@ namespace MyTimelineASPTry
             var db = mgClient.GetDatabase("Timeline");
             var collection = db.GetCollection<BsonDocument>("Persons");
 
-            if (firstName.Text != "" && lastName.Text != "")
+            if (textBoxCompleteName.Text != "")
             {
                 //Response.Write("O mers  ");
                // Response.Write(inputImportance.Value);
@@ -103,15 +103,24 @@ namespace MyTimelineASPTry
                 }
                 else
                     endDate = dateDeath.Value;
-                saveId = firstName.Text.ToLower() + "_" + lastName.Text.ToLower();
+                saveId = textBoxCompleteName.Text.ToLower().Replace(" ", "_");//firstName.Text.ToLower() + "_" + lastName.Text.ToLower();
+               Response.Write(saveId);
                 ViewState["itemId"] = saveId;
+
+                BsonArray separatedNames = new BsonArray();
+
+                foreach(string name in textBoxCompleteName.Text.Split(' '))
+                {
+                    if(name != "")
+                    separatedNames.Add(name);
+                }
                 BsonDocument document = new BsonDocument
             {
                 //{ "_id", firstName.Text.ToLower() +"_"+lastName.Text.ToLower() },
                  { "owner", Session["userId"].ToString() },
                 { "id", saveId },
-                { "name",new BsonArray{ firstName.Text,lastName.Text} },
-                { "title", firstName.Text+" "+lastName.Text },
+                { "name",separatedNames},
+                { "title", textBoxCompleteName.Text},
                 { "startdate", dateBirth.Value },
                 { "enddate", endDate},
                 { "description", textBoxDescription.Text },
@@ -220,9 +229,16 @@ namespace MyTimelineASPTry
             // Response.Write("<++"+itemId+"++>");
             var filter = Builders<PersonInfo>.Filter.Eq("id", itemId);
             var documents = await collection.Find(filter).FirstAsync();
-            firstName.Text = documents.name[0].ToString();
 
-            lastName.Text = documents.name[1].ToString();
+            string completeName = "";
+            foreach(string name in documents.name)
+            {
+                completeName += name + " ";
+            }
+            textBoxCompleteName.Text = completeName;
+            //firstName.Text = documents.name[0].ToString();
+
+           // lastName.Text = documents.name[1].ToString();
 
 
             dateBirth.Value = documents.startdate;
@@ -276,11 +292,19 @@ namespace MyTimelineASPTry
             else
                 endDate = dateDeath.Value;
 
+            BsonArray separatedNames = new BsonArray();
+
+            foreach (string name in textBoxCompleteName.Text.Split(' '))
+            {
+                if(name != "")
+                separatedNames.Add(name);
+            }
+
             var filter = Builders<PersonInfo>.Filter.Eq("id", itemId);
 
             var update = Builders<PersonInfo>.Update
-                .Set("name", new BsonArray { firstName.Text, lastName.Text })
-                .Set("title", firstName.Text + " " + lastName.Text)
+                .Set("name", separatedNames)
+                .Set("title", textBoxCompleteName.Text)
                 .Set("startdate", dateBirth.Value)
                 .Set("enddate", endDate)
                 .Set("description", textBoxDescription.Text)

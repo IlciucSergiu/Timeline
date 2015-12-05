@@ -156,7 +156,7 @@ form{
     #loginDiv {
         margin-top:10%;
         margin-left:40%;
-        width: 300px;
+        width: 500px;
     }
 
     .loginTextBox {
@@ -169,11 +169,19 @@ form{
         margin-left:30px;
     }
 
+    .labelLoginUsername {
+        margin-left:23px;
+    }
+
     .loginButton {
-        float:right;
+        margin-left:50px;
         margin-top: 5px;
     height: 26px;
 }
+
+    .signUpLink{
+         margin-left:100px;
+    }
 
 #signUpForm {
      margin-top:3%;
@@ -183,5 +191,9 @@ form{
 
 .buttonCreateAccount {
     
-    margin-left: 255px;
+    margin-left: 80px;
+}
+
+.loginLink {
+    margin-left:140px;
 }

@@ -8,22 +8,22 @@
     <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1"  autocomplete="off" method="post" runat="server">
         <div id="signUpForm">
 
 
-            <asp:TextBox ID="textBoxFirstName" runat="server" Height="23px" Width="158px" placeholder="First name"></asp:TextBox>&nbsp;&nbsp;
-        <asp:TextBox ID="textBoxLastName" runat="server" Height="23px" Width="158px" placeholder="Last name"></asp:TextBox><br />
+            <asp:TextBox ID="textBoxFirstName" runat="server" Height="23px" Width="158px" placeholder="First name" autocomplete="off"></asp:TextBox>&nbsp;&nbsp;
+        <asp:TextBox ID="textBoxLastName" runat="server" Height="23px" Width="158px" placeholder="Last name" AutoCompleteType="Disabled" autocomplete="off"></asp:TextBox><br />
             <br />
-            <asp:TextBox ID="textBoxPassword" runat="server" Height="23px" Width="167px" placeholder="Password"></asp:TextBox>
+            <asp:TextBox ID="textBoxPassword" runat="server" Height="23px" Width="167px" placeholder="Password" AutoCompleteType="Disabled" autocomplete="off" TextMode="Password"></asp:TextBox>
             <br />
             <br />
-            <asp:TextBox ID="textBoxPasswordVerify" runat="server" Height="23px" Width="167px" placeholder="Password again"></asp:TextBox><asp:Label ID="labelPasswordValidation" runat="server" ForeColor="Red" Text="Password" Visible="False"></asp:Label>
+            <asp:TextBox ID="textBoxPasswordVerify" runat="server" Height="23px" Width="167px" placeholder="Password again" TextMode="Password" autocomplete="off"></asp:TextBox><asp:Label ID="labelPasswordValidation" runat="server" ForeColor="Red" Text="Password" Visible="False"></asp:Label>
             <br />
             <br />
             <asp:TextBox ID="textBoxEmail" runat="server" Height="23px" Width="258px" placeholder="Email"></asp:TextBox>
             &nbsp;<asp:Label ID="labelEmailValidation" runat="server" ForeColor="Red" Text="Email" Visible="False"></asp:Label>
-            <br />
+            <br /> 
             <br />
             <asp:RadioButtonList ID="radioButtonListGender" runat="server" RepeatDirection="Horizontal">
                 <asp:ListItem>Male</asp:ListItem>
@@ -32,7 +32,9 @@
             <asp:Label ID="labelInvalid" runat="server" ForeColor="Red" Text="Validity" Visible="False"></asp:Label>
             <br />
 
-            <asp:Button ID="Button1" runat="server" Text="Create account" Height="33px" Width="110px" OnClick="Button1_Click" CssClass="buttonCreateAccount" />
+            <asp:LinkButton ID="linkButtonLogin" runat="server" CssClass="loginLink" PostBackUrl="~/LoginUser.aspx">Login</asp:LinkButton>
+
+            <asp:Button ID="buttonCreateButton" runat="server" Text="Create account" Height="33px" Width="110px" OnClick="Button1_Click" CssClass="buttonCreateAccount" />
         </div>
     </form>
 </body>

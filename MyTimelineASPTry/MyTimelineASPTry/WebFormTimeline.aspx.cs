@@ -196,6 +196,8 @@ namespace MyTimelineASPTry
             labelReligion.Text = documents.religion;
             imageProfile.ImageUrl = documents.image;
 
+            htmlInfo.InnerHtml = "";
+                
             if (ItemExists(itemId))
             {
                 var collection1 = db.GetCollection<IndividualData>("IndividualData");
@@ -205,14 +207,14 @@ namespace MyTimelineASPTry
                 htmlInfo.InnerHtml = item.htmlInformation;
                 // listBoxLinks.Items.Clear();
                
-                    additionalResources.InnerHtml = "Additional resources";
+                    additionalResources.InnerHtml = "Additional resources <br />";
                     if (item.additionalBooks != null)
                         foreach (var book in item.additionalBooks)
                         {
                             additionalResources.InnerHtml +="<br />"+ book.ToString();
                         }
 
-                    additionalLinks.InnerHtml = "Additional links";
+                    additionalLinks.InnerHtml = "Additional links <br />";
                     if (item.additionalLinks != null)
                         foreach (var links in item.additionalLinks)
                         {

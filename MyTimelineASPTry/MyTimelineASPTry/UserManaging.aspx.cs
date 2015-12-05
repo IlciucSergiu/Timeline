@@ -13,7 +13,7 @@ namespace MyTimelineASPTry
     {
         protected async void Page_Load(object sender, EventArgs e)
         {
-            Response.Write(listBoxOwns.Items.Count);
+           // Response.Write(listBoxOwns.Items.Count);
             if (listBoxOwns.Items.Count == 0)
             {
                 listBoxOwns.Items.Clear();
