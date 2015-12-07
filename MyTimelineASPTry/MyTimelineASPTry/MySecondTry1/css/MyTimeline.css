@@ -115,27 +115,26 @@ form{
         
 }
 
-    #Div1 {
-        height:50px;
-    }
+   
 
-    #header .inHeader {
+   .inHeader {
        
-        /*display:inline;*/
-        float:left;
+        display:inline;
+        /*float:left;*/
        margin-left:30px;
-       
-    }
+    top: 0px;
+    
+    /*width: 166px;*/
+}
+   
     #bigTitle {
         margin-top:0px;
     }
 
-   .buttonInHeader {
-      
-        /*vertical-align:baseline;*/
-        position:relative;
-        margin-top:11px;
+    .searchButton {
+        margin-left:5px;
     }
+   
 
     #individualInfo {
        display:none;

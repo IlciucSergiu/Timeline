@@ -29,9 +29,13 @@
 
     <form runat="server">
         <div id="header">
-            <h1 class="inHeader" id="bigTitle">MyTry</h1>
-            <asp:Button ID="buttonAddData" runat="server" Text="Login" OnClick="buttonAddData_Click" Width="88px" CssClass="inHeader buttonInHeader" />
-            <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" CssClass="inHeader buttonInHeader" /><br />
+            <h1 class="inHeader" id="bigTitle" >MyTry</h1>
+            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader" Width="223px"></asp:TextBox>
+            <asp:Button ID="buttonSearchQuery" runat="server" Text="Search" CssClass="inHeader searchButton" OnClick="buttonSearchQuery_Click"/>
+            <asp:Button ID="buttonAddData" runat="server" Text="Login" OnClick="buttonAddData_Click" Width="88px" CssClass="inHeader" />
+            <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" CssClass="inHeader" />
+            
+            <br />
         </div>
         <br />
         <div id='placement' style="height: 400px"></div>

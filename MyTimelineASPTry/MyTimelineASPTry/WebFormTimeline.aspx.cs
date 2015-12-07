@@ -197,7 +197,9 @@ namespace MyTimelineASPTry
             imageProfile.ImageUrl = documents.image;
 
             htmlInfo.InnerHtml = "";
-                
+            additionalLinks.InnerHtml = "";
+            additionalResources.InnerHtml = "";
+
             if (ItemExists(itemId))
             {
                 var collection1 = db.GetCollection<IndividualData>("IndividualData");
@@ -207,20 +209,22 @@ namespace MyTimelineASPTry
                 htmlInfo.InnerHtml = item.htmlInformation;
                 // listBoxLinks.Items.Clear();
                
-                    additionalResources.InnerHtml = "Additional resources <br />";
+                    additionalResources.InnerHtml = "Additional resources";
                     if (item.additionalBooks != null)
                         foreach (var book in item.additionalBooks)
                         {
                             additionalResources.InnerHtml +="<br />"+ book.ToString();
                         }
+                    additionalResources.InnerHtml += "<br /><br />";
 
-                    additionalLinks.InnerHtml = "Additional links <br />";
+                    additionalLinks.InnerHtml = "Additional links";
                     if (item.additionalLinks != null)
                         foreach (var links in item.additionalLinks)
                         {
                             additionalLinks.InnerHtml += "<br /><a href=" + links.ToString() + ">" + links.ToString() + "<a/>";
 
                         }
+                    additionalLinks.InnerHtml += "<br /><br />";
 
             }
         }
@@ -238,6 +242,47 @@ namespace MyTimelineASPTry
                 return true;
             else
                 return false;
+        }
+
+        protected async void buttonSearchQuery_Click(object sender, EventArgs e)
+        {
+            if (textBoxSearchQuery.Text != "")
+            {
+                MongoClient mclient = new MongoClient();
+                var db = mclient.GetDatabase("Timeline");
+
+                var collection = db.GetCollection<PersonInfo>("Persons");
+
+                //var documents = await collection.Find(new BsonDocument()).FirstAsync();
+                string[] category = textBoxSearchQuery.Text.Split(':');
+                Response.Write(category[0] + "    " + category[1]);
+                var filter = Builders<PersonInfo>.Filter.Eq(category[0], category[1]); ;
+
+
+                //  var searchD = collection.AsQueryable()
+                // .Where(u => u.religion.ToLower() == textBoxSearchQuery.Text.ToLower());
+
+
+
+                jsString = "";
+                await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
+                    + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+                    + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
+                    + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+                    + d.link + "\",\"image\" : \"" + d.image + "\"},");
+                //await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
+
+
+                jsonData = "[{" +
+             "\"id\": \"important_personalities\"," +
+             "\"title\": \"Important Personalities\"," +
+             "\"initial_zoom\": \"40\"," +
+                    //"\"focus_date\": \"1998-03-11 12:00:00\","+
+             "\"image_lane_height\": 50," +
+             "\"events\":[" + jsString.TrimEnd(',') + "]" +
+         "}]";
+
+            }
         }
     }
 }

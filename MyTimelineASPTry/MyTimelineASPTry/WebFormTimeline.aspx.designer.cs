@@ -13,6 +13,24 @@ namespace MyTimelineASPTry {
     public partial class WebFormTimeline {
         
         /// <summary>
+        /// textBoxSearchQuery control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBoxSearchQuery;
+        
+        /// <summary>
+        /// buttonSearchQuery control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonSearchQuery;
+        
+        /// <summary>
         /// buttonAddData control.
         /// </summary>
         /// <remarks>
