@@ -263,7 +263,7 @@ namespace MyTimelineASPTry
                 // .Where(u => u.religion.ToLower() == textBoxSearchQuery.Text.ToLower());
 
 
-
+                 
                 jsString = "";
                 await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
                     + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
