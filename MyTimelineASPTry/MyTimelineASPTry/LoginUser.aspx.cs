@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using DevOne.Security.Cryptography.BCrypt;
 
 namespace MyTimelineASPTry
 {
@@ -33,7 +34,9 @@ namespace MyTimelineASPTry
                 //await collection.Find(filter).ForEachAsync(d => listBoxOwns.Items.Add(d.id.ToString()));
 
                 var document = await collection.Find(filter).FirstAsync();
-                if (document.password == textBoxPassword.Text)
+
+
+                if (BCryptHelper.CheckPassword(textBoxPassword.Text, document.password))
                 {
                     Session["userId"] = document.email;
                     //Response.Write("Te-ai logat cu username " + Session["userId"].ToString() +"  si parola " +document.password);

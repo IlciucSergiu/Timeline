@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using DevOne.Security.Cryptography.BCrypt;
 
 
 namespace MyTimelineASPTry
@@ -40,16 +41,27 @@ namespace MyTimelineASPTry
                     { gender = "male"; }
                     else { gender = "female"; }
                 }
+
+                    string userInput = textBoxPassword.Text;
+                string salt = BCryptHelper.GenerateSalt();
+                //Response.Write(salt +"<br />");
+                var hashedPassword = BCryptHelper.HashPassword(userInput, salt);
+
+               // Response.Write(hashedPassword + "<br />");
+
+
+                //Response.Write(BCryptHelper.CheckPassword("mere",hashedPassword));
                 BsonDocument document = new BsonDocument
             {
                
                 { "firstName", textBoxFirstName.Text },
                 { "lastName", textBoxLastName.Text },
-                { "password", textBoxPassword.Text },
+                { "password", hashedPassword },
+                { "salt", salt },
                 { "email", textBoxEmail.Text },
                 { "gender", gender }
             };
-                collection.InsertOneAsync(document);
+               collection.InsertOneAsync(document);
                 Response.Redirect("LoginUser.aspx", false);
                 }
                 else

@@ -86,5 +86,6 @@ namespace MyTimelineASPTry
         public string password { get; set; }
         public string email { get; set; }
         public string gender { get; set; }
+        public string salt { get; set; }
     }
 }
