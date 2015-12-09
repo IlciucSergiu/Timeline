@@ -14,33 +14,44 @@
 
 
 
-    <style type="text/css">
-        #header {
-            height: 23px;
-        }
-    </style>
-
+   
 
 
 </head>
-<body>
+<body id="background">
     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/testSergiu.js" type="text/javascript" charset="utf-8"></script>
 
-    <form runat="server">
+    <form runat="server" id="mainForm">
         <div id="header">
-            <h1 class="inHeader" id="bigTitle" >MyTry</h1>
-            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader" Width="223px"></asp:TextBox>
+           <!-- <h1 class="inHeader" id="bigTitle" >MyTry</h1> -->
+                       
+        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="The name"  CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+           
+        
+            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader" Width="233px" Height="22px" BorderStyle="None" placeholder="search for specific categories"></asp:TextBox>
             <asp:Button ID="buttonSearchQuery" runat="server" Text="Search" CssClass="inHeader searchButton" OnClick="buttonSearchQuery_Click"/>
-            <asp:Button ID="buttonAddData" runat="server" Text="Login" OnClick="buttonAddData_Click" Width="88px" CssClass="inHeader" />
+            <asp:Button ID="buttonLogin" runat="server" Text="Login" OnClick="buttonLogin_Click" Width="88px" CssClass="inHeader" />
+            <asp:Button ID="buttonWorkspace" runat="server" Text="Workspace" CssClass="inHeader" PostBackUrl="~/UserManaging.aspx" Visible="False" Width="83px" />
             <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" CssClass="inHeader" />
+             <asp:LinkButton ID="linkButtonLogout" runat="server" CssClass="linkLogout" OnClick="linkButtonLogout_Click" Visible="False">Logout</asp:LinkButton >
             
-            <br />
+            
+            
+            
+           
+            
+            
+            
+            
+            
         </div>
-        <br />
+       
+        
+        
         <div id='placement' style="height: 400px"></div>
 
-
+            
 
 
         <script>

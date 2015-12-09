@@ -9,6 +9,19 @@
 </head>
 <body>
     <form id="form1"  autocomplete="off" method="post" runat="server">
+        <div id="header">
+           
+        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="The name" CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+           
+        </div>
+        <script>
+            $(function () {
+              $("#bigTitle").click(function(){
+     alert('Handler for .click() called.')
+   });
+                });
+
+        </script>
         <div id="signUpForm">
 
 

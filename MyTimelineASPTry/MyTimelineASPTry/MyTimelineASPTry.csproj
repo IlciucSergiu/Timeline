@@ -167,6 +167,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MySecondTry1\timeglider\img\11.jpg" />
     <Content Include="Account\AddPhoneNumber.aspx" />
     <Content Include="Account\Confirm.aspx" />
     <Content Include="Account\Forgot.aspx" />
@@ -660,6 +661,10 @@
     <Content Include="MySecondTry1\timeglider\icons\triangle_yellow.png" />
     <Content Include="MySecondTry1\timeglider\icons\video.png" />
     <Content Include="MySecondTry1\timeglider\icons\_notes\dwsync.xml" />
+    <Content Include="MySecondTry1\timeglider\img\29b3f011017147.560efb49b90cf.png" />
+    <Content Include="MySecondTry1\timeglider\img\calendar_16.png" />
+    <Content Include="MySecondTry1\timeglider\img\calendar_20.png" />
+    <Content Include="MySecondTry1\timeglider\img\calendar_icon.jpg" />
     <Content Include="MySecondTry1\timeglider\img\cal_icon.png" />
     <Content Include="MySecondTry1\timeglider\img\close.png" />
     <Content Include="MySecondTry1\timeglider\img\datepicker_minus.png" />
@@ -682,8 +687,11 @@
     <Content Include="MySecondTry1\timeglider\img\modal_full_close.png" />
     <Content Include="MySecondTry1\timeglider\img\pan_left.png" />
     <Content Include="MySecondTry1\timeglider\img\pan_right.png" />
+    <Content Include="MySecondTry1\timeglider\img\paper_texture.jpg" />
     <Content Include="MySecondTry1\timeglider\img\subtick_highlight.png" />
     <Content Include="MySecondTry1\timeglider\img\tags.png" />
+    <Content Include="MySecondTry1\timeglider\img\TEXTURE A.jpg" />
+    <Content Include="MySecondTry1\timeglider\img\TEXTURE B.jpg" />
     <Content Include="MySecondTry1\timeglider\img\timeglider.png" />
     <Content Include="MySecondTry1\timeglider\img\tools.png" />
     <Content Include="MySecondTry1\timeglider\img\zoom\minus.png" />
@@ -760,6 +768,7 @@
     <Content Include="ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
     <Content Include="ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="ckeditor\skins\moono\readme.md" />
+    <Content Include="MySecondTry1\timeglider\img\abideinchrist_cs_librivox_archive.torrent" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

@@ -20,7 +20,7 @@ namespace MyTimelineASPTry
         protected async void buttonSearchId_Click(object sender, EventArgs e)
         {
             labelEmailVerification.Visible = false;
-            labelPasswordVerification.Visible = false;
+            
 
             if (ItemExists(textBoxSearchId.Text))
             {
@@ -39,19 +39,20 @@ namespace MyTimelineASPTry
                 if (BCryptHelper.CheckPassword(textBoxPassword.Text, document.password))
                 {
                     Session["userId"] = document.email;
+                    Session["userLogged"] = "True";
                     //Response.Write("Te-ai logat cu username " + Session["userId"].ToString() +"  si parola " +document.password);
                     Response.Redirect("UserManaging.aspx", false);
                 }
                 else
                 {
-                    labelPasswordVerification.Visible = true;
-                    labelPasswordVerification.Text = "Password is incorect";
+                    labelEmailVerification.Visible = true;
+                    labelEmailVerification.Text = "Email or password is incorect";
                 }
             }
             else
             {
                 labelEmailVerification.Visible = true;
-                labelEmailVerification.Text = "This email is not registred";
+                labelEmailVerification.Text = "Email or password is incorect";
             }
 
 

@@ -485,6 +485,23 @@ namespace MyTimelineASPTry
             Response.Redirect("WebFormTimeline.aspx",false);
         }
 
+        protected void buttonAddTag_Click(object sender, EventArgs e)
+        {
+            //TableCell tagName = new TableCell();
+            //tagName.Text = textBoxTagName.Text;
+
+            // TableCell tagImportance = new TableCell();
+            //tagImportance.Text = inputImportance.ToString();
+
+            //TableRow tagRow = new TableRow();
+            //tagRow.Controls.Add(tagName);
+            //tagRow.Controls.Add(tagImportance);
+
+            //tableTags.Controls.Add(tagRow);
+           
+            listBoxTags.Items.Add(textBoxTagName.Text +"  "+ inputImportanceTag.Value);
+        }
+
        
 
 

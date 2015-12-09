@@ -20,7 +20,7 @@
         
     <div id="header">
            
-        <asp:ImageButton ID="ImageButton1" runat="server" Height="73px" Width="211px" AlternateText="The name" OnClick="ImageButton1_Click" CssClass="linkMain" />
+        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="The name" CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
            
         </div>
         
@@ -40,12 +40,12 @@
             <div id="datesPosition">
                 <p>
                     Date of birth:
-                <input type="text" class="datepicker" id="dateBirth" runat="server" />
+                <input type="text" class="datepicker" id="dateBirth" runat="server" placeholder="yyyy-mm-dd" />
                 </p>
                 &nbsp;&nbsp;&nbsp;
          <p>
              Date of death
-             <input type="text" class="datepicker" id="dateDeath" runat="server" />
+             <input type="text" class="datepicker" id="dateDeath" runat="server"  placeholder="yyyy-mm-dd"/>
          </p>
                 &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" OnCheckedChanged="checkBoxContemporary_CheckedChanged"  /><br />
                 <br />
@@ -105,6 +105,10 @@
             <script>
                 $(function () {
                     $(".datepicker").datepicker({
+                        showOn: "button",
+                        buttonImage:"MySecondTry1/timeglider/img/calendar_16.png",
+                        buttonImageOnly: true,
+                        buttonText: "Select date",
                         changeYear: true,
                         changeMonth: true,
                         yearRange: "1:c"
@@ -174,11 +178,25 @@
 
         
         <div id="ckEditor">
-            <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000" ></CKEditor:CKEditorControl>
+            <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000" placeholder="Importance"></CKEditor:CKEditorControl>
         </div>
 
             <asp:HiddenField ID="hiddenFieldCk" runat="server" />
             &nbsp;</p>
+            <div id="addTags">
+                <asp:LinkButton ID="linkButtonAddTag" runat="server">Add tag</asp:LinkButton>
+                <br />
+               <br />
+                 <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name"></asp:TextBox> 
+               -
+                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClick="buttonAddTag_Click" />
+                <asp:Table ID="tableTags" runat="server" Height="52px" Width="80px" Visible="False">
+
+                </asp:Table>
+               <br />
+                 <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px"></asp:ListBox>
+                <br />
+            </div>
         <p>
            <!-- <asp:LinkButton ID="LinkButton2" runat="server">Add additional resources</asp:LinkButton> -->
             <asp:Label ID="labelAddResources" runat="server" Text="Add additional resources"></asp:Label>

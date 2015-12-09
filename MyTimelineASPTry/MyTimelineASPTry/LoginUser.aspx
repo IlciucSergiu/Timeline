@@ -9,7 +9,11 @@
 </head>
 <body>
     <form id="form1" runat="server">
-
+        <div id="header">
+           
+        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="The name"  CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+           
+        </div>
     <div id="loginDiv">
         
         
@@ -17,15 +21,15 @@
         
          <asp:TextBox ID="textBoxSearchId" runat="server" CssClass="loginTextBox" Width="150px"></asp:TextBox> 
         <br />
-        <asp:Label ID="labelEmailVerification" runat="server" CssClass="loginLabel" ForeColor="Red" Text="Email verif" Visible="False"></asp:Label>
         <br />
         <asp:Label ID="Label2" runat="server" Text="Password     " CssClass="loginLabel"></asp:Label>
         <asp:TextBox ID="textBoxPassword" runat="server" CssClass="loginTextBox" Width="152px" TextMode="Password"></asp:TextBox>
         <br />
-        <asp:Label ID="labelPasswordVerification" runat="server" CssClass="loginLabel" ForeColor="Red" Text="Password verif" Visible="False"></asp:Label>
-        <br /><br />
+        <br />
+        <asp:Label ID="labelEmailVerification" runat="server" CssClass="loginLabel" ForeColor="Red" Text="Email verif" Visible="False"></asp:Label>
+        <br />
         <asp:LinkButton ID="linkButtonSignUp" runat="server" CssClass="signUpLink" PostBackUrl="~/SignUpUser.aspx">Create account</asp:LinkButton>
-        <asp:Button ID="buttonSearchId" runat="server" Text="SearchID" OnClick="buttonSearchId_Click"  CssClass="loginButton"/>
+        <asp:Button ID="buttonSearchId" runat="server" Text="Login" OnClick="buttonSearchId_Click"  CssClass="loginButton" ForeColor="Black" Width="77px"/>
     </div>
     </form>
 </body>

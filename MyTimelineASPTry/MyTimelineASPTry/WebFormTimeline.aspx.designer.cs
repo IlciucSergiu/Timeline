@@ -13,6 +13,24 @@ namespace MyTimelineASPTry {
     public partial class WebFormTimeline {
         
         /// <summary>
+        /// mainForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm mainForm;
+        
+        /// <summary>
+        /// ImageButton1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
+        
+        /// <summary>
         /// textBoxSearchQuery control.
         /// </summary>
         /// <remarks>
@@ -31,13 +49,22 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Button buttonSearchQuery;
         
         /// <summary>
-        /// buttonAddData control.
+        /// buttonLogin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonAddData;
+        protected global::System.Web.UI.WebControls.Button buttonLogin;
+        
+        /// <summary>
+        /// buttonWorkspace control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonWorkspace;
         
         /// <summary>
         /// buttonLoadTimeline control.
@@ -47,6 +74,15 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button buttonLoadTimeline;
+        
+        /// <summary>
+        /// linkButtonLogout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton linkButtonLogout;
         
         /// <summary>
         /// buttonCreate control.
