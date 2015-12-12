@@ -52,6 +52,19 @@
             </div>
             <asp:Label ID="labelImportance" runat="server" Text="Importance"></asp:Label>&nbsp;&nbsp;
         <input id="inputImportance" type="number" runat="server" max="100" min="0" style="width: 72px" /><br />
+
+             <div id="addTags">
+                <asp:LinkButton ID="linkButtonAddTag" runat="server">Add tag</asp:LinkButton>
+                <br />
+               <br />
+                 <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" CssClass="textBoxAddTag"></asp:TextBox> 
+               -
+                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick="return AddTagItem();"  />
+                &nbsp;&nbsp;
+                 <input id="buttonRemoveTags" type="button" value="Remove" /><br />
+                 <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px" CssClass="listBoxTags"></asp:ListBox>
+                <br />
+            </div>
             <br />
 
 
@@ -103,6 +116,30 @@
             <br />
 
             <script>
+
+               
+
+                function AddTagItem() {
+                    var tagName = $(".textBoxAddTag").val();
+                    var tagImportance = $("#inputImportanceTag").val();
+
+                    try{
+                  
+                        $('.listBoxTags').append("<option value="+tagName +" "+ tagImportance+">"+tagName +" "+ tagImportance+"</option>");
+
+                    alert(tagName + " ---- " + tagImportance);
+                    }
+                    catch(err)
+                    {
+                        alert(err.message);
+                    }
+                    return false;
+                }
+
+                $('#buttonRemoveTags').click(function () {
+                    $(".listBoxTags option:selected").remove();
+                });
+
                 $(function () {
                     $(".datepicker").datepicker({
                         showOn: "button",
@@ -134,6 +171,8 @@
                         $("#divMainInfo").css("display", "block");
                         
                     }
+
+                     
                 });
                
                // $(document).ready(function () {
@@ -183,20 +222,7 @@
 
             <asp:HiddenField ID="hiddenFieldCk" runat="server" />
             &nbsp;</p>
-            <div id="addTags">
-                <asp:LinkButton ID="linkButtonAddTag" runat="server">Add tag</asp:LinkButton>
-                <br />
-               <br />
-                 <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name"></asp:TextBox> 
-               -
-                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClick="buttonAddTag_Click" />
-                <asp:Table ID="tableTags" runat="server" Height="52px" Width="80px" Visible="False">
-
-                </asp:Table>
-               <br />
-                 <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px"></asp:ListBox>
-                <br />
-            </div>
+           
         <p>
            <!-- <asp:LinkButton ID="LinkButton2" runat="server">Add additional resources</asp:LinkButton> -->
             <asp:Label ID="labelAddResources" runat="server" Text="Add additional resources"></asp:Label>

@@ -44,6 +44,7 @@ namespace MyTimelineASPTry
         public string link { get; set; }
         public string image { get; set; }
         public string importance { get; set; }
+        public BsonArray tags { get; set; }
 
         [BsonIgnoreIfNull]
         public string gender { get; set; }
@@ -74,6 +75,9 @@ namespace MyTimelineASPTry
         public BsonArray additionalLinks { get; set; }
 
         public BsonArray additionalBooks { get; set; }
+
+        public BsonArray tags { get; set; }
+
     }
 
     public class UserData

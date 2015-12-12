@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Web.Script.Serialization;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using System.Diagnostics;
 
 
 namespace MyTimelineASPTry
@@ -25,9 +26,11 @@ namespace MyTimelineASPTry
                     buttonLogin.Visible = false;
                     buttonWorkspace.Visible = true;
                 }
-
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             LoadTimelineConcat();
-
+            sw.Stop();
+            labelTime.Text = "Page Load : "+sw.Elapsed.TotalMilliseconds.ToString();
 
 
         }
@@ -179,6 +182,10 @@ namespace MyTimelineASPTry
 
         async void InitializeData()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            
+            
             string itemId = hiddenId.Value;
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
@@ -226,38 +233,71 @@ namespace MyTimelineASPTry
                 additionalLinks.InnerHtml += "<br /><br />";
 
             }
+            sw.Stop();
+            labelTime.Text += "\r\n InitializeData :" + sw.Elapsed.TotalMilliseconds.ToString();
         }
 
         bool ItemExists(string id)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             MongoClient mgClient = new MongoClient();
             var db = mgClient.GetDatabase("Timeline");
             var collection = db.GetCollection<IndividualData>("IndividualData");
             var filter = Builders<IndividualData>.Filter.Eq("id", id);
             var count = collection.Find(filter).CountAsync();
 
+            sw.Stop();
+            labelTime.Text += "\r\n Item Exists :" + sw.Elapsed.TotalMilliseconds.ToString();
             // Response.Write(count.Result);
             if (Convert.ToInt32(count.Result) != 0)
                 return true;
             else
                 return false;
+
+            
         }
 
         protected async void buttonSearchQuery_Click(object sender, EventArgs e)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            string searchQuery = textBoxSearchQuery.Text;
+            
+
             if (textBoxSearchQuery.Text != "")
             {
                 MongoClient mclient = new MongoClient();
                 var db = mclient.GetDatabase("Timeline");
-
                 var collection = db.GetCollection<PersonInfo>("Persons");
+                var filter = Builders<PersonInfo>.Filter.Eq("name", "Mozart");
+
+                if (searchQuery.Trim().Contains(':'))
+                { 
+              
+
+               
+
+                
+                string[] category = searchQuery.Split(':');
+                filter = Builders<PersonInfo>.Filter.Eq(category[0], category[1]); 
 
                 //var documents = await collection.Find(new BsonDocument()).FirstAsync();
-                string[] category = textBoxSearchQuery.Text.Split(':');
-                Response.Write(category[0] + "    " + category[1]);
-                var filter = Builders<PersonInfo>.Filter.Eq(category[0], category[1]); ;
+            
+               // Response.Write(category[0] + "    " + category[1]);
+                }
+                else
+                {
+                    
+
+                   filter = Builders<PersonInfo>.Filter.Eq("tags.tagName", searchQuery);
 
 
+                }
+
+               
                 //  var searchD = collection.AsQueryable()
                 // .Where(u => u.religion.ToLower() == textBoxSearchQuery.Text.ToLower());
 
@@ -269,7 +309,7 @@ namespace MyTimelineASPTry
                     + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
                     + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
                     + d.link + "\",\"image\" : \"" + d.image + "\"},");
-                //await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
+               
 
 
                 jsonData = "[{" +
@@ -282,6 +322,8 @@ namespace MyTimelineASPTry
          "}]";
 
             }
+            sw.Stop();
+            labelTime.Text += "\r\n Search Query :" + sw.Elapsed.TotalMilliseconds.ToString();
         }
 
         
@@ -292,6 +334,8 @@ namespace MyTimelineASPTry
             Session.Remove("userLogged");
             Response.Redirect("WebFormTimeline.aspx", false);
         }
+
+        
 
 
 

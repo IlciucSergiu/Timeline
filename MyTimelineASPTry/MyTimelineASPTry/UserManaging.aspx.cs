@@ -88,7 +88,7 @@ namespace MyTimelineASPTry
         protected void buttonEdit_Click(object sender, EventArgs e)
         {
             //Response.Write("ai selectat :" + listBoxOwns.SelectedIndex.ToString());
-            Session["userId"] = textBoxSearchId.Text;
+           // Session["userId"] = textBoxSearchId.Text;
            Session["itemId"] = listBoxOwns.SelectedValue;
             Response.Redirect("AddData.aspx?itemId=" + listBoxOwns.SelectedValue + "&scope=modify",false);
         }
