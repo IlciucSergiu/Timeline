@@ -264,7 +264,7 @@ namespace MyTimelineASPTry
             sw.Stop();
             labelTime.Text += "\r\n Item Exists :" + sw.Elapsed.TotalMilliseconds.ToString();
             // Response.Write(count.Result);
-            if (Convert.ToInt32(count.Result) != 0)
+            if (Convert.ToInt32(count.Result) != 0) 
                 return true;
             else
                 return false;
