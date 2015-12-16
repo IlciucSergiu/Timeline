@@ -6,8 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using HtmlAgilityPack;
-using CsQuery;
+
 
 namespace MyTimelineASPTry
 {
@@ -117,21 +116,23 @@ namespace MyTimelineASPTry
 
                 string[] separateTag;
                 BsonArray tagsArray = new BsonArray();
-                foreach (ListItem tag in listBoxTags.Items)
+                foreach (string tag in hiddenFieldTags.Value.Split(';'))
                 {
 
 
+                    if (tag.Length > 3)
+                    {
+                        separateTag = tag.Split('-');
 
-                    separateTag = tag.Text.Split(' ');
-
-                    BsonDocument tagDocument = new BsonDocument {
+                        BsonDocument tagDocument = new BsonDocument {
 
                         { "tagName", separateTag[0] },
                         { "tagImportance", separateTag[1] }
                  };
 
 
-                    tagsArray.Add(tagDocument);
+                        tagsArray.Add(tagDocument);
+                    }
                 }
 
                 BsonDocument document = new BsonDocument
@@ -290,13 +291,17 @@ namespace MyTimelineASPTry
             if (documents.tags != null)
                 foreach (var tag in documents.tags)
                 {
-                    listBoxTags.Items.Add(tag[0].ToString() + " " + tag[1].ToString());
+                    ListItem tagItem = new ListItem();
+                    tagItem.Text = tag[0].ToString() + " " + tag[1].ToString();
+                    tagItem.Value = tag[0].ToString() + "-" + tag[1].ToString();
+                    listBoxTags.Items.Add(tagItem);
                 }
 
         }
 
         protected async void buttonModify_Click(object sender, EventArgs e)
         {
+           // Response.Write(hiddenFieldTags.Value);
             showEssential = false;
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
@@ -330,12 +335,12 @@ namespace MyTimelineASPTry
 
             string[] separateTag;
             BsonArray tagsArray = new BsonArray();
-            foreach (ListItem tag in listBoxTags.Items)
+            foreach (string tag in hiddenFieldTags.Value.Split(';'))
             {
 
 
-
-                separateTag = tag.Text.Split(' ');
+                if (tag.Length > 3) { 
+                separateTag = tag.Split('-');
 
                 BsonDocument tagDocument = new BsonDocument {
 
@@ -345,6 +350,7 @@ namespace MyTimelineASPTry
 
 
                 tagsArray.Add(tagDocument);
+                }
             }
 
             var filter = Builders<PersonInfo>.Filter.Eq("id", itemId);
@@ -594,6 +600,11 @@ namespace MyTimelineASPTry
             //tableTags.Controls.Add(tagRow);
 
             listBoxTags.Items.Add(textBoxTagName.Text + " " + inputImportanceTag.Value);
+        }
+
+        protected void buttonAddTag_Click1(object sender, EventArgs e)
+        {
+
         }
 
 

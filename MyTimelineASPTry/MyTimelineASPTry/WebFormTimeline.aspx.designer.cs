@@ -121,6 +121,24 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.HiddenField hiddenId;
         
         /// <summary>
+        /// ScriptManagerMain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManagerMain;
+        
+        /// <summary>
+        /// hiddenFieldCriteria control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hiddenFieldCriteria;
+        
+        /// <summary>
         /// imageProfile control.
         /// </summary>
         /// <remarks>
@@ -173,6 +191,15 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label labelReligion;
+        
+        /// <summary>
+        /// divTags control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divTags;
         
         /// <summary>
         /// htmlInfo control.

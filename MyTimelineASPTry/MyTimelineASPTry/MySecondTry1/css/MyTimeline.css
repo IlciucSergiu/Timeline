@@ -1,37 +1,34 @@
 ﻿body {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     background-color: #f5f5f5;
-    
-}
-html {
-    
 }
 
-#mainForm{
-    
+html {
+}
+
+#mainForm {
 }
 
 
 #header {
-       
-       background-color: #201E1B;
-       width:100%;
-       height:43px;
-       
-
+    background-color: #201E1B;
+    width: 100%;
+    height: 43px;
+    
 }
 
-#placement{
-    position:relative;
-    margin-top:0;
+#placement {
+    position: relative;
+    margin-top: 15px;
 }
-#bigTitle{
+
+#bigTitle {
     /*color: rgb(250, 231, 191);*/
-     /*color: #201E1B;*/
-     font-size:38px;
-     font-family: sans-serif;
-     color:white;
+    /*color: #201E1B;*/
+    font-size: 38px;
+    font-family: sans-serif;
+    color: white;
 }
 
 /*#backGroundImage {
@@ -40,7 +37,6 @@ html {
 }*/
 /*AddData page*/
 #buttonSubmit {
-    
 }
 
 #datesPosition p {
@@ -51,64 +47,53 @@ html {
     display: inline;
 }
 
-form{
-    display:compact;
+form {
+    display: compact;
 }
-#divAddEssentials{
-   
+
+#divAddEssentials {
     left: 3%;
     top: 0px;
     margin-left: 0px;
-   display:block;
+    display: block;
 }
 
 #divMainInfo {
     clear: left;
-    
 }
 
 
 
-.imageInline{
-
-    display:inline;
+.imageInline {
+    display: inline;
     float: left;
 }
-  
-#ckEditor{
+
+#ckEditor {
     clear: left;
     padding-left: 3%;
 }
 
 .essentialLabels {
-    
     padding-left: 20px;
-
     line-height: 170%;
-    
 }
 
 #labelsInfo {
-    
-    width:300px;
-    
-    top:50px;
+    width: 300px;
+    top: 50px;
 }
 
 .linkLabel {
-
     padding-left: 275px;
 }
 
-.essentialButtons{
+.essentialButtons {
     margin-left: 30px;
-   
 }
 
 .userManButton {
-
     margin-left: 30px;
-    
 }
 
 /*#addLinks {
@@ -116,112 +101,120 @@ form{
 }*/
 
 
-   
 
-    #afterImage {
-      
-        clear:both;
-       padding-top:20px;
-        
-        
+
+#afterImage {
+    clear: both;
+    padding-top: 20px;
 }
 
-   
 
-   .inHeader {
-       
-        display:inline;
-        /*float:left;*/
-       margin-left:30px;
-    top: 0px;
-    
-    /*width: 166px;*/
+
+.inHeader {
+    position:relative;
+    /*display: inline;*/
+    margin-left: 30px;
+    margin-right: 0px;
+    margin-top: 0px;
+    top: -8px;
+    left: -23px;
+    width: 90px;
 }
-   
-    #bigTitle {
-        margin-top:0px;
-    }
 
-    .searchButton {
-        margin-left:5px;
-    }
-   
+#bigTitle {
+    margin-top: 0px;
+}
 
-    #individualInfo {
-       display:none;
-    }
+.searchButton {
+    margin-left: 5px;
+}
 
-    .hideButton {
-        display:none;
-    }
 
-    #placement {
-        clear:left;
-    }
-    .linkMain {
-        font-size:30pt;
-        font-size:38px;
-     font-family: sans-serif;
-     color:white;
-        /*padding-bottom: 20px;*/
-    }
+#individualInfo {
+    display: none;
+}
 
-    #loginDiv {
-        margin-top:10%;
-        margin-left:40%;
-        width: 500px;
-    }
+.hideButton {
+    display: none;
+}
 
-    .loginTextBox {
-        margin-top:10px;
-        margin-left:5px;
-    }
+#placement {
+    clear: left;
+}
 
-    .loginLabel {
-        
-        margin-left:30px;
-    }
+.linkMain {
+    font-size: 30pt;
+    font-size: 38px;
+    font-family: sans-serif;
+    color: white;
+    /*padding-bottom: 20px;*/
+}
 
-    .labelLoginUsername {
-        margin-left:23px;
-    }
+#loginDiv {
+    margin-top: 10%;
+    margin-left: 40%;
+    width: 500px;
+}
 
-    .loginButton {
-        /*background-color:#fff;*/
-        margin-left:50px;
-        margin-top: 5px;
-    }
+.loginTextBox {
+    margin-top: 10px;
+    margin-left: 5px;
+}
 
-    .signUpLink{
-         margin-left:100px;
-    }
+.loginLabel {
+    margin-left: 30px;
+}
+
+.labelLoginUsername {
+    margin-left: 23px;
+}
+
+.loginButton {
+    /*background-color:#fff;*/
+    margin-left: 50px;
+    margin-top: 5px;
+}
+
+.signUpLink {
+    margin-left: 100px;
+}
 
 #signUpForm {
-     margin-top:3%;
-        margin-left:30%;
-        width: 400px;
+    margin-top: 3%;
+    margin-left: 30%;
+    width: 400px;
 }
 
 .buttonCreateAccount {
-    
     margin-left: 80px;
 }
 
 .loginLink {
-    margin-left:140px;
-    
+    margin-left: 140px;
 }
 
 .linkLogout {
-    
     position: absolute;
-
-   
-   left: 90%;
+    left: 90%;
     font-size: 15px;
-   font-family: sans-serif;
-   color: white;
+    font-family: sans-serif;
+    color: white;
     top: 14px;
-    
     width: 46px;
+}
+
+.tagLinks {
+    background: #808080;
+    margin: 2px 2px 2px 0;
+    padding: 0px 4px 1px 3px;
+    border: 1px solid #e1ecf4;
+}
+.tagLinks:hover {
+    /*font-size:15px;
+    font-weight:bold;
+    font-family:sans-serif;*/
+     background: #201E1B;
+     cursor:pointer;
+     color: #ffffff;
+
 }

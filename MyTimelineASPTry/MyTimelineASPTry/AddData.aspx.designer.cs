@@ -139,6 +139,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Button buttonAddTag;
         
         /// <summary>
+        /// hiddenFieldTags control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hiddenFieldTags;
+        
+        /// <summary>
         /// listBoxTags control.
         /// </summary>
         /// <remarks>

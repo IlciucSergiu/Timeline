@@ -76,6 +76,8 @@ namespace MyTimelineASPTry
 
         public BsonArray additionalBooks { get; set; }
 
+        private BsonDocument tagsDocument { get; set; }
+
         public BsonArray tags { get; set; }
 
     }

@@ -14,6 +14,8 @@
     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="/resources/demos/style.css" />
+   
+    
 </head>
 <body>
     <form runat="server" id="formMainForm">
@@ -59,8 +61,9 @@
                <br />
                  <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" CssClass="textBoxAddTag"></asp:TextBox> 
                -
-                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick="return AddTagItem();"  />
-                &nbsp;&nbsp;
+                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick="return AddTagItem();" OnClick="buttonAddTag_Click1"  />
+                 <asp:HiddenField ID="hiddenFieldTags" runat="server" />
+                  &nbsp;&nbsp;
                  <input id="buttonRemoveTags" type="button" value="Remove" /><br />
                  <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px" CssClass="listBoxTags"></asp:ListBox>
                 <br />
@@ -114,76 +117,42 @@
 
 
             <br />
+            <script src="MySecondTry1/js/AddData.js"></script>
 
             <script>
-
-               
-
-                function AddTagItem() {
-                    var tagName = $(".textBoxAddTag").val();
-                    var tagImportance = $("#inputImportanceTag").val();
-
-                    try{
-                  
-                        $('.listBoxTags').append("<option value="+tagName +" "+ tagImportance+">"+tagName +" "+ tagImportance+"</option>");
-
-                    alert(tagName + " ---- " + tagImportance);
-                    }
-                    catch(err)
-                    {
-                        alert(err.message);
-                    }
-                    return false;
-                }
-
-                $('#buttonRemoveTags').click(function () {
-                    $(".listBoxTags option:selected").remove();
-                });
-
-                $(function () {
-                    $(".datepicker").datepicker({
-                        showOn: "button",
-                        buttonImage:"MySecondTry1/timeglider/img/calendar_16.png",
-                        buttonImageOnly: true,
-                        buttonText: "Select date",
-                        changeYear: true,
-                        changeMonth: true,
-                        yearRange: "1:c"
-                    });
-                    $(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
-
-                });
-
+         
                 $(document).ready(function () {
+                    //alert("is ready");
                     if ('<%=setDate%>' == "True") {
                         $("#dateBirth").datepicker("setDate", '<%=dateBirth.Value.ToString()%>');
                         $("#dateDeath").datepicker("setDate", '<%=dateDeath.Value.ToString()%>');
                         //alert('<%=dateBirth.Value%>' + "" + '<%=dateDeath.Value%>');
                         //alert('<%=setDate%>');
                     }
-                    if ('<%=showEssential%>' == "True")
-                    {
+                    if ('<%=showEssential%>' == "True") {
                         $("#divAddEssentials").css("display", "block");
                         $("#divMainInfo").css("display", "none");
                     }
                     else {
                         $("#divAddEssentials").css("display", "none");
                         $("#divMainInfo").css("display", "block");
-                        
+
                     }
 
-                     
+
                 });
-               
-               // $(document).ready(function () {
-                 //   $(document).dblclick(function () {
-                        // alert(ckEditor.textContent);
-                 //       alert($(ckEditor).toString());
-                        //alert(ckEditor.id);
-                //    });
-               // });
-                
+                //try {
+                function UpdHid(listString1) {
+                    alert(listString1);
+                         $('#'+'<%=hiddenFieldTags.ClientID %>').val(listString1);
+                         return false;
+                     }
+               // }
+                //catch (err) {
+                //    alert(err.message);
+               // }
             </script>
+             
         </div>
 
 

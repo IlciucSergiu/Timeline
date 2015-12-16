@@ -9,6 +9,11 @@ using System.Web.Script.Serialization;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Diagnostics;
+using System.Web.Services;
+using System.Threading.Tasks;
+using System.Threading;
+using Newtonsoft.Json.Linq;
+
 
 
 namespace MyTimelineASPTry
@@ -35,7 +40,7 @@ namespace MyTimelineASPTry
 
         }
 
-        public string jsonData { get; set; }
+        public static string jsonData { get; set; }
 
         public string jsString;
 
@@ -118,7 +123,7 @@ namespace MyTimelineASPTry
 
         }
 
-        string endDate(string date)
+        static string endDate(string date)
         {
             if (date == "contemporary" || date == "now")
 
@@ -202,6 +207,14 @@ namespace MyTimelineASPTry
             labelReligion.Text = documents.religion;
             imageProfile.ImageUrl = documents.image;
 
+            divTags.InnerHtml = "";
+            if(documents.tags != null)
+            foreach(BsonDocument tag in documents.tags)
+            {
+                divTags.InnerHtml += "<a class=\"tagLinks\" runat=\"server\" >" + tag[0] + "</a>  ";
+
+            }
+
             htmlInfo.InnerHtml = "";
             additionalLinks.InnerHtml = "";
             additionalResources.InnerHtml = "";
@@ -259,48 +272,46 @@ namespace MyTimelineASPTry
             
         }
 
-        protected async void buttonSearchQuery_Click(object sender, EventArgs e)
+        protected  void buttonSearchQuery_Click(object sender, EventArgs e)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
-
-            string searchQuery = textBoxSearchQuery.Text;
-            
-
-            if (textBoxSearchQuery.Text != "")
+            string searchQuery = "";
+            if (hiddenFieldCriteria.Value.ToString() != "")
             {
-                MongoClient mclient = new MongoClient();
+                searchQuery = hiddenFieldCriteria.Value.ToString();
+                SearchQueryByTag(searchQuery);
+            }
+            else
+            {
+                searchQuery = textBoxSearchQuery.Text;
+                if(searchQuery.Contains(':'))
+                SearchQueryByCriteria(searchQuery);
+                else
+                {
+                    SearchQueryByTag(searchQuery);
+                }
+            }
+            sw.Stop();
+            labelTime.Text += "\r\n Search Query :" + sw.Elapsed.TotalMilliseconds.ToString();
+
+            
+ }
+
+        async void SearchQueryByCriteria(string searchQuery)
+        {
+            if(searchQuery.Contains(':'))
+            {
+              MongoClient mclient = new MongoClient();
                 var db = mclient.GetDatabase("Timeline");
                 var collection = db.GetCollection<PersonInfo>("Persons");
                 var filter = Builders<PersonInfo>.Filter.Eq("name", "Mozart");
-
-                if (searchQuery.Trim().Contains(':'))
-                { 
-              
 
                
 
                 
                 string[] category = searchQuery.Split(':');
                 filter = Builders<PersonInfo>.Filter.Eq(category[0], category[1]); 
-
-                //var documents = await collection.Find(new BsonDocument()).FirstAsync();
-            
-               // Response.Write(category[0] + "    " + category[1]);
-                }
-                else
-                {
-                    
-
-                   filter = Builders<PersonInfo>.Filter.Eq("tags.tagName", searchQuery);
-
-
-                }
-
-               
-                //  var searchD = collection.AsQueryable()
-                // .Where(u => u.religion.ToLower() == textBoxSearchQuery.Text.ToLower());
-
 
 
                 jsString = "";
@@ -313,21 +324,130 @@ namespace MyTimelineASPTry
 
 
                 jsonData = "[{" +
-             "\"id\": \"important_personalities\"," +
+             "\"id\": \""+searchQuery+"\"," +
              "\"title\": \"Important Personalities\"," +
              "\"initial_zoom\": \"40\"," +
                     //"\"focus_date\": \"1998-03-11 12:00:00\","+
              "\"image_lane_height\": 50," +
              "\"events\":[" + jsString.TrimEnd(',') + "]" +
          "}]";
-
-            }
-            sw.Stop();
-            labelTime.Text += "\r\n Search Query :" + sw.Elapsed.TotalMilliseconds.ToString();
+                }
+            
         }
 
-        
+       async  void  SearchQueryByTag(string searchQuery)
+        {
+            
+                MongoClient mclient = new MongoClient();
+                var db = mclient.GetDatabase("Timeline");
+                var collection = db.GetCollection<PersonInfo>("Persons");
+                var filter = Builders<PersonInfo>.Filter.Eq("name", "Mozart");
 
+               
+            filter = Builders<PersonInfo>.Filter.Eq("tags.tagName", searchQuery);
+
+
+
+                jsString = "";
+                await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
+                    + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+                    + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
+                    + GetImportance(d.tags, searchQuery) + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+                    + d.link + "\",\"image\" : \"" + d.image + "\"},");
+
+               // await collection.Find(filter).ForEachAsync(d => jsString += GetImportance(d.tags,searchQuery));
+
+
+              //  Response.Write(jsString);
+
+                jsonData = "[{" +
+             "\"id\": \"" + searchQuery + "\"," +
+             "\"title\": \""+ searchQuery.First().ToString().ToUpper() + searchQuery.Substring(1) + "\"," +
+             "\"initial_zoom\": \"40\"," +
+                    //"\"focus_date\": \"1998-03-11 12:00:00\","+
+             "\"image_lane_height\": 50," +
+             "\"events\":[" + jsString.TrimEnd(',') + "]" +
+         "}]";
+
+            
+            hiddenFieldCriteria.Value = "";
+           // sw.Stop();
+            //labelTime.Text += "\r\n Search Query :" + sw.Elapsed.TotalMilliseconds.ToString();
+      
+        }
+
+        string GetImportance(BsonArray tags,string searchQuery)
+       {
+           string theReturn = "";
+            foreach(BsonDocument tagDocument in tags)
+            {
+                var obj = JObject.Parse(tagDocument.ToString());
+                //var url = (string)obj["data"]["img_url"];
+                if((string)obj["tagName"] == searchQuery)
+                { 
+                
+                theReturn = (string)obj["tagImportance"];
+                }
+             
+            }
+            return theReturn;
+            
+       }
+        //string jsonData;
+        [WebMethod]
+        public static async Task<string> SearchByCriteria(string criteria)
+        {
+           Stopwatch sw = new Stopwatch();
+            sw.Start();
+            
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+            var collection = db.GetCollection<PersonInfo>("Persons");
+            var filter = Builders<PersonInfo>.Filter.Eq("name", "Mozart");
+
+          
+
+              string jsString = "";
+              try { 
+              //await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
+              //    + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+              //    + "\",\"enddate\" : \"" + /*endDate(d.enddate)*/"" +"\",\"importance\" : \""
+              //    + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+              //    + d.link + "\",\"image\" : \"" + d.image + "\"},");
+
+
+                 CancellationTokenSource cts = new CancellationTokenSource();
+                 if (sw.Elapsed > System.TimeSpan.Parse("00:00:00:05"))
+                  cts.Cancel();
+                  var result =  await collection.Find(filter).FirstAsync(cts.Token);
+
+               // collection.InsertOneAsync(document);
+
+                  return "bob";
+                  }
+
+            catch(Exception e)
+              {
+                  return e.ToString();
+              }
+
+            string  jsonData1 = "[{" +
+            "\"id\": \"important_personalities\"," +
+            "\"title\": \"Important Personalities\"," +
+            "\"initial_zoom\": \"40\"," +
+                  //"\"focus_date\": \"1998-03-11 12:00:00\","+
+            "\"image_lane_height\": 50," +
+            "\"events\":[" + jsString.TrimEnd(',') + "]" +
+        "}]";
+
+            
+            sw.Stop();
+            //jsonData = sw.Elapsed.ToString();
+            return  jsonData1;
+            
+        }
+
+    
 
         protected void linkButtonLogout_Click(object sender, EventArgs e)
         {
@@ -335,7 +455,12 @@ namespace MyTimelineASPTry
             Response.Redirect("WebFormTimeline.aspx", false);
         }
 
-        
+        [System.Web.Services.WebMethod]
+        public static string LoadTimelineQuery(string query)
+        {
+            return "sergiu e amecher";
+
+        }
 
 
 

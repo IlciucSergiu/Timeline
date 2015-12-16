@@ -21,6 +21,7 @@
 <body id="background">
     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/testSergiu.js" type="text/javascript" charset="utf-8"></script>
+    <script src="MySecondTry1/js/AddData.js"></script>
 
     <form runat="server" id="mainForm">
         <div id="header">
@@ -32,7 +33,7 @@
             <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader" Width="233px" Height="22px" BorderStyle="None" placeholder="search for specific categories"></asp:TextBox>
             <asp:Button ID="buttonSearchQuery" runat="server" Text="Search" CssClass="inHeader searchButton" OnClick="buttonSearchQuery_Click"/>
             <asp:Button ID="buttonLogin" runat="server" Text="Login" OnClick="buttonLogin_Click" Width="88px" CssClass="inHeader" />
-            <asp:Button ID="buttonWorkspace" runat="server" Text="Workspace" CssClass="inHeader" PostBackUrl="~/UserManaging.aspx" Visible="False" Width="83px" />
+            <asp:Button ID="buttonWorkspace" runat="server" Text="Workspace" CssClass="inHeader" PostBackUrl="~/UserManaging.aspx" Visible="False" />
             <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" CssClass="inHeader" />
              <asp:LinkButton ID="linkButtonLogout" runat="server" CssClass="linkLogout" OnClick="linkButtonLogout_Click" Visible="False">Logout</asp:LinkButton >
             
@@ -55,6 +56,13 @@
 
 
         <script>
+
+            function UpdHidCriteria(criteria) {
+                alert(criteria);
+                $('#' + '<%=hiddenFieldCriteria.ClientID %>').val(criteria);
+                document.getElementById('<%=buttonSearchQuery.ClientID %>').click();
+                return false;
+            }
 
             var jsonString = '<%=jsonData%>';
 
@@ -122,8 +130,9 @@
                         secondClick = true;
                         document.getElementById('hiddenId').value = theId;
                         // alert(divId);
-                        $("#individualInfo").css("display", "block");
+                        
                         document.getElementById("buttonSearchId").click();
+                        $("#individualInfo").css("display", "block");
                         // alert(theId);
 
                         // if ( e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner" || e.target.className == "tg-event-hoverline") {
@@ -146,11 +155,7 @@
                     //     }
                 });
 
-                //var element = e.target;
-
-
-                // if(element.hasClass("timeglider-timeline-event") || element.hasClass("timeglider-event-spanning"))
-                //  aler("it has");
+                
             });
 
         </script>
@@ -185,6 +190,17 @@
         <asp:HiddenField ID="hiddenId" runat="server" />
 
 
+        <asp:ScriptManager ID="ScriptManagerMain"
+            runat="server"
+            EnablePageMethods="true" 
+            ScriptMode="Release" 
+            LoadScriptsBeforeUI="true">
+    </asp:ScriptManager>
+
+
+        <asp:HiddenField ID="hiddenFieldCriteria" runat="server" />
+
+
         <div id="individualInfo">
 
             <div id="divEssentialInfo" class="imageInline">
@@ -195,7 +211,12 @@
                 <asp:Label ID="labelDates" runat="server" Text="Dates" CssClass="essentialLabels" Width="300px"></asp:Label><br />
                 <asp:Label ID="labelProfession" runat="server" Text="Profession" CssClass="essentialLabels" Width="300px"></asp:Label><br />
                 <asp:Label ID="labelNationality" runat="server" Text="Nationality" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelReligion" runat="server" Text="Religion" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+                <asp:Label ID="labelReligion" runat="server" Text="Religion" CssClass="essentialLabels" Width="300px"></asp:Label>
+                <br />
+                <br />
+                <div id="divTags" runat="server" class="essentialLabels">
+
+                </div>
 
 
 
