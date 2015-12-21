@@ -103,15 +103,6 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inputImportance;
         
         /// <summary>
-        /// linkButtonAddTag control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton linkButtonAddTag;
-        
-        /// <summary>
         /// textBoxTagName control.
         /// </summary>
         /// <remarks>
@@ -479,6 +470,15 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox listBoxLinks;
+        
+        /// <summary>
+        /// hiddenFieldLinks control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hiddenFieldLinks;
         
         /// <summary>
         /// buttomSaveChanges control.

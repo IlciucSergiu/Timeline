@@ -23,7 +23,7 @@ namespace MyTimelineASPTry
                 dateDeath.Value = ViewState["dateDeath"].ToString();
             }
 
-
+            InitializeItem(userId, itemId);
 
 
 
@@ -63,7 +63,7 @@ namespace MyTimelineASPTry
                 itemId = ViewState["itemId"].ToString();
                 userId = Session["userId"].ToString();
 
-                InitializeItem(userId, itemId);
+                
             }
         }
 
@@ -186,7 +186,7 @@ namespace MyTimelineASPTry
 
                 Session["itemId"] = saveId;
                 Response.Redirect("AddData.aspx?itemId=" + saveId + "&scope=modify");
-                
+
 
             }
             else
@@ -287,21 +287,24 @@ namespace MyTimelineASPTry
             else
                 RadioButtonListGender.SelectedIndex = 1;
 
-            if(listBoxTags.Items.Count == 0)
-            if (documents.tags != null)
-                foreach (var tag in documents.tags)
-                {
-                    ListItem tagItem = new ListItem();
-                    tagItem.Text = tag[0].ToString() + " " + tag[1].ToString();
-                    tagItem.Value = tag[0].ToString() + "-" + tag[1].ToString();
-                    listBoxTags.Items.Add(tagItem);
-                }
+           // if (listBoxTags.Items.Count == 0)
+               listBoxTags.Items.Clear();
+                if (documents.tags != null)
+                    foreach (var tag in documents.tags)
+                    {
+                        ListItem tagItem = new ListItem();
+                        tagItem.Text = tag[0].ToString() + " " + tag[1].ToString();
+                        tagItem.Value = tag[0].ToString() + "-" + tag[1].ToString();
+                        listBoxTags.Items.Add(tagItem);
+                        hiddenFieldTags.Value += tagItem.Value.ToString() + ";";
+                    }
+                //Response.Write(hiddenFieldTags.Value);
 
         }
 
         protected async void buttonModify_Click(object sender, EventArgs e)
         {
-           // Response.Write(hiddenFieldTags.Value);
+            // Response.Write(hiddenFieldTags.Value);
             showEssential = false;
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
@@ -310,7 +313,7 @@ namespace MyTimelineASPTry
 
             if (RadioButtonListGender.SelectedIndex != -1)
             {
-                
+
                 if (RadioButtonListGender.SelectedValue == "Male")
                 { gender = "male"; }
                 else { gender = "female"; }
@@ -339,17 +342,18 @@ namespace MyTimelineASPTry
             {
 
 
-                if (tag.Length > 3) { 
-                separateTag = tag.Split('-');
+                if (tag.Length > 3)
+                {
+                    separateTag = tag.Split('-');
 
-                BsonDocument tagDocument = new BsonDocument {
+                    BsonDocument tagDocument = new BsonDocument {
 
                         { "tagName", separateTag[0] },
                         { "tagImportance", separateTag[1] }
                  };
 
 
-                tagsArray.Add(tagDocument);
+                    tagsArray.Add(tagDocument);
                 }
             }
 
@@ -403,19 +407,26 @@ namespace MyTimelineASPTry
                     var filter1 = Builders<IndividualData>.Filter.Eq("id", itemId);
                     var item = await collection1.Find(filter1).FirstAsync();
 
-
-
-
+                   
+                    listBoxLinks.Items.Clear();
+                    if (item.additionalLinks != null)
+                        foreach (var links in item.additionalLinks)
+                        {
+                            listBoxLinks.Items.Add(links.ToString());
+                           
+                        }
+                   
                     // listBoxLinks.Items.Clear();
                     if (!IsPostBack)
                     {
-
+                       
                         CKEditorInformation.Text = item.htmlInformation;
 
                         if (item.additionalLinks != null)
                             foreach (var links in item.additionalLinks)
                             {
-                                listBoxLinks.Items.Add(links.ToString());
+                                //listBoxLinks.Items.Add(links.ToString());
+                                hiddenFieldLinks.Value += links.ToString() + ";";
                             }
 
                         if (item.additionalBooks != null)
@@ -424,8 +435,9 @@ namespace MyTimelineASPTry
                                 listBoxBooks.Items.Add(book.ToString());
                             }
 
-                       
+
                     }
+                    
 
                 }
             }
@@ -433,43 +445,44 @@ namespace MyTimelineASPTry
 
         protected async void buttomSaveChanges_Click(object sender, EventArgs e)
         {
-            if (listBoxTags.Items.Count != 0)
-            {
-                MongoClient mclient = new MongoClient();
-                var db = mclient.GetDatabase("Timeline");
+            //if (listBoxTags.Items.Count != 0)
+            //{
+            //    MongoClient mclient = new MongoClient();
+            //    var db = mclient.GetDatabase("Timeline");
 
-                var collection = db.GetCollection<PersonInfo>("Person");
+            //    var collection = db.GetCollection<PersonInfo>("Person");
 
-                string[] separateTag;
-                BsonArray tagsArray = new BsonArray();
-                foreach (ListItem tag in listBoxTags.Items)
-                {
-
-
-
-                    separateTag = tag.Text.Split(' ');
-
-                    BsonDocument tagDocument = new BsonDocument {
-
-                        { "tagName", separateTag[0] },
-                        { "tagImportance", separateTag[1] }
-                    };
+            //    string[] separateTag;
+            //    BsonArray tagsArray = new BsonArray();
+            //    foreach (ListItem tag in listBoxTags.Items)
+            //    {
 
 
-                    tagsArray.Add(tagDocument);
 
-                    var filter = Builders<PersonInfo>.Filter.Eq("id", itemId);
-                    
-                    var update = Builders<PersonInfo>.Update
-                        .Set("tags", tagsArray);
+            //        separateTag = tag.Text.Split(' ');
 
-                   
-                    var result = await collection.UpdateOneAsync(filter, update);
-                }
+            //        BsonDocument tagDocument = new BsonDocument {
+
+            //            { "tagName", separateTag[0] },
+            //            { "tagImportance", separateTag[1] }
+            //        };
 
 
-            }
+            //        tagsArray.Add(tagDocument);
 
+            //        var filter = Builders<PersonInfo>.Filter.Eq("id", itemId);
+
+            //        var update = Builders<PersonInfo>.Update
+            //            .Set("tags", tagsArray);
+
+
+            //        var result = await collection.UpdateOneAsync(filter, update);
+            //    }
+
+
+            //}
+
+            //Response.Write(hiddenFieldLinks.Value);
 
             if (ItemExists(itemId))
             {
@@ -479,11 +492,21 @@ namespace MyTimelineASPTry
 
                 var collection = db.GetCollection<IndividualData>("IndividualData");
 
+                //BsonArray linksArray = new BsonArray();
+                //foreach (ListItem link in listBoxLinks.Items)
+                //{
+                //    linksArray.Add(link.Text);
+                //}
+
+                
                 BsonArray linksArray = new BsonArray();
-                foreach (ListItem link in listBoxLinks.Items)
+                foreach (string link in hiddenFieldLinks.Value.Split(';'))
                 {
-                    linksArray.Add(link.Text);
+                     if (link.Length > 2)
+                     linksArray.Add(link);
+                    
                 }
+                //hiddenFieldLinks.Value = null;
 
 
                 BsonArray booksArray = new BsonArray();
@@ -493,16 +516,16 @@ namespace MyTimelineASPTry
                     // booksArray.Add(new bso);
                 }
 
-                
+
 
                 var filter = Builders<IndividualData>.Filter.Eq("id", itemId);
-                
+
                 var update = Builders<IndividualData>.Update
                     .Set("htmlInformation", CKEditorInformation.Text)
                     .Set("additionalLinks", linksArray)
                     .Set("additionalBooks", booksArray);
 
-               
+
                 var result = await collection.UpdateOneAsync(filter, update);
             }
             else
@@ -512,10 +535,18 @@ namespace MyTimelineASPTry
                 var collection = db.GetCollection<BsonDocument>("IndividualData");
 
 
+                //BsonArray linksArray = new BsonArray();
+                //foreach (ListItem link in listBoxLinks.Items)
+                //{
+                //    linksArray.Add(link.Text);
+                //}
+
                 BsonArray linksArray = new BsonArray();
-                foreach (ListItem link in listBoxLinks.Items)
+                foreach (string link in hiddenFieldLinks.Value.Split(';'))
                 {
-                    linksArray.Add(link.Text);
+                    if (link.Length > 3)
+                        linksArray.Add(link);
+
                 }
 
                 BsonArray booksArray = new BsonArray();
@@ -525,7 +556,7 @@ namespace MyTimelineASPTry
                     // booksArray.Add(new bso);
                 }
 
-               
+
 
                 BsonDocument document = new BsonDocument
             {
@@ -542,6 +573,9 @@ namespace MyTimelineASPTry
                 await collection.InsertOneAsync(document);
             }
 
+            
+
+           InitializeItem(Session["userId"].ToString(),itemId);
         }
 
 
@@ -602,10 +636,8 @@ namespace MyTimelineASPTry
             listBoxTags.Items.Add(textBoxTagName.Text + " " + inputImportanceTag.Value);
         }
 
-        protected void buttonAddTag_Click1(object sender, EventArgs e)
-        {
 
-        }
+
 
 
 

@@ -94,4 +94,19 @@ namespace MyTimelineASPTry
         public string gender { get; set; }
         public string salt { get; set; }
     }
+
+    public class TagsCollection
+    {
+        [BsonId]
+        public ObjectId _id { get; set; }
+
+        public string name { get; set; }
+        public string parentName { get; set; }
+        public BsonArray childrenNames { get; set;}
+
+        public BsonArray documentsBelonging { get; set; }
+
+       
+    }
+
 }

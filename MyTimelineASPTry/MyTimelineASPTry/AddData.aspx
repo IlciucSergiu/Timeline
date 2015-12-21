@@ -45,26 +45,27 @@
                 <input type="text" class="datepicker" id="dateBirth" runat="server" placeholder="yyyy-mm-dd" />
                 </p>
                 &nbsp;&nbsp;&nbsp;
-         <p>
+         <p >
              Date of death
              <input type="text" class="datepicker" id="dateDeath" runat="server"  placeholder="yyyy-mm-dd"/>
          </p>
-                &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" OnCheckedChanged="checkBoxContemporary_CheckedChanged"  /><br />
+                &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" class="checkContemporary" /><br />
                 <br />
             </div>
             <asp:Label ID="labelImportance" runat="server" Text="Importance"></asp:Label>&nbsp;&nbsp;
         <input id="inputImportance" type="number" runat="server" max="100" min="0" style="width: 72px" /><br />
 
              <div id="addTags">
-                <asp:LinkButton ID="linkButtonAddTag" runat="server">Add tag</asp:LinkButton>
+
                 <br />
                <br />
                  <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" CssClass="textBoxAddTag"></asp:TextBox> 
                -
-                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick="return AddTagItem();" OnClick="buttonAddTag_Click1"  />
-                 <asp:HiddenField ID="hiddenFieldTags" runat="server" />
+                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick="return AddTagItem();"   />
+                
                   &nbsp;&nbsp;
                  <input id="buttonRemoveTags" type="button" value="Remove" /><br />
+                  <asp:HiddenField ID="hiddenFieldTags" runat="server" />
                  <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px" CssClass="listBoxTags"></asp:ListBox>
                 <br />
             </div>
@@ -142,11 +143,19 @@
 
                 });
                 //try {
-                function UpdHid(listString1) {
-                    alert(listString1);
-                         $('#'+'<%=hiddenFieldTags.ClientID %>').val(listString1);
+                function UpdHidTag(listString1) {
+                   
+                    $('#' + '<%=hiddenFieldTags.ClientID %>').val(listString1);
+                   
                          return false;
-                     }
+                }
+
+                function UpdHidLink(listString1) {
+                    //alert(listString1);
+                    $('#' + '<%=hiddenFieldLinks.ClientID %>').val(listString1);
+                  alert("In hidden: " + $('#' + '<%=hiddenFieldLinks.ClientID %>').val());
+                    return false;
+                }
                // }
                 //catch (err) {
                 //    alert(err.message);
@@ -205,7 +214,7 @@
             Title : 
             <asp:TextBox ID="textBoxAddBooks" runat="server" Width="147px"></asp:TextBox>
 
-               &nbsp; <asp:Button ID="buttonAddBook" runat="server" Text="Add book" OnClick="buttonAddBook_Click" />
+               &nbsp; <asp:Button ID="buttonAddBook" runat="server" Text="Add book" OnClick="buttonAddBook_Click"  />
 
             
         </p>
@@ -224,12 +233,13 @@
         
         </p>
             <div id="addLinks" >
-                <asp:TextBox ID="textBoxAddLink" runat="server" Width="256px"></asp:TextBox>
-                <asp:Button ID="buttonAddLink" runat="server" Text="Add" OnClick="buttonAddLink_Click" Width="74px"/>
-            </div>
+                <asp:TextBox ID="textBoxAddLink" runat="server" Width="256px" CssClass="textBoxAddLink"></asp:TextBox>
+                <asp:Button ID="buttonAddLink" runat="server" Text="Add" OnClick="buttonAddLink_Click" Width="74px" OnClientClick="AddLinkItem(); return false;"/>&nbsp;&nbsp;
+                <input id="buttonRemoveLinks" type="button" value="Remove" /></div>
             <p>
 
-            <asp:ListBox ID="listBoxLinks" runat="server" Height="53px" Width="300px"></asp:ListBox>
+            <asp:ListBox ID="listBoxLinks" runat="server" Height="53px" Width="300px" CssClass="listBoxLinks"></asp:ListBox>
+                <asp:HiddenField ID="hiddenFieldLinks" runat="server"  />
             </p>
             <asp:Button ID="buttomSaveChanges" runat="server" Text="Save" OnClick="buttomSaveChanges_Click" Width="83px" />
         </div>
@@ -245,7 +255,7 @@
         </script>
             
     </form>
-
+    <br />
 
 </body>
 </html>

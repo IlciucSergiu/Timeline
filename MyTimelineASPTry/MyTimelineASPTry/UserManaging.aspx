@@ -12,7 +12,7 @@
     <form id="form1" runat="server">
         <div id="header">
            
-        <asp:ImageButton ID="ImageButton1" runat="server" Height="68px" Width="216px" AlternateText="The name" OnClick="ImageButton1_Click"  CssClass="linkMain"/>
+        <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail" OnClick="ImageButton1_Click"  CssClass="linkMain"/>
         </div>
     <div>
     

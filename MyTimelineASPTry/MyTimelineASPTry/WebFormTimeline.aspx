@@ -27,14 +27,14 @@
         <div id="header">
            <!-- <h1 class="inHeader" id="bigTitle" >MyTry</h1> -->
                        
-        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="The name"  CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail"  CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
            
         
             <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader" Width="233px" Height="22px" BorderStyle="None" placeholder="search for specific categories"></asp:TextBox>
             <asp:Button ID="buttonSearchQuery" runat="server" Text="Search" CssClass="inHeader searchButton" OnClick="buttonSearchQuery_Click"/>
-            <asp:Button ID="buttonLogin" runat="server" Text="Login" OnClick="buttonLogin_Click" Width="88px" CssClass="inHeader" />
-            <asp:Button ID="buttonWorkspace" runat="server" Text="Workspace" CssClass="inHeader" PostBackUrl="~/UserManaging.aspx" Visible="False" />
-            <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" CssClass="inHeader" />
+            <asp:Button ID="buttonLogin" runat="server" Text="Login" OnClick="buttonLogin_Click" Width="88px" CssClass="inHeader" UseSubmitBehavior="False" />
+            <asp:Button ID="buttonWorkspace" runat="server" Text="Workspace" CssClass="inHeader" PostBackUrl="~/UserManaging.aspx" Visible="False" UseSubmitBehavior="False" />
+            <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" CssClass="inHeader hideButton" />
              <asp:LinkButton ID="linkButtonLogout" runat="server" CssClass="linkLogout" OnClick="linkButtonLogout_Click" Visible="False">Logout</asp:LinkButton >
             
             
@@ -58,7 +58,7 @@
         <script>
 
             function UpdHidCriteria(criteria) {
-                alert(criteria);
+               // alert(criteria);
                 $('#' + '<%=hiddenFieldCriteria.ClientID %>').val(criteria);
                 document.getElementById('<%=buttonSearchQuery.ClientID %>').click();
                 return false;
@@ -109,10 +109,7 @@
                         e.stopPropagation();
                         $("div").css("pointer-events", "none");
                         secondClick = false;
-                        //  $(e.target).mousemove(function (e) {
-                        //      if(firstClick)
-                        //     firstClick = false;
-                        //  });
+                        
                         setTimeout(function () {
 
                             $("div").css("pointer-events", "auto");
@@ -129,9 +126,11 @@
                     if (firstClick) {
                         secondClick = true;
                         document.getElementById('hiddenId').value = theId;
+                       // SearchPersonalInfo(theId);
+
                         // alert(divId);
                         
-                        document.getElementById("buttonSearchId").click();
+                       document.getElementById("buttonSearchId").click();
                         $("#individualInfo").css("display", "block");
                         // alert(theId);
 
@@ -181,7 +180,7 @@
         <script src="MySecondTry1/timeglider/timeglider.timeline.widget.js" type="text/javascript" charset="utf-8"></script>
         <script src="MySecondTry1/timeglider/timeglider.datepicker.js" type="text/javascript" charset="utf-8"></script>
 
-        <asp:Label ID="labelTime" runat="server" Text="Time"></asp:Label>
+        <asp:Label ID="labelTime" runat="server" Text="Time" Visible="False"></asp:Label>
 
         <br />
         <asp:Button ID="buttonCreate" runat="server" OnClick="buttonCreate_Click" Text="Creaza JSON" Visible="False" CssClass="hideButton" />
@@ -207,11 +206,11 @@
                 <asp:Image ID="imageProfile" runat="server" Height="209px" Width="183px" />
             </div>
             <div class="imageInline" id="labelsInfo">
-                <asp:Label ID="labelName" runat="server" Text="Name" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelDates" runat="server" Text="Dates" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelProfession" runat="server" Text="Profession" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelNationality" runat="server" Text="Nationality" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelReligion" runat="server" Text="Religion" CssClass="essentialLabels" Width="300px"></asp:Label>
+                <asp:Label ID="labelName" runat="server" CssClass="essentialLabels" Width="300px" Font-Size="X-Large"></asp:Label><br />
+                <asp:Label ID="labelDates" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+                <asp:Label ID="labelProfession" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+                <asp:Label ID="labelNationality" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+                <asp:Label ID="labelReligion" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label>
                 <br />
                 <br />
                 <div id="divTags" runat="server" class="essentialLabels">
@@ -223,19 +222,30 @@
             </div>
             <br />
             <div id="afterImage">
-                <div id="htmlInfo" runat="server">
+                <div id="htmlInfo" runat="server" >
                 </div>
 
+                <h3>Additional resources</h3>
+                <hr />
                 <div id="additionalResources" runat="server">
+                    
                 </div>
 
+                <h3>Related pages</h3>
+                <hr />
                 <div id="additionalLinks" runat="server">
+                    
                 </div>
             </div>
 
         </div>
 
-
+        <div id="footer">
+            <br />
+            <asp:LinkButton ID="linkButtonContact" runat="server" CssClass="inFooter linkContact" OnClientClick="return false;">Contact</asp:LinkButton>
+            <asp:LinkButton ID="linkButtonCopyright" runat="server" CssClass="inFooter">Copyright</asp:LinkButton>
+            <asp:LinkButton ID="linkButtonTermsAndConditions" runat="server" CssClass="inFooter">Terms and conditions</asp:LinkButton>
+        </div>
     </form>
 
 
