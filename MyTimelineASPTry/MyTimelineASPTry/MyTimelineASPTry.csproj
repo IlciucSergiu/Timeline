@@ -161,6 +161,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AddNewTag.aspx" />
+    <Content Include="EditTag.aspx" />
+    <Content Include="Error.aspx" />
     <Content Include="MySecondTry1\timeglider\img\11.jpg" />
     <Content Include="Account\AddPhoneNumber.aspx" />
     <Content Include="Account\Confirm.aspx" />
@@ -922,10 +925,31 @@
     <Compile Include="AddData.aspx.designer.cs">
       <DependentUpon>AddData.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AddNewTag.aspx.cs">
+      <DependentUpon>AddNewTag.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddNewTag.aspx.designer.cs">
+      <DependentUpon>AddNewTag.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="EditTag.aspx.cs">
+      <DependentUpon>EditTag.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditTag.aspx.designer.cs">
+      <DependentUpon>EditTag.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

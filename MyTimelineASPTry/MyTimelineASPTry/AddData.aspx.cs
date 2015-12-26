@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Web.Services;
 
 
 namespace MyTimelineASPTry
@@ -23,8 +24,9 @@ namespace MyTimelineASPTry
                 dateDeath.Value = ViewState["dateDeath"].ToString();
             }
 
+            if (scope == "modify") { 
             InitializeItem(userId, itemId);
-
+            }
 
 
         }
@@ -389,6 +391,7 @@ namespace MyTimelineASPTry
 
                 var filter = Builders<PersonInfo>.Filter.Eq("id", initItemId);
                 var documents = await collection.Find(filter).FirstAsync();
+                if (documents.owner == initUserId) { 
                 labelName.Text = documents.name.ToString();
                 labelDates.Text = documents.startdate + " - " + documents.enddate;
                 labelProfession.Text = documents.profession;
@@ -437,8 +440,13 @@ namespace MyTimelineASPTry
 
 
                     }
-                    
 
+
+                }
+                else
+                {
+                    Response.Redirect("Error.aspx",false);
+                }
                 }
             }
         }
@@ -566,7 +574,7 @@ namespace MyTimelineASPTry
                 { "owner", userId },
                 { "htmlInformation", CKEditorInformation.Text },
                 { "additionalLinks", linksArray },
-                { "additionalBooks", booksArray},
+                { "additionalBooks", booksArray}
                
 
             };
@@ -636,7 +644,42 @@ namespace MyTimelineASPTry
             listBoxTags.Items.Add(textBoxTagName.Text + " " + inputImportanceTag.Value);
         }
 
+        protected void buttonSearchTag_Click(object sender, EventArgs e)
+        {
 
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+            var collection = db.GetCollection<TagsCollection>("Tags");
+
+
+
+
+            var filter = Builders<TagsCollection>.Filter.Regex("tagName", new BsonRegularExpression(/*"^"+*/textBoxTagName.Text));
+
+
+            collection.Find(filter).ForEachAsync(d => Response.Write(d.tagName.ToString()));
+        }
+
+        [WebMethod]
+       public static string  FindTagOptions(string inputValue)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+            var collection = db.GetCollection<TagsCollection>("Tags");
+
+
+
+
+            var filter = Builders<TagsCollection>.Filter.Regex("tagName", new BsonRegularExpression(/*"^"+*/inputValue));
+
+            string tagOptions="";
+            collection.Find(filter).ForEachAsync(d => tagOptions += d.tagName.ToString() + "{;}").Wait();
+
+            return tagOptions;
+
+        }
 
 
 

@@ -289,3 +289,34 @@ h3 {
 .linkContact {
  padding-left: 34%;
 }
+
+#documentsManaging {
+    width:30%;
+
+}
+
+#tagsManaging {
+    margin-top:20px;
+    /*float:right;*/
+}
+#tagsManagingButton .tagButton{
+    margin-left:20px;
+}
+
+.infoLabel {
+    /*float:right;*/
+    color:red;
+    
+}
+
+#divAddEssentials{
+margin-left:2%;
+}
+
+#divMainInfo{
+margin-left:2%;
+}
+
+#verifyTag {
+    color:red;
+}

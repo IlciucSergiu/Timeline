@@ -20,6 +20,13 @@
 <body>
     <form runat="server" id="formMainForm">
         
+         <asp:ScriptManager ID="ScriptManagerMain"
+            runat="server"
+            EnablePageMethods="true" 
+            ScriptMode="Release" 
+            LoadScriptsBeforeUI="true">
+    </asp:ScriptManager>
+
     <div id="header">
            
         <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="The name" CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
@@ -53,7 +60,9 @@
                 <br />
             </div>
             <asp:Label ID="labelImportance" runat="server" Text="Importance"></asp:Label>&nbsp;&nbsp;
-        <input id="inputImportance" type="number" runat="server" max="100" min="0" style="width: 72px" /><br />
+        <input id="inputImportance" type="number" runat="server" max="100" min="0" style="width: 72px" />
+            
+            <br />
 
              <div id="addTags">
 
@@ -61,10 +70,11 @@
                <br />
                  <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" CssClass="textBoxAddTag"></asp:TextBox> 
                -
-                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick="return AddTagItem();"   />
+                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick=" AddTagItem(); return false;"   />
                 
                   &nbsp;&nbsp;
-                 <input id="buttonRemoveTags" type="button" value="Remove" /><br />
+                 <input id="buttonRemoveTags" type="button" value="Remove" /> <asp:Label ID="labelInfo" runat="server" Text="" CssClass="verifyTag" ForeColor="Red"></asp:Label> <!-- <p id="verifyTag" ></p> -->
+                 <br /> 
                   <asp:HiddenField ID="hiddenFieldTags" runat="server" />
                  <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px" CssClass="listBoxTags"></asp:ListBox>
                 <br />

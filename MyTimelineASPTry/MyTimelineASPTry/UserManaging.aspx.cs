@@ -14,11 +14,13 @@ namespace MyTimelineASPTry
         protected async void Page_Load(object sender, EventArgs e)
         {
            // Response.Write(listBoxOwns.Items.Count);
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
             if (listBoxOwns.Items.Count == 0)
             {
                 listBoxOwns.Items.Clear();
-                MongoClient mclient = new MongoClient();
-                var db = mclient.GetDatabase("Timeline");
+               
 
                 var collection = db.GetCollection<PersonInfo>("Persons");
 
@@ -28,6 +30,24 @@ namespace MyTimelineASPTry
 
 
             }
+
+            
+                
+               
+
+                var collectionTags = db.GetCollection<TagsCollection>("Tags");
+
+
+                var filterTags = Builders<TagsCollection>.Filter.Eq("owner", Session["userId"].ToString());
+                await collectionTags.Find(filterTags).ForEachAsync(d =>
+                {
+                    
+                    listBoxTags.Items.Add(d.id.ToString());
+                }
+                    );
+
+
+            
             
 
             
@@ -87,10 +107,13 @@ namespace MyTimelineASPTry
 
         protected void buttonEdit_Click(object sender, EventArgs e)
         {
-            //Response.Write("ai selectat :" + listBoxOwns.SelectedIndex.ToString());
+            Response.Write("ai selectat :" + listBoxOwns.SelectedIndex.ToString());
            // Session["userId"] = textBoxSearchId.Text;
+
+            if (listBoxOwns.SelectedIndex >= 0) { 
            Session["itemId"] = listBoxOwns.SelectedValue;
             Response.Redirect("AddData.aspx?itemId=" + listBoxOwns.SelectedValue + "&scope=modify",false);
+            }
         }
 
         protected void buttonCreate_Click(object sender, EventArgs e)
@@ -101,6 +124,22 @@ namespace MyTimelineASPTry
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
         {
             Response.Redirect("WebFormTimeline.aspx", false);
+        }
+
+        protected void buttonEditTag_Click(object sender, EventArgs e)
+        {
+
+            if (listBoxTags.SelectedIndex >= 0)
+            {
+                Session["tagId"] = listBoxTags.SelectedValue;
+
+                Response.Redirect("EditTag.aspx", false);
+            }
+        }
+
+        protected void buttonCreateTag_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AddNewTag.aspx", false);
         }
 
        

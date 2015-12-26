@@ -30,7 +30,7 @@
         <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail"  CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
            
         
-            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader" Width="233px" Height="22px" BorderStyle="None" placeholder="search for specific categories"></asp:TextBox>
+            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader" Width="233px" Height="22px" BorderStyle="None" placeholder="search for events, persons or categories"></asp:TextBox>
             <asp:Button ID="buttonSearchQuery" runat="server" Text="Search" CssClass="inHeader searchButton" OnClick="buttonSearchQuery_Click"/>
             <asp:Button ID="buttonLogin" runat="server" Text="Login" OnClick="buttonLogin_Click" Width="88px" CssClass="inHeader" UseSubmitBehavior="False" />
             <asp:Button ID="buttonWorkspace" runat="server" Text="Workspace" CssClass="inHeader" PostBackUrl="~/UserManaging.aspx" Visible="False" UseSubmitBehavior="False" />
