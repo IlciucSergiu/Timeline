@@ -29,7 +29,7 @@
 
     <div id="header">
            
-        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="The name" CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail" CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
            
         </div>
         
@@ -59,8 +59,7 @@
                 &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" class="checkContemporary" /><br />
                 <br />
             </div>
-            <asp:Label ID="labelImportance" runat="server" Text="Importance"></asp:Label>&nbsp;&nbsp;
-        <input id="inputImportance" type="number" runat="server" max="100" min="0" style="width: 72px" />
+          
             
             <br />
 
@@ -82,26 +81,7 @@
             <br />
 
 
-            <div id="notEssential">
-                <div id="gender">
-                    <p>
-                        *Gender:&nbsp;&nbsp;<asp:RadioButtonList ID="RadioButtonListGender" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
-                            <asp:ListItem>Male</asp:ListItem>
-                            <asp:ListItem>Female</asp:ListItem>
-                        </asp:RadioButtonList>
-                    </p>
-                </div>
-                <p>
-                    &nbsp;*Profession :
-                <asp:TextBox ID="textBoxProfession" runat="server"></asp:TextBox>
-                    <p>
-                        &nbsp;*Nationality :
-                    <asp:TextBox ID="textBoxNationality" runat="server"></asp:TextBox>
-                        <p>
-                            &nbsp;*Religion :
-                        <asp:TextBox ID="textBoxReligion" runat="server"></asp:TextBox>
-                        </p>
-            </div>
+            
 
 
             <asp:Label ID="labelDescription" runat="server" Text="Description"></asp:Label><br />
@@ -194,9 +174,7 @@
             <div class="imageInline" id="labelsInfo">
                 <asp:Label ID="labelName" runat="server" Text="Name" CssClass="essentialLabels" Width="300px"></asp:Label><br />
                 <asp:Label ID="labelDates" runat="server" Text="Dates" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelProfession" runat="server" Text="Profession" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelNationality" runat="server" Text="Nationality" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelReligion" runat="server" Text="Religion" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+               
 
                 <asp:LinkButton ID="linkButtonEdit" runat="server" CssClass="linkLabel" OnClick="linkButtonEdit_Click"  OnClientClick="setDate()">edit</asp:LinkButton>
 
@@ -205,11 +183,11 @@
 
         
         <div id="ckEditor">
-            <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000" placeholder="Importance"></CKEditor:CKEditorControl>
+            <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000" ></CKEditor:CKEditorControl>
         </div>
 
             <asp:HiddenField ID="hiddenFieldCk" runat="server" />
-            &nbsp;</p>
+            &nbsp;
            
         <p>
            <!-- <asp:LinkButton ID="LinkButton2" runat="server">Add additional resources</asp:LinkButton> -->

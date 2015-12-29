@@ -31,15 +31,6 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
         
         /// <summary>
-        /// textBoxSearchId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textBoxSearchId;
-        
-        /// <summary>
         /// buttonSearchId control.
         /// </summary>
         /// <remarks>
@@ -49,40 +40,40 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Button buttonSearchId;
         
         /// <summary>
-        /// Label1 control.
+        /// LabelUsername control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.Label LabelUsername;
         
         /// <summary>
-        /// Label2 control.
+        /// imageProfile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
+        protected global::System.Web.UI.WebControls.Image imageProfile;
         
         /// <summary>
-        /// listBoxOwns control.
+        /// labelReputation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox listBoxOwns;
+        protected global::System.Web.UI.WebControls.Label labelReputation;
         
         /// <summary>
-        /// buttonEdit control.
+        /// labelNumeberOfDocuments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonEdit;
+        protected global::System.Web.UI.WebControls.Label labelNumeberOfDocuments;
         
         /// <summary>
         /// buttonCreate control.
@@ -94,31 +85,22 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Button buttonCreate;
         
         /// <summary>
-        /// listBoxTags control.
+        /// documentsContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox listBoxTags;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentsContainer;
         
         /// <summary>
-        /// LinkButton1 control.
+        /// labelNumberOfTags control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
-        
-        /// <summary>
-        /// buttonEditTag control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonEditTag;
+        protected global::System.Web.UI.WebControls.Label labelNumberOfTags;
         
         /// <summary>
         /// buttonCreateTag control.
@@ -128,5 +110,14 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button buttonCreateTag;
+        
+        /// <summary>
+        /// tagsContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tagsContainer;
     }
 }

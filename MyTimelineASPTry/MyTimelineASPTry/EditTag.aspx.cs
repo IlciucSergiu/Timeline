@@ -11,12 +11,16 @@ namespace MyTimelineASPTry
 {
     public partial class EditTag : System.Web.UI.Page
     {
-        protected async void Page_Load(object sender, EventArgs e)
+        protected  void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack)
-            InitializaTagData(Session["tagId"].ToString(), Session["userId"].ToString());
+            
+                //ViewState["itemId"] = Request.QueryString["itemId"];
+                tagId = Request.QueryString["itemId"];
+                InitializeTagData(tagId, Session["userId"].ToString());
+            
         }
 
+        public static string tagId;
         protected async void buttonSaveTagChanges_Click(object sender, EventArgs e)
         {
 
@@ -26,7 +30,9 @@ namespace MyTimelineASPTry
             var db = mclient.GetDatabase("Timeline");
 
             var collection = db.GetCollection<TagsCollection>("Tags");
-           string  tagId = Session["tagId"].ToString();
+
+            //string tagId = Request.QueryString["itemId"];
+           //string  tagId = Session["tagId"].ToString();
              var filter = Builders<TagsCollection>.Filter.Eq("id",tagId);
 
              try {
@@ -39,6 +45,7 @@ namespace MyTimelineASPTry
 
 
             await collection.UpdateOneAsync(filter, update);
+            Response.Redirect("UserManaging.aspx?tab=tags", false);
            
                  }
             catch(Exception ex)
@@ -48,7 +55,7 @@ namespace MyTimelineASPTry
 
         }
 
-        async void InitializaTagData(string tagId, string userId)
+        async void InitializeTagData(string initTagId, string userId)
         {
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
@@ -56,7 +63,7 @@ namespace MyTimelineASPTry
             var collection = db.GetCollection<TagsCollection>("Tags");
             //var documents = await collection.Find(new BsonDocument()).FirstAsync();
 
-            var filter = Builders<TagsCollection>.Filter.Eq("id", tagId);
+            var filter = Builders<TagsCollection>.Filter.Eq("id", initTagId);
             var documents = await collection.Find(filter).FirstAsync();
             if (documents.owner == userId)
             {
@@ -74,5 +81,18 @@ namespace MyTimelineASPTry
 
         }
 
+        protected async void buttonDeleteTag_Click(object sender, EventArgs e)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+            var collection = db.GetCollection<TagsCollection>("Tags");
+            var filter = Builders<TagsCollection>.Filter.Eq("id", tagId);
+
+           var result= await collection.DeleteOneAsync(filter);
+            Response.Redirect("UserManaging.aspx?tab=tags", false);
+        }
+
+        
     }
 }

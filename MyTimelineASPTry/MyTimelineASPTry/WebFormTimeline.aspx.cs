@@ -58,32 +58,7 @@ namespace MyTimelineASPTry
 
         }
 
-        protected async void LoadTimeline()
-        {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
 
-            var collection = db.GetCollection<BsonDocument>("Personalities");
-
-
-
-            var filter = Builders<BsonDocument>.Filter.Eq("name", "gigel");
-
-
-            jsString = "";
-            await collection.Find(_ => true).ForEachAsync(d => jsString += d + ",");
-            // await collection.Find(filter).ForEachAsync(d => jsString += d+",");
-
-            jsonData = "[{" +
-         "\"id\": \"important_personalities\"," +
-         "\"title\": \"Important Personalities\"," +
-         "\"initial_zoom\": \"40\"," +
-                //"\"focus_date\": \"1998-03-11 12:00:00\","+
-         "\"image_lane_height\": 50," +
-         "\"events\":[" + jsString.TrimEnd(',') + "]" +
-     "}]";
-
-        }
 
 
 
@@ -92,7 +67,7 @@ namespace MyTimelineASPTry
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
 
-            var collection = db.GetCollection<PersonInfo>("Persons");
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
 
 
@@ -101,14 +76,14 @@ namespace MyTimelineASPTry
 
             //var documents = await collection.Find(new BsonDocument()).FirstAsync();
 
-            var filter = Builders<PersonInfo>.Filter.Eq("name", "Ilciuc"); ;
+            var filter = Builders<DocumentInfo>.Filter.Eq("name", "Ilciuc"); ;
 
             //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
             jsString = "";
             await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\""
                 + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
                 + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+                + 50 + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
                 + d.link + "\",\"image\" : \"" + d.image + "\"},");
             //await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
@@ -196,16 +171,16 @@ namespace MyTimelineASPTry
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
 
-            var collection = db.GetCollection<PersonInfo>("Persons");
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
             //var documents = await collection.Find(new BsonDocument()).FirstAsync();
 
-            var filter = Builders<PersonInfo>.Filter.Eq("id", itemId); ;
+            var filter = Builders<DocumentInfo>.Filter.Eq("id", itemId); ;
             var documents = await collection.Find(filter).FirstAsync();
             labelName.Text = documents.name.ToString().Replace(',', ' ').Replace('[', ' ').Replace(']', ' '); ;
             labelDates.Text = documents.startdate + " - " + documents.enddate;
-            labelProfession.Text = documents.profession;
-            labelNationality.Text = documents.nationality;
-            labelReligion.Text = documents.religion;
+            // labelProfession.Text = documents.profession;
+            // labelNationality.Text = documents.nationality;
+            // labelReligion.Text = documents.religion;
             imageProfile.ImageUrl = documents.image;
 
             divTags.InnerHtml = "";
@@ -226,10 +201,18 @@ namespace MyTimelineASPTry
                 var filter1 = Builders<IndividualData>.Filter.Eq("id", itemId);
                 var item = await collection1.Find(filter1).FirstAsync();
 
+                // Aici incrementez numarul vizualizarilor
+                var update = Builders<IndividualData>.Update
+                   .Inc("timesViewed", 1);
+                var result = await collection1.UpdateOneAsync(filter1, update);
+
+
                 htmlInfo.InnerHtml = item.htmlInformation;
+
+                labelNumberOfViews.Text = "viewed " + (item.timesViewed + 1).ToString() + " times";
                 // listBoxLinks.Items.Clear();
 
-               // additionalResources.InnerHtml = "Additional resources";
+                // additionalResources.InnerHtml = "Additional resources";
                 if (item.additionalBooks != null)
                     foreach (var book in item.additionalBooks)
                     {
@@ -237,7 +220,7 @@ namespace MyTimelineASPTry
                     }
                 additionalResources.InnerHtml += "<br /><br />";
 
-               // additionalLinks.InnerHtml = "Additional links";
+                // additionalLinks.InnerHtml = "Additional links";
                 if (item.additionalLinks != null)
                     foreach (var links in item.additionalLinks)
                     {
@@ -309,14 +292,14 @@ namespace MyTimelineASPTry
             {
                 MongoClient mclient = new MongoClient();
                 var db = mclient.GetDatabase("Timeline");
-                var collection = db.GetCollection<PersonInfo>("Persons");
-                var filter = Builders<PersonInfo>.Filter.Eq("name", "Mozart");
+                var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+                var filter = Builders<DocumentInfo>.Filter.Eq("name", "Mozart");
 
 
 
 
                 string[] category = searchQuery.Split(':');
-                filter = Builders<PersonInfo>.Filter.Eq(category[0], category[1]);
+                filter = Builders<DocumentInfo>.Filter.Eq(category[0], category[1]);
 
 
                 jsString = "";
@@ -345,11 +328,11 @@ namespace MyTimelineASPTry
 
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
-            var collection = db.GetCollection<PersonInfo>("Persons");
-            var filter = Builders<PersonInfo>.Filter.Eq("name", "Mozart");
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+            var filter = Builders<DocumentInfo>.Filter.Eq("name", "Mozart");
 
 
-            filter = Builders<PersonInfo>.Filter.Eq("tags.tagName", searchQuery);
+            filter = Builders<DocumentInfo>.Filter.Eq("tags.tagName", searchQuery);
 
 
 
@@ -381,7 +364,7 @@ namespace MyTimelineASPTry
 
         }
 
-       static string GetImportance(BsonArray tags, string searchQuery)
+        static string GetImportance(BsonArray tags, string searchQuery)
         {
             string theReturn = "";
             foreach (BsonDocument tagDocument in tags)
@@ -411,7 +394,7 @@ namespace MyTimelineASPTry
         //    var collection = db.GetCollection<PersonInfo>("Persons");
         //    var filter = Builders<PersonInfo>.Filter.Eq("name", "Mozart");
 
-            
+
 
         //    string jsString = "";
         //    try
@@ -423,17 +406,17 @@ namespace MyTimelineASPTry
         //            + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
 
-                
+
         //        //var result =  collection.Find(filter);
 
         //    //    BsonDocument document = new BsonDocument
         //    //{
-                
+
         //    //     //{ "owner", ViewState["userId"].ToString() },
         //    //    { "id", "Fanica" },
         //    //    { "owner", "Geo" }
-              
-               
+
+
 
         //    //};
         //    //   // await collection.InsertOneAsync(document);
@@ -468,30 +451,30 @@ namespace MyTimelineASPTry
 
 
         [WebMethod]
-       
-        public static  string SearchByCriteria(string criteria)
+
+        public static string SearchByCriteria(string criteria)
         {
 
             string searchQuery = criteria;
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-           MongoClient mclient = new MongoClient();
+            MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
-            var collection = db.GetCollection<PersonInfo>("Persons");
-            var filter = Builders<PersonInfo>.Filter.Eq("name", "Mozart");
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+            var filter = Builders<DocumentInfo>.Filter.Eq("name", "Mozart");
 
 
-            filter = Builders<PersonInfo>.Filter.Eq("tags.tagName", searchQuery);
+            filter = Builders<DocumentInfo>.Filter.Eq("tags.tagName", searchQuery);
 
 
 
             string jsString = "";
-             collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
-                + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
-                + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                + GetImportance(d.tags, searchQuery) + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
-                + d.link + "\",\"image\" : \"" + d.image + "\"},").Wait();
+            collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
+               + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+               + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
+               + GetImportance(d.tags, searchQuery) + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+               + d.link + "\",\"image\" : \"" + d.image + "\"},").Wait();
 
 
 
@@ -512,10 +495,6 @@ namespace MyTimelineASPTry
 
 
 
-       
-
-
-
 
         [WebMethod]
         public static string SearchPersonalInfo(string personId)
@@ -525,14 +504,14 @@ namespace MyTimelineASPTry
 
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
-            var collection = db.GetCollection<PersonInfo>("Persons");
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
 
             // var filter = Builders<PersonInfo>.Filter.Eq("name", "Mozart");
 
-            var filter = Builders<PersonInfo>.Filter.Eq("id", personId);
+            var filter = Builders<DocumentInfo>.Filter.Eq("id", personId);
 
-            PersonInfo personData = new PersonInfo();
+            DocumentInfo personData = new DocumentInfo();
             string jsString = "";
             try
             {
@@ -550,7 +529,7 @@ namespace MyTimelineASPTry
                 //    personData.image = d.image;
                 //}).Wait();
 
-               
+
 
 
                 //return jsString;
@@ -560,7 +539,7 @@ namespace MyTimelineASPTry
                 return e.ToString();
             }
 
-          
+
 
 
             //sw.Stop();
@@ -590,7 +569,42 @@ namespace MyTimelineASPTry
         }
 
 
+        [WebMethod]
 
+        public static string UpVoteDocument(string documentId, string userId)
+        {
+
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+            var collection = db.GetCollection<IndividualData>("IndividualData");
+            var filter = Builders<IndividualData>.Filter.Eq("id", documentId);
+
+            bool notYet = true;
+            int pos;
+            collection.Find(filter).ForEachAsync(d => {
+                if (d.alreadyVoted != null) { 
+                 pos = Array.IndexOf(d.alreadyVoted.ToArray(), userId);
+                
+                if (pos != -1)
+                    notYet = false;
+                }
+             }).Wait();
+
+           
+            if (notYet){ 
+            var update = Builders<IndividualData>.Update
+                .Inc("votes", 1)
+                .Push(p => p.alreadyVoted, userId);
+
+            collection.UpdateOneAsync(filter, update).Wait();
+            return "worked";
+            }
+            else
+            {
+                return "already";
+            }
+            
+        }
 
     }
 }

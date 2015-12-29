@@ -6,11 +6,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-    
+        <div id="header">
+
+            <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail"  CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+        </div>
+    <div id="pageBody">
+      <br />
         <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" Height="24px" Width="178px"></asp:TextBox>
          <br />
         <br />

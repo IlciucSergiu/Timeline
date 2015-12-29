@@ -5,12 +5,17 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
     <title></title>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-    
+        <div id="header">
+
+            <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail" CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+        </div>
+    <div id="pageBody">
+    <br /><br />
         <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" Height="24px" Width="178px"></asp:TextBox>
          <br />
         <br />
@@ -39,6 +44,9 @@
         <br />
         <br />
         <asp:Button ID="buttonSaveTagChanges" runat="server" Text="Save changes" OnClick="buttonSaveTagChanges_Click" />
+       
+    
+        &nbsp; &nbsp;<asp:Button ID="buttonDeleteTag" runat="server" Text="Delete" OnClick="buttonDeleteTag_Click" />
        
     
     </div>

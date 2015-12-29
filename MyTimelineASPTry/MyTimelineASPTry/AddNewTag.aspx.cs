@@ -29,10 +29,10 @@ namespace MyTimelineASPTry
             {
                 //{ "_id", firstName.Text.ToLower() +"_"+lastName.Text.ToLower() },
                  
-                { "tagName",textBoxTagName.Text},
+                { "tagName",textBoxTagName.Text.ToLower()},
                 { "id", textBoxTagName.Text+"_"+Session["userId"].ToString().Substring(0,5) },
                 { "owner", Session["userId"].ToString() },
-                { "parentName", textBoxParentName.Text },
+                { "parentName", textBoxParentName.Text.ToLower() },
                 { "relativeImportance", textBoxRelativeImportance.Value},
                 { "description", textBoxTagShortDescription.Text },
                 { "tagInfo", CKEditorInformation.Text },
@@ -40,7 +40,7 @@ namespace MyTimelineASPTry
                 
             };
                 collection.InsertOneAsync(document);
-                Response.Redirect("UserManaging.aspx",false);
+                Response.Redirect("UserManaging.aspx?tab=tags", false);
             }
         }
 

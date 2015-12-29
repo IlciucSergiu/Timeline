@@ -35,8 +35,8 @@
             <br />
             <br />
             <asp:TextBox ID="textBoxEmail" runat="server" Height="23px" Width="258px" placeholder="Email"></asp:TextBox>
-            &nbsp;<asp:Label ID="labelEmailValidation" runat="server" ForeColor="Red" Text="Email" Visible="False"></asp:Label>
-            <br /> 
+            &nbsp;<br /> 
+            <asp:Label ID="labelEmailValidation" runat="server" ForeColor="Red" Text="Email" Visible="False"></asp:Label>
             <br />
             <asp:RadioButtonList ID="radioButtonListGender" runat="server" RepeatDirection="Horizontal">
                 <asp:ListItem>Male</asp:ListItem>

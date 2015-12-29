@@ -100,6 +100,12 @@ namespace MyTimelineASPTry
                 labelPasswordValidation.Visible = true;
                 labelPasswordValidation.Text = "The passwords do not match.";
             }
+            else if (textBoxPassword.Text.Length < 7)
+            {
+                valid = false;
+                labelPasswordValidation.Visible = true;
+                labelPasswordValidation.Text = "The password is to short.";
+            }
 
             if (textBoxEmail.Text == "" )
             {
@@ -109,8 +115,8 @@ namespace MyTimelineASPTry
             else if(!textBoxEmail.Text.Contains('@'))
             {
                 valid = false;
-                textBoxEmail.Visible = true;
-                textBoxEmail.Text = "Email must contain at least a \"@\" character";
+                labelEmailValidation.Visible = true;
+                labelEmailValidation.Text = "Email must contain at least a \"@\" character";
             }
 
             if (radioButtonListGender.SelectedIndex == -1)

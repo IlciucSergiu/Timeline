@@ -143,7 +143,19 @@ function AddLinkItem() {
     return false;
 }
 
+
 $(function () {
+    
+
+    $(".textBoxSearchQuery").keydown(function (event) {
+        if (e.keyCode == 13) {
+            alert(e.keyCode);
+            $(".searchButton").click();
+
+        }
+        
+    });
+
 
     $(".checkContemporary").click(function () {
         // alert(document.getElementByClass('checkBoxContemporary').checked).toString();
@@ -223,55 +235,91 @@ $(function () {
     });
 
 
+    $(".textBoxSearchQuery").on('keydown keypress focus', function () {
+        try {
+            var dataValue = { inputValue: $(".textBoxSearchQuery").val() };
 
-});
-$(function () {
+            $.ajax({
+                type: "POST",
+                url: "AddData.aspx/FindTagOptions",
+                data: JSON.stringify(dataValue),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
 
-    $(".tagLinks").click(function (e) {
-        // alert("bun");
-        UpdHidCriteria(this.innerHTML);
+                error: function (err) {
 
-        //try {
-        //            var dataValue = { criteria : this.innerHTML};
-        //            // alert("got here");
-        //            $.ajax({
-        //                type: "POST",
-        //                url: "WebFormTimeline.aspx/SearchByCriteria",
-        //                data: JSON.stringify(dataValue),
-        //                contentType: 'application/json; charset=utf-8',
-        //                dataType: 'json',
+                    alert("Errort: " + err.responseText);
+                },
+                success: function (result) {
 
-        //                error: function (err) {
-        //                    alert("Errort: " + err.responseText);
-        //                },
-        //                success: function (result) {
-        //                    var jsonString = result.d;
-        //                   // var jsonObject = jQuery.parseJSON("[" + jsonData + "]");
+                    var availableTags = result.d.split("{;}");
+                    $(".textBoxSearchQuery").autocomplete({
+                        source: availableTags
+                    });
+                }
+            });
+        }
+        catch (e) {
+            alert("Error" + e.message);
+        }
+    });
 
-        //                    alert("We returned: " + jsonString);
 
-        //                    if (jsonString != "") {
-        //                        //alert(jsonString);
-        //                        var jsonData = JSON.parse(jsonString);
+    $('.userManagingTab').click(function (e) {
 
-        //                        var tg1 = $("#placement").timeline({
+        alert( "adsf");
+        //$('.tabsContainer').each(function (i, obj) {
+        //    if($(this).hasClass(e.innerHTML))
+        //        $(this).css("display", "block");
+        //    else
+        //        $(this).css("display", "none");
+        //});
 
-        //                            "data_source": jsonData, //"MySecondTry1/json/sergiu3.json",
-        //                            "min_zoom": 15,
-        //                            "max_zoom": 60
-        //                        }
-        //                        );
-        //                    }
-        //                }
-        //            });
-        //        }
-        //        catch (e) {
-        //            alert("Error" + e.message);
-        //        }
     });
 });
 
-$(function () {
+
+
+    function VoteUp(userId1) {
+       
+        //alert(userId1);
+
+        try {
+            var dataValue = { documentId: document.getElementById('hiddenId').value, userId:userId1  /*this.innerHTML*/ };
+            
+            //alert(document.getElementById('hiddenId').value);
+            $.ajax({
+                type: "POST",
+                url: "WebFormTimeline.aspx/UpVoteDocument",
+                data: JSON.stringify(dataValue),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                // async: false,
+                error: function (err) {
+                    alert("Errort: " + err.responseText);
+                },
+                success: function (result) {
+                    //alert("We returned: " + result.d);
+                    if (result.d == "worked"){
+                        $(".labelVote").css("display", "block");
+                        $(".labelVote").css("color", "green");
+                        $(".labelVote").text("you have already voted");
+                    }
+                    if (result.d == "already") {
+
+                        $(".labelVote").css("display", "block");
+                        $(".labelVote").css("color", "red");
+                        $(".labelVote").text("vote registred");
+                    }
+                }
+            });
+        }
+        catch (e) {
+            alert("Error" + e.message);
+        }
+    }
+
+    $(function () {
 
     $(".linkContact").click(function (e) {
 
@@ -310,6 +358,9 @@ $(function () {
             alert("Error" + e.message);
         }
     });
+
+   
+    
 });
 
 // De pastrat

@@ -22,6 +22,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// ImageButton1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
+        
+        /// <summary>
         /// textBoxTagName control.
         /// </summary>
         /// <remarks>
@@ -67,12 +76,12 @@ namespace MyTimelineASPTry {
         protected global::CKEditor.NET.CKEditorControl CKEditorInformation;
         
         /// <summary>
-        /// buttonSaveTagChanges control.
+        /// buttonCreateTag control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonSaveTagChanges;
+        protected global::System.Web.UI.WebControls.Button buttonCreateTag;
     }
 }

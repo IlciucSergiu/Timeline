@@ -10,25 +10,10 @@ using MongoDB.Driver;
 
 namespace MyTimelineASPTry
 {
-    public class PersonBasic
-    {
-        [BsonId]
-        public ObjectId _id { get; set; }
+  
+    
 
-        public string id { get; set; }
-        public string title { get; set; }
-        public string startdate { get; set; }
-        public string enddate { get; set; }
-        public string description { get; set; }
-        public string link { get; set; }
-        public string image { get; set; }
-        public string importance { get; set; }
-       
-
-        
-    }
-
-    public class PersonInfo
+    public class DocumentInfo
     {
         [BsonId]
         public ObjectId _id { get; set; }
@@ -46,14 +31,7 @@ namespace MyTimelineASPTry
         public string importance { get; set; }
         public BsonArray tags { get; set; }
 
-        [BsonIgnoreIfNull]
-        public string gender { get; set; }
-        [BsonIgnoreIfNull]
-        public string profession { get; set; }
-        [BsonIgnoreIfNull]
-        public string religion { get; set; }
-        [BsonIgnoreIfNull]
-        public string nationality { get; set; }
+       
     }
 
     public class IndividualData
@@ -80,6 +58,11 @@ namespace MyTimelineASPTry
 
         public BsonArray tags { get; set; }
 
+        public int timesViewed { get; set; }
+
+        public int votes { get; set; }
+
+        public BsonArray alreadyVoted { get; set; }
     }
 
     public class UserData
@@ -93,7 +76,11 @@ namespace MyTimelineASPTry
         public string email { get; set; }
         public string gender { get; set; }
         public string salt { get; set; }
-    }
+
+        public string image { get; set; }
+        public int reputation { get; set; }
+
+        }
 
     public class TagsCollection
     {

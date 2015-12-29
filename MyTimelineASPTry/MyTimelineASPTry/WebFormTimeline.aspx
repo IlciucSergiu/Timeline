@@ -6,10 +6,10 @@
 
 <head>
     <title>MyTry</title>
-    <link rel="stylesheet" href="MySecondTry1/css/jquery-ui-1.10.3.custom.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="MySecondTry1/timeglider/timeglider.datepicker.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="MySecondTry1/css/MyTimeline.css" charset="utf-8" />
+    <link rel="stylesheet" href="MySecondTry1/css/jquery-ui-1.10.3.custom.css" type="text/css"  />
+    <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css"  />
+    <link rel="stylesheet" href="MySecondTry1/timeglider/timeglider.datepicker.css" type="text/css"  />
+    <link rel="stylesheet" type="text/css" href="MySecondTry1/css/MyTimeline.css"  />
     <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
 
 
@@ -30,7 +30,7 @@
         <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail"  CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
            
         
-            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader" Width="233px" Height="22px" BorderStyle="None" placeholder="search for events, persons or categories"></asp:TextBox>
+            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader textBoxSearchQuery" Height="22px" Width="300px" BorderStyle="None" placeholder="search for events, persons or tags" ></asp:TextBox>
             <asp:Button ID="buttonSearchQuery" runat="server" Text="Search" CssClass="inHeader searchButton" OnClick="buttonSearchQuery_Click"/>
             <asp:Button ID="buttonLogin" runat="server" Text="Login" OnClick="buttonLogin_Click" Width="88px" CssClass="inHeader" UseSubmitBehavior="False" />
             <asp:Button ID="buttonWorkspace" runat="server" Text="Workspace" CssClass="inHeader" PostBackUrl="~/UserManaging.aspx" Visible="False" UseSubmitBehavior="False" />
@@ -86,16 +86,10 @@
             });
 
             $(function () {
-                $('div').click(function (e) {
-                    // $("div").off("click");
-                    // setTimeout(function () { $("div").on("click"); }, 1000);
+                $("#linkVoteUp").click(function (e) {
 
-                    // $(e.target.className).off("click");
-
-                    //$("div").css("pointer-events", "none");
-
-                    // setTimeout(function () { $("div").css("pointer-events", "auto"); }, 1000);
-
+                    if('<%= Session["userId"] %>' != "")
+                        VoteUp('<%= Session["userId"] %>');
 
                 });
                 var firstClick = false; var secondClick = false; var theId;
@@ -141,17 +135,7 @@
                         //  alert(eventId);
                         //  e.stopPropagation();
                     }
-                    //  if (e.target.className == "timeglider-event-title" || "timeglider-event-spanner")
-                    //   {   
-
-                    //      var child = e.target.id;
-                    //      var parent = e.target.parentElement;
-                    //        var grandParent = parent.parentElement.id;
-
-
-                    //       var parent2 = parent.id.replace("_modal", "");
-                    //       alert(child+"///"+parent.id + "----" + parent2 + "----" + grandParent);
-                    //     }
+                    
                 });
 
                 
@@ -208,10 +192,11 @@
             <div class="imageInline" id="labelsInfo">
                 <asp:Label ID="labelName" runat="server" CssClass="essentialLabels" Width="300px" Font-Size="X-Large"></asp:Label><br />
                 <asp:Label ID="labelDates" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelProfession" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelNationality" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-                <asp:Label ID="labelReligion" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label>
+               
                 <br />
+                <a id="linkVoteUp" href="#" class="linkVoteUp">vote up</a>
+               &nbsp;&nbsp; <a href="#" class="linkVoteDown">vote down</a><br/>
+                <asp:Label ID="labelVote" runat="server" Text="voting status" CssClass="hide labelVote"></asp:Label>
                 <br />
                 <div id="divTags" runat="server" class="essentialLabels">
 
@@ -236,6 +221,7 @@
                 <div id="additionalLinks" runat="server">
                     
                 </div>
+                <asp:Label ID="labelNumberOfViews" runat="server" Text="Views"></asp:Label>
             </div>
 
         </div>

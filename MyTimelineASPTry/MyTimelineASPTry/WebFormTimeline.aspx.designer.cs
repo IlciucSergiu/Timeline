@@ -166,31 +166,13 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Label labelDates;
         
         /// <summary>
-        /// labelProfession control.
+        /// labelVote control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelProfession;
-        
-        /// <summary>
-        /// labelNationality control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelNationality;
-        
-        /// <summary>
-        /// labelReligion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelReligion;
+        protected global::System.Web.UI.WebControls.Label labelVote;
         
         /// <summary>
         /// divTags control.
@@ -227,6 +209,15 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl additionalLinks;
+        
+        /// <summary>
+        /// labelNumberOfViews control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelNumberOfViews;
         
         /// <summary>
         /// linkButtonContact control.

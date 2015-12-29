@@ -94,24 +94,6 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.CheckBox checkBoxContemporary;
         
         /// <summary>
-        /// labelImportance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelImportance;
-        
-        /// <summary>
-        /// inputImportance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inputImportance;
-        
-        /// <summary>
         /// textBoxTagName control.
         /// </summary>
         /// <remarks>
@@ -164,42 +146,6 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox listBoxTags;
-        
-        /// <summary>
-        /// RadioButtonListGender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList RadioButtonListGender;
-        
-        /// <summary>
-        /// textBoxProfession control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textBoxProfession;
-        
-        /// <summary>
-        /// textBoxNationality control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textBoxNationality;
-        
-        /// <summary>
-        /// textBoxReligion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textBoxReligion;
         
         /// <summary>
         /// labelDescription control.
@@ -335,33 +281,6 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label labelDates;
-        
-        /// <summary>
-        /// labelProfession control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelProfession;
-        
-        /// <summary>
-        /// labelNationality control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelNationality;
-        
-        /// <summary>
-        /// labelReligion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelReligion;
         
         /// <summary>
         /// linkButtonEdit control.

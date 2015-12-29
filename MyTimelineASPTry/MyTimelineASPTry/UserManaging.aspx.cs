@@ -13,112 +13,110 @@ namespace MyTimelineASPTry
     {
         protected async void Page_Load(object sender, EventArgs e)
         {
-           // Response.Write(listBoxOwns.Items.Count);
+            // Response.Write(listBoxOwns.Items.Count);
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
 
-            if (listBoxOwns.Items.Count == 0)
+            var user = db.GetCollection<UserData>("Users");
+            var filterUser = Builders<UserData>.Filter.Eq("email", Session["userId"].ToString());
+            await user.Find(filterUser).ForEachAsync(d =>
             {
-                listBoxOwns.Items.Clear();
-               
+                LabelUsername.Text = d.firstName.ToString() + " " + d.lastName.ToString();
 
-                var collection = db.GetCollection<PersonInfo>("Persons");
+                if (d.image != null)
+                    imageProfile.ImageUrl = d.image;
+                else
+                    imageProfile.ImageUrl = "https://cdn4.iconfinder.com/data/icons/linecon/512/photo-256.png";
+            });
+
+            GetUserReputation(Session["userId"].ToString());
+            
+
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
 
-                var filter = Builders<PersonInfo>.Filter.Eq("owner", Session["userId"].ToString());
-                await collection.Find(filter).ForEachAsync(d => listBoxOwns.Items.Add(d.id.ToString()));
+            var filter = Builders<DocumentInfo>.Filter.Eq("owner", Session["userId"].ToString());
+
+            int numberOfDocuments = 0;
+            await collection.Find(filter).ForEachAsync(d =>
+            {
+                numberOfDocuments++;
+                documentsContainer.Controls.Add(new LiteralControl { Text = "<hr><div class=\"documentsListElement\" > <a class=\"editDocumentLink\" href = \"AddData.aspx?itemId=" + d.id.ToString() + "&scope=modify\" >" + d.title.ToString() + "</a></div>" });
+                //documentsContainer.Controls.Add(new LiteralControl { Text = "<div class=\"documentsListElement\" value=\"" + d.id.ToString() + "\">" + d.title.ToString() + "</div>" });
+                //documentsContainer.InnerHtml +="<div class=\"documentElement\" value=\"" + d.id.ToString() + "\">" + d.title.ToString() + "</div>";
+            });
+
+            labelNumeberOfDocuments.Text = "(" + numberOfDocuments + ")";
 
 
+
+
+
+
+            var collectionTags = db.GetCollection<TagsCollection>("Tags");
+
+            int numberOfTags = 0;
+            var filterTags = Builders<TagsCollection>.Filter.Eq("owner", Session["userId"].ToString());
+            await collectionTags.Find(filterTags).ForEachAsync(d =>
+            {
+                numberOfTags++;
+                tagsContainer.Controls.Add(new LiteralControl { Text = "<hr><div class=\"tagsListElement\" > <a class=\"editTagLink\" href=\"EditTag.aspx?itemId=" + d.id.ToString() + " \">" + d.tagName + "</a></div>" });
+
+                // listBoxTags.Items.Add(d.id.ToString());
             }
-
-            
-                
-               
-
-                var collectionTags = db.GetCollection<TagsCollection>("Tags");
+                );
+            labelNumberOfTags.Text = "(" + numberOfTags + ")";
 
 
-                var filterTags = Builders<TagsCollection>.Filter.Eq("owner", Session["userId"].ToString());
-                await collectionTags.Find(filterTags).ForEachAsync(d =>
-                {
-                    
-                    listBoxTags.Items.Add(d.id.ToString());
-                }
-                    );
 
 
-            
-            
 
-            
         }
 
-        //protected async void Page_Unload(object sender, EventArgs e)
-        //{
-        //    Response.Write(listBoxOwns.Items.Count);
-        //    if (listBoxOwns.Items.Count == 0)
-        //    {
-        //        listBoxOwns.Items.Clear();
-        //        MongoClient mclient = new MongoClient();
-        //        var db = mclient.GetDatabase("Timeline");
 
-        //        var collection = db.GetCollection<PersonInfo>("Persons");
-
-
-        //        var filter = Builders<PersonInfo>.Filter.Eq("owner", Session["userId"].ToString());
-        //        await collection.Find(filter).ForEachAsync(d => listBoxOwns.Items.Add(d.id.ToString()));
-
-
-        //    }
-
-        //}
-
-        protected async void buttonSearchId_Click(object sender, EventArgs e)
+       async void GetUserReputation(string userId)
         {
-            listBoxOwns.Items.Clear();
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
 
-            var collection = db.GetCollection<PersonInfo>("Persons");
-            //var documents = await collection.Find(new BsonDocument()).FirstAsync();
+            var document = db.GetCollection<IndividualData>("IndividualData");
+            var filterDocument = Builders<IndividualData>.Filter.Eq("owner", userId);
 
-            var filter = Builders<PersonInfo>.Filter.Eq("owner", textBoxSearchId.Text);
-            await collection.Find(filter).ForEachAsync(d => listBoxOwns.Items.Add(d.id.ToString()));
+            int totalNumberOfViews = 0;
+            await document.Find(filterDocument).ForEachAsync(d =>
+            {
+                //if(d.timesViewed != null)
+               // Response.Write(d.timesViewed.ToString());
+                totalNumberOfViews += d.timesViewed;  
+            });
 
-            //var documents = await collection.Find(filter).FirstAsync();
-            //labelName.Text = documents.name.ToString();
-            //labelDates.Text = documents.startdate + "-" + documents.enddate;
-            //labelProfession.Text = documents.profession;
-            //labelNationality.Text = documents.nationality;
-            //labelReligion.Text = documents.religion;
-            //imageProfile.ImageUrl = documents.image;
-            Session["userId"] = textBoxSearchId.Text;
 
-            buttonCreate.Enabled = true;
+            int reputation = totalNumberOfViews / 10;
+           
+           labelReputation.Text = "Reputation " + reputation.ToString();
+
+            var userCollection = db.GetCollection<UserData>("Users");
+            var filterUser = Builders<UserData>.Filter.Eq("email", userId);
+
+            var update = Builders<UserData>.Update
+                    .Set("reputation", reputation);
+            var result = await userCollection.UpdateOneAsync(filterUser, update);
         }
 
-        protected void listBoxOwns_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listBoxOwns.SelectedIndex.ToString() != "")
-                buttonEdit.Enabled = true;
-            else
-                buttonEdit.Enabled = false;
-        }
+        //protected void buttonEdit_Click(object sender, EventArgs e)
+        //{
+        //    Response.Write("ai selectat :" + listBoxOwns.SelectedIndex.ToString());
+        //   // Session["userId"] = textBoxSearchId.Text;
 
-        protected void buttonEdit_Click(object sender, EventArgs e)
-        {
-            Response.Write("ai selectat :" + listBoxOwns.SelectedIndex.ToString());
-           // Session["userId"] = textBoxSearchId.Text;
-
-            if (listBoxOwns.SelectedIndex >= 0) { 
-           Session["itemId"] = listBoxOwns.SelectedValue;
-            Response.Redirect("AddData.aspx?itemId=" + listBoxOwns.SelectedValue + "&scope=modify",false);
-            }
-        }
+        //    if (listBoxOwns.SelectedIndex >= 0) { 
+        //   Session["itemId"] = listBoxOwns.SelectedValue;
+        //    Response.Redirect("AddData.aspx?scope=modify",false);
+        //    }
+        //}
 
         protected void buttonCreate_Click(object sender, EventArgs e)
         {
-            Response.Redirect("AddData.aspx?scope=create",false);
+            Response.Redirect("AddData.aspx?scope=create", false);
         }
 
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
@@ -126,22 +124,22 @@ namespace MyTimelineASPTry
             Response.Redirect("WebFormTimeline.aspx", false);
         }
 
-        protected void buttonEditTag_Click(object sender, EventArgs e)
-        {
+        //protected void buttonEditTag_Click(object sender, EventArgs e)
+        //{
 
-            if (listBoxTags.SelectedIndex >= 0)
-            {
-                Session["tagId"] = listBoxTags.SelectedValue;
+        //    if (listBoxTags.SelectedIndex >= 0)
+        //    {
+        //        Session["tagId"] = listBoxTags.SelectedValue;
 
-                Response.Redirect("EditTag.aspx", false);
-            }
-        }
+        //        Response.Redirect("EditTag.aspx", false);
+        //    }
+        //}
 
         protected void buttonCreateTag_Click(object sender, EventArgs e)
         {
             Response.Redirect("AddNewTag.aspx", false);
         }
 
-       
+
     }
 }
