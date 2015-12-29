@@ -6,7 +6,7 @@ function AddTagItem() {
     VerifyIfInList();
     if (VerifyTagItem() && VerifyIfInList()) {
         if ($("#inputImportanceTag").val() != "") {
-           // alert($("#inputImportanceTag").val());
+            // alert($("#inputImportanceTag").val());
             var tagName = $(".textBoxAddTag").val().toString().toLowerCase();
             $(".textBoxAddTag").val(null);
             var tagImportance = $("#inputImportanceTag").val();
@@ -35,10 +35,7 @@ function AddTagItem() {
             $(".verifyTag").text("Invalid information.");
         }
     }
-    //else {
-    //    $(".verifyTag").text("This tag does not exist!");
-    //    return false;
-    //}
+    
 }
 
 function VerifyIfInList() {
@@ -46,12 +43,12 @@ function VerifyIfInList() {
     var response = true;
     $(".listBoxTags option").each(function () {
 
-       var listString = $(this).val().split('-');
-       if ($(".textBoxAddTag").val().toString().toLowerCase() == listString[0]) {
-           $(".verifyTag").text("This tag already exists in list.");
-           response =  false;
-       }
-       
+        var listString = $(this).val().split('-');
+        if ($(".textBoxAddTag").val().toString().toLowerCase() == listString[0]) {
+            $(".verifyTag").text("This tag already exists in list.");
+            response = false;
+        }
+
 
     });
     return response;
@@ -77,28 +74,25 @@ function VerifyTagItem() {
         success: function (result) {
 
             var availableTags = result.d.split("{;}");
-           // alert(availableTags);
+            // alert(availableTags);
 
             if (availableTags != "") {
                 //alert("asdf");
-                if ($.inArray($(".textBoxAddTag").val(), availableTags) != -1)
-                {
-                   // alert($.inArray($(".textBoxAddTag").val(), availableTags));
-                    
+                if ($.inArray($(".textBoxAddTag").val(), availableTags) != -1) {
+                    // alert($.inArray($(".textBoxAddTag").val(), availableTags));
+
                     response = true;
                 }
                 else {
                     $(".verifyTag").text("This tag does not exist!");
                 }
-               
+
             }
             else {
                 $(".verifyTag").text("This tag does not exist!");
                 response = false;
             }
-            //$(".textBoxAddTag").autocomplete({
-            //    source: availableTags
-            //});
+          
         }
     });
 
@@ -145,7 +139,7 @@ function AddLinkItem() {
 
 
 $(function () {
-    
+
 
     $(".textBoxSearchQuery").keydown(function (event) {
         if (e.keyCode == 13) {
@@ -153,7 +147,7 @@ $(function () {
             $(".searchButton").click();
 
         }
-        
+
     });
 
 
@@ -265,87 +259,73 @@ $(function () {
     });
 
 
-    $('.userManagingTab').click(function (e) {
-
-        alert( "adsf");
-        //$('.tabsContainer').each(function (i, obj) {
-        //    if($(this).hasClass(e.innerHTML))
-        //        $(this).css("display", "block");
-        //    else
-        //        $(this).css("display", "none");
-        //});
-
-    });
+    
 });
 
 
 
-    function VoteUp(userId1) {
-       
-        //alert(userId1);
+function VoteUp(userId1) {
 
-        try {
-            var dataValue = { documentId: document.getElementById('hiddenId').value, userId:userId1  /*this.innerHTML*/ };
-            
-            //alert(document.getElementById('hiddenId').value);
-            $.ajax({
-                type: "POST",
-                url: "WebFormTimeline.aspx/UpVoteDocument",
-                data: JSON.stringify(dataValue),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                // async: false,
-                error: function (err) {
-                    alert("Errort: " + err.responseText);
-                },
-                success: function (result) {
-                    //alert("We returned: " + result.d);
-                    if (result.d == "worked"){
-                        $(".labelVote").css("display", "block");
-                        $(".labelVote").css("color", "green");
-                        $(".labelVote").text("you have already voted");
-                    }
-                    if (result.d == "already") {
+    //alert(userId1);
 
-                        $(".labelVote").css("display", "block");
-                        $(".labelVote").css("color", "red");
-                        $(".labelVote").text("vote registred");
-                    }
+    try {
+        var dataValue = { documentId: document.getElementById('hiddenId').value, userId: userId1  /*this.innerHTML*/ };
+
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "WebFormTimeline.aspx/UpVoteDocument",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                //alert("We returned: " + result.d);
+                if (result.d == "worked") {
+                    $(".labelVote").css("display", "block");
+                    $(".labelVote").css("color", "green");
+                    $(".labelVote").text("you have already voted");
                 }
-            });
-        }
-        catch (e) {
-            alert("Error" + e.message);
-        }
+                if (result.d == "already") {
+
+                    $(".labelVote").css("display", "block");
+                    $(".labelVote").css("color", "red");
+                    $(".labelVote").text("vote registred");
+                }
+            }
+        });
     }
+    catch (e) {
+        alert("Error" + e.message);
+    }
+}
 
-    $(function () {
+$(function () {
 
+    $(".tagLinks").click(function (e) {
+
+        UpdHidCriteria(this.innerHTML);
+
+    });
     $(".linkContact").click(function (e) {
 
         alert(this.innerHTML);
 
-        //PageMethods.LoadTimelineQuery(e.innerHTML, OnSuccessCallback, OnFailureCallback);
 
-
-        //function OnSuccessCallback(res) {
-        //    alert(res);
-        //}
-
-        //function OnFailureCallback() {
-        //    alert('Error');
-        //}
 
         try {
-            var dataValue = { criteria: "clasicism" /*this.innerHTML*/ };
-            // alert("got here");
+            var dataValue = { criteria: "clasicism" };
+
             $.ajax({
                 type: "POST",
                 url: "WebFormTimeline.aspx/SearchByCriteria",
                 data: JSON.stringify(dataValue),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'text',
-                // async: false,
+
                 error: function (err) {
                     alert("Errort: " + err.responseText);
                 },
@@ -359,8 +339,8 @@ $(function () {
         }
     });
 
-   
-    
+
+
 });
 
 // De pastrat
