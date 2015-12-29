@@ -280,7 +280,7 @@ function VoteUp(userId1) {
             dataType: 'json',
             // async: false,
             error: function (err) {
-                alert("Errort: " + err.responseText);
+                alert("Errort: " + err.responseText); 
             },
             success: function (result) {
                 //alert("We returned: " + result.d);
