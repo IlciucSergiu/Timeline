@@ -287,13 +287,13 @@ function VoteUp(userId1) {
                 if (result.d == "worked") {
                     $(".labelVote").css("display", "block");
                     $(".labelVote").css("color", "green");
-                    $(".labelVote").text("you have already voted");
+                    $(".labelVote").text("vote registered");
                 }
                 if (result.d == "already") {
 
                     $(".labelVote").css("display", "block");
                     $(".labelVote").css("color", "red");
-                    $(".labelVote").text("vote registred");
+                    $(".labelVote").text("you have already voted");
                 }
             }
         });
