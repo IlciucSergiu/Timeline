@@ -13,7 +13,7 @@ function AddTagItem() {
             $("#inputImportanceTag").val(null);
             try {
                 var tagValue = tagName + "-" + tagImportance.toString();
-                $('.listBoxTags').append("<option value=" + tagValue.toString() + ">" + tagName + " " + tagImportance + "</option>");
+                $('.listBoxTags').append("<option value=" + tagValue.toString() + ">" + tagName + " " + tagImportance + "</option>"); 
 
                 // alert(tagName + " ---- " + tagImportance);
 
