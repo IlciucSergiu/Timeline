@@ -6,15 +6,15 @@
 
 <head>
     <title>MyTry</title>
-    <link rel="stylesheet" href="MySecondTry1/css/jquery-ui-1.10.3.custom.css" type="text/css"  />
-    <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css"  />
-    <link rel="stylesheet" href="MySecondTry1/timeglider/timeglider.datepicker.css" type="text/css"  />
-    <link rel="stylesheet" type="text/css" href="MySecondTry1/css/MyTimeline.css"  />
+    <link rel="stylesheet" href="MySecondTry1/css/jquery-ui-1.10.3.custom.css" type="text/css" />
+    <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css" />
+    <link rel="stylesheet" href="MySecondTry1/timeglider/timeglider.datepicker.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="MySecondTry1/css/MyTimeline.css" />
     <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
 
 
 
-   
+
 
 
 </head>
@@ -25,40 +25,40 @@
 
     <form runat="server" id="mainForm">
         <div id="header">
-           <!-- <h1 class="inHeader" id="bigTitle" >MyTry</h1> -->
-                       
-        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail"  CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
-           
-        
-            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader textBoxSearchQuery" Height="22px" Width="300px" BorderStyle="None" placeholder="search for events, persons or tags" ></asp:TextBox>
-            <asp:Button ID="buttonSearchQuery" runat="server" Text="Search" CssClass="inHeader searchButton" OnClick="buttonSearchQuery_Click"/>
+            <!-- <h1 class="inHeader" id="bigTitle" >MyTry</h1> -->
+
+            <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail" CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+
+
+            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader textBoxSearchQuery" Height="22px" Width="300px" BorderStyle="None" placeholder="search for events, persons or tags"></asp:TextBox>
+            <asp:Button ID="buttonSearchQuery" runat="server" Text="Search" CssClass="inHeader searchButton" OnClick="buttonSearchQuery_Click" />
             <asp:Button ID="buttonLogin" runat="server" Text="Login" OnClick="buttonLogin_Click" Width="88px" CssClass="inHeader" UseSubmitBehavior="False" />
             <asp:Button ID="buttonWorkspace" runat="server" Text="Workspace" CssClass="inHeader" PostBackUrl="~/UserManaging.aspx" Visible="False" UseSubmitBehavior="False" />
             <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" CssClass="inHeader hideButton" />
-             <asp:LinkButton ID="linkButtonLogout" runat="server" CssClass="linkLogout" OnClick="linkButtonLogout_Click" Visible="False">Logout</asp:LinkButton >
-            
-            
-            
-            
-           
-            
-            
-            
-            
-            
+            <asp:LinkButton ID="linkButtonLogout" runat="server" CssClass="linkLogout" OnClick="linkButtonLogout_Click" Visible="False">Logout</asp:LinkButton>
+
+
+
+
+
+
+
+
+
+
         </div>
-       
-        
-        
+
+
+
         <div id='placement' style="height: 400px"></div>
 
-            
+
 
 
         <script>
 
             function UpdHidCriteria(criteria) {
-               // alert(criteria);
+                // alert(criteria);
                 $('#' + '<%=hiddenFieldCriteria.ClientID %>').val(criteria);
                 document.getElementById('<%=buttonSearchQuery.ClientID %>').click();
                 return false;
@@ -81,16 +81,20 @@
                     }
                 );
                 }
-                 if ('<%=showIndividual%>' == "True") 
-                $("#individualInfo").css("display", "block");
+                if ('<%=showIndividual%>' == "True")
+                    $("#individualInfo").css("display", "block");
             });
 
             $(function () {
                 $("#linkVoteUp").click(function (e) {
-
-                    if('<%= Session["userId"] %>' != "")
+                    //the user id is visible but only if logged in
+                    if ('<%= Session["userId"] %>' != "")
                         VoteUp('<%= Session["userId"] %>');
-
+                    else {
+                        $(".labelVote").css("display", "block");
+                        $(".labelVote").css("color", "red");
+                        $(".labelVote").text("you need an acount to vote");
+                    }
                 });
                 var firstClick = false; var secondClick = false; var theId;
                 $('div').mousedown(function (e) {
@@ -103,7 +107,7 @@
                         e.stopPropagation();
                         $("div").css("pointer-events", "none");
                         secondClick = false;
-                        
+
                         setTimeout(function () {
 
                             $("div").css("pointer-events", "auto");
@@ -120,11 +124,11 @@
                     if (firstClick) {
                         secondClick = true;
                         document.getElementById('hiddenId').value = theId;
-                       // SearchPersonalInfo(theId);
+                        // SearchPersonalInfo(theId);
 
                         // alert(divId);
-                        
-                       document.getElementById("buttonSearchId").click();
+
+                        document.getElementById("buttonSearchId").click();
                         $("#individualInfo").css("display", "block");
                         // alert(theId);
 
@@ -135,10 +139,10 @@
                         //  alert(eventId);
                         //  e.stopPropagation();
                     }
-                    
+
                 });
 
-                
+
             });
 
         </script>
@@ -175,10 +179,10 @@
 
         <asp:ScriptManager ID="ScriptManagerMain"
             runat="server"
-            EnablePageMethods="true" 
-            ScriptMode="Release" 
+            EnablePageMethods="true"
+            ScriptMode="Release"
             LoadScriptsBeforeUI="true">
-    </asp:ScriptManager>
+        </asp:ScriptManager>
 
 
         <asp:HiddenField ID="hiddenFieldCriteria" runat="server" />
@@ -192,14 +196,14 @@
             <div class="imageInline" id="labelsInfo">
                 <asp:Label ID="labelName" runat="server" CssClass="essentialLabels" Width="300px" Font-Size="X-Large"></asp:Label><br />
                 <asp:Label ID="labelDates" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-               
+
                 <br />
                 <a id="linkVoteUp" href="#" class="linkVoteUp">vote up</a>
-               &nbsp;&nbsp; <a href="#" class="linkVoteDown">vote down</a><br/>
+                &nbsp;&nbsp; <a href="#" class="linkVoteDown">vote down</a><br />
                 <asp:Label ID="labelVote" runat="server" Text="voting status" CssClass="hide labelVote"></asp:Label>
                 <br />
-                <div id="divTags" runat="server" class="essentialLabels">
 
+                <div id="divTags" runat="server" class="essentialLabels">
                 </div>
 
 
@@ -207,19 +211,17 @@
             </div>
             <br />
             <div id="afterImage">
-                <div id="htmlInfo" runat="server" >
+                <div id="htmlInfo" runat="server">
                 </div>
 
                 <h3>Additional resources</h3>
                 <hr />
                 <div id="additionalResources" runat="server">
-                    
                 </div>
 
                 <h3>Related pages</h3>
                 <hr />
                 <div id="additionalLinks" runat="server">
-                    
                 </div>
                 <asp:Label ID="labelNumberOfViews" runat="server" Text="Views"></asp:Label>
             </div>

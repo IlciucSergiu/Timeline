@@ -270,7 +270,7 @@ function VoteUp(userId1) {
 
     try {
         var dataValue = { documentId: document.getElementById('hiddenId').value, userId: userId1  /*this.innerHTML*/ };
-
+       // alert("asdg");
         //alert(document.getElementById('hiddenId').value);
         $.ajax({
             type: "POST",
