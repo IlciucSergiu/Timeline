@@ -90,14 +90,14 @@ namespace MyTimelineASPTry
         public string tagName { get; set; }
         public string id { get; set; }
         public string owner { get; set; }
-        public string parentName { get; set; }
+        public BsonArray parentTags { get; set; }
         public int relativeImportance { get; set; }
         public string description { get; set; }
         public string tagInfo { get; set; }
         public DateTime dateAdded { get; set; }
         //public BsonArray childrenNames { get; set;}
         public BsonArray documentsBelonging { get; set; }
-
+        public BsonArray tagSynonyms { get; set; }
        
     }
 

@@ -140,6 +140,7 @@ function AddLinkItem() {
 
 $(function () {
 
+   //alert("sadtag");
 
     $(".textBoxSearchQuery").keydown(function (event) {
         if (e.keyCode == 13) {
@@ -259,7 +260,84 @@ $(function () {
     });
 
 
-    
+   // $('#pageBody').click(function () { alert("sdasdg") });
+
+    $(".textBoxAddParentTag").on('keydown keypress focus', function () {
+        //alert("here");
+        if ($(".textBoxAddParentTag").val() != "")
+        try {
+            var dataValue = { inputValue: $(".textBoxAddParentTag").val() };
+
+            $.ajax({
+                type: "POST",
+                url: "AddNewTag.aspx/FindTagParentOptions",
+                data: JSON.stringify(dataValue),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+
+                error: function (err) {
+
+                    alert("Errort: " + err.responseText);
+                },
+                success: function (result) {
+                    var arrayTagNames = [];
+                    var arrayTagId = [];
+                    var availableTags = result.d.split("{;}").forEach(function (item) {
+                        //array2.push(item);
+                        var array3 = item.split("{0}");
+                       // alert(array3[0]);
+                        arrayTagNames.push(array3[0]);
+                        arrayTagId.push(array3[1]);
+                    });
+                    // alert(array2);
+                   // $('#debug1').text(arrayTagNames);
+                   // $('#debug2').text(arrayTagId);
+
+                    $(".textBoxAddParentTag").autocomplete({
+                        source: arrayTagNames,
+                        select: function (event, ui) {
+                            var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                            $('#debug2').text(parentId);
+                            UpdHidId(parentId);
+                            //alert(ui.item.label);
+                           // $('hiddenFieldParentTagId').val(parentId);
+                          //  alert($('hiddenFieldParentTagId').val);
+                           // $(".textBoxAddParentTag").val(ui.item.label);
+                           
+                        }
+                    });
+                }
+            });
+        }
+        catch (e) {
+            alert("Error" + e.message);
+        }
+    });
+
+    $(".textBoxAddParentTag").focusout(function () {
+       // alert($(".textBoxAddParentTag").val());
+        if (!VerifyTagExistence($(".textBoxAddParentTag").val())) {
+           // $("#verifyTag").css("display", "block");
+            $("#verifyTag").css("color", "red");
+            $("#verifyTag").text("This tag does not exist.");
+        }
+        else {
+            $("#verifyTag").text("");
+        }
+    });
+
+    $(".textBoxTagName").focusout(function () {
+        // alert($(".textBoxAddParentTag").val());
+        if (VerifyTagExistence($(".textBoxTagName").val())) {
+           // $("#verifyTagName").css("display", "block");
+            $("#verifyTagName").css("color", "red");
+            $("#verifyTagName").text("This tag already exists.");
+        }
+        else {
+            // $("#verifyTagName").css("display", "none");
+            $("#verifyTagName").text("");
+        }
+    });
 });
 
 
@@ -303,6 +381,57 @@ function VoteUp(userId1) {
     }
 }
 
+
+
+function VerifyTagExistence( tagName) {
+
+    var dataValue = { inputValue:tagName };
+    var response;
+    $.ajax({
+        type: "POST",
+        url: "AddNewTag.aspx/VerifyTagExistence",
+        data: JSON.stringify(dataValue),
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+
+        error: function (err) {
+
+            console.log("A aparut o eroare: " + err.responseText);
+            // return false;
+        },
+        success: function (result) {
+
+            response = result.d;
+           // var availableTags = result.d.split("{;}");
+           // alert(result.d);
+
+            //if (availableTags != "") {
+            //    //alert("asdf");
+            //    if ($.inArray($(".textBoxAddTag").val(), availableTags) != -1) {
+            //        // alert($.inArray($(".textBoxAddTag").val(), availableTags));
+
+            //        response = true;
+            //    }
+            //    else {
+            //        $(".verifyTag").text("This tag does not exist!");
+            //    }
+
+            //}
+            //else {
+            //    $(".verifyTag").text("This tag does not exist!");
+            //    response = false;
+            //}
+
+        }
+    });
+
+    return response;
+
+}
+
+
+
 $(function () {
 
     $(".tagLinks").click(function (e) {
@@ -342,6 +471,8 @@ $(function () {
 
 
 });
+
+
 
 // De pastrat
 //function SearchPersonalInfo(theId) {

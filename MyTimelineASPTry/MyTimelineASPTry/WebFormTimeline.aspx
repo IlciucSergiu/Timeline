@@ -64,23 +64,31 @@
                 return false;
             }
 
-            var jsonString = '<%=jsonData%>';
+            var tg1;
 
             $(document).ready(function () {
 
 
-                if (jsonString != "") {
-                    //alert(jsonString);
-                    var jsonData = JSON.parse(jsonString);
+                //if (jsonString != "") {
+                //alert(jsonString);
 
-                    var tg1 = $("#placement").timeline({
 
-                        "data_source": jsonData, //"MySecondTry1/json/sergiu3.json",
+                tg1 = $("#placement").timeline({
+
+                    "data_source": JSON.parse('<%=jsonData%>'.toString()),
                         "min_zoom": 15,
                         "max_zoom": 60
                     }
-                );
-                }
+                    );
+
+               // if ('<%=setDate%>' == "True") {
+                 //   alert(document.getElementById('hiddenFieldStartDate').value);
+                 //    var timelineClone = tg1.data("timeline");
+                 //   timelineClone.goTo(document.getElementById('hiddenFieldStartDate').value.toString());
+                       
+                  //  }
+
+                // }
                 if ('<%=showIndividual%>' == "True")
                     $("#individualInfo").css("display", "block");
             });
@@ -124,6 +132,11 @@
                     if (firstClick) {
                         secondClick = true;
                         document.getElementById('hiddenId').value = theId;
+                        var tg_instance = tg1.data("timeline");
+                        var startDate = tg_instance.getEventByID(theId).startdate;
+                        document.getElementById('hiddenFieldStartDate').value = startDate;
+                        // alert(startDate);
+                        //alert(JSON.stringify(data));
                         // SearchPersonalInfo(theId);
 
                         // alert(divId);
@@ -175,6 +188,7 @@
         <asp:Button ID="buttonSearchId" runat="server" Text="Search Id" OnClick="buttonSearchId_Click" CssClass="hideButton" />
 
         <asp:HiddenField ID="hiddenId" runat="server" />
+        <asp:HiddenField ID="hiddenFieldStartDate" runat="server" />
 
 
         <asp:ScriptManager ID="ScriptManagerMain"
@@ -196,9 +210,11 @@
             <div class="imageInline" id="labelsInfo">
                 <asp:Label ID="labelName" runat="server" CssClass="essentialLabels" Width="300px" Font-Size="X-Large"></asp:Label><br />
                 <asp:Label ID="labelDates" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-
                 <br />
-                <a id="linkVoteUp" href="#" class="linkVoteUp">vote up</a>
+                <asp:Label ID="labelNumberOfViews" runat="server" Text="Views" CssClass="labelViews"></asp:Label>
+                <br />
+                <br />
+                <a id="linkVoteUp" class="linkVoteUp">vote up</a>
                 &nbsp;&nbsp; <a href="#" class="linkVoteDown">vote down</a><br />
                 <asp:Label ID="labelVote" runat="server" Text="voting status" CssClass="hide labelVote"></asp:Label>
                 <br />
@@ -223,7 +239,7 @@
                 <hr />
                 <div id="additionalLinks" runat="server">
                 </div>
-                <asp:Label ID="labelNumberOfViews" runat="server" Text="Views"></asp:Label>
+
             </div>
 
         </div>

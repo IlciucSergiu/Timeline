@@ -89,8 +89,8 @@ namespace MyTimelineASPTry
 
 
             jsonData = "[{" +
-         "\"id\": \"important_personalities\"," +
-         "\"title\": \"Important Personalities\"," +
+         "\"id\": \"main_data\"," +
+         "\"title\": \"TimeTrail\"," +
          "\"initial_zoom\": \"40\"," +
                 //"\"focus_date\": \"1998-03-11 12:00:00\","+
          "\"image_lane_height\": 50," +
@@ -161,12 +161,13 @@ namespace MyTimelineASPTry
 
         }
 
+        public bool setDate = false;
         async void InitializeData()
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-
+            setDate = true;
             string itemId = hiddenId.Value;
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
@@ -313,7 +314,7 @@ namespace MyTimelineASPTry
 
                 jsonData = "[{" +
              "\"id\": \"" + searchQuery + "\"," +
-             "\"title\": \"Important Personalities\"," +
+             "\"title\": \""+ searchQuery.First().ToString().ToUpper() + searchQuery.Substring(1) +"\"," +
              "\"initial_zoom\": \"40\"," +
                     //"\"focus_date\": \"1998-03-11 12:00:00\","+
              "\"image_lane_height\": 50," +

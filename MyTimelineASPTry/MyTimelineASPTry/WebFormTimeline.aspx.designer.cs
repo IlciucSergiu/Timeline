@@ -121,6 +121,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.HiddenField hiddenId;
         
         /// <summary>
+        /// hiddenFieldStartDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hiddenFieldStartDate;
+        
+        /// <summary>
         /// ScriptManagerMain control.
         /// </summary>
         /// <remarks>
@@ -166,6 +175,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Label labelDates;
         
         /// <summary>
+        /// labelNumberOfViews control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelNumberOfViews;
+        
+        /// <summary>
         /// labelVote control.
         /// </summary>
         /// <remarks>
@@ -209,15 +227,6 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl additionalLinks;
-        
-        /// <summary>
-        /// labelNumberOfViews control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelNumberOfViews;
         
         /// <summary>
         /// linkButtonContact control.

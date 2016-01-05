@@ -15,11 +15,10 @@ html {
     background-color: #201E1B;
     width: 100%;
     height: 43px;
-    
 }
 
 #placement {
-    z-index:0;
+    z-index: 0;
     position: relative;
     margin-top: 0px;
 }
@@ -75,15 +74,12 @@ form {
     padding-left: 3%;
 }
 
-#labelsInfo{
-
+#labelsInfo {
     font-family: "Linux Libertine",Georgia,Times,serif;
-
 }
-#divEssentialInfo{
-     
-    
-    margin-left:3%;
+
+#divEssentialInfo {
+    margin-left: 3%;
     font-size: 0.875em;
 }
 
@@ -97,29 +93,31 @@ hr {
 }
 
 h3 {
-    font-family:sans-serif;
-    margin-left:1%;
+    font-family: sans-serif;
+    margin-left: 1%;
 }
-#htmlInfo{
-    font-family:sans-serif;
-    margin-right:15%;
-    margin-left:3%;
+
+#htmlInfo {
+    font-family: sans-serif;
+    margin-right: 15%;
+    margin-left: 3%;
     font-size: 0.875em;
 }
 
-#additionalResources{
-    font-family:sans-serif;
-    margin-right:15%;
-    margin-left:3%;
+#additionalResources {
+    font-family: sans-serif;
+    margin-right: 15%;
+    margin-left: 3%;
     font-size: 0.875em;
 }
 
 #additionalLinks {
-     font-family:sans-serif;
-    margin-right:15%;
-    margin-left:3%;
+    font-family: sans-serif;
+    margin-right: 15%;
+    margin-left: 3%;
     font-size: 0.875em;
 }
+
 .essentialLabels {
     padding-left: 20px;
     line-height: 170%;
@@ -139,26 +137,27 @@ h3 {
 }
 
 .userManButton {
-    border-style:solid;
+    border-style: solid;
     border-color: #767d84;
-    border-width:thin;
+    border-width: thin;
     margin-left: 20px;
-    background-color:transparent;
-    color:#222426;
-    cursor:pointer;
-    font-size:17px;
-    font-family:Arial;
-   /*//text-decoration:underline;*/
-    font-weight:400;
+    background-color: transparent;
+    color: #222426;
+    cursor: pointer;
+    font-size: 17px;
+    font-family: Arial;
+    /*//text-decoration:underline;*/
+    font-weight: 400;
     padding: 0px;
-    position:absolute;
-    top:0px;
+    position: absolute;
+    top: 0px;
     left: 221px;
     width: 93px;
 }
-.userManButton:hover {
-     background-color:#9ea3a9;
-}
+
+    .userManButton:hover {
+        background-color: #9ea3a9;
+    }
 
 /*#addLinks {
     display:none;
@@ -175,7 +174,7 @@ h3 {
 
 
 .inHeader {
-    position:relative;
+    position: relative;
     /*display: inline;*/
     margin-left: 30px;
     margin-right: 0px;
@@ -195,7 +194,7 @@ h3 {
 
 
 #individualInfo {
-    /*display: none;*/
+    display: none;
     margin-left: 7%;
 }
 
@@ -274,137 +273,138 @@ h3 {
     padding: 0px 4px 1px 3px;
     border: 1px solid #e1ecf4;
 }
-.tagLinks:hover {
-    /*font-size:15px;
+
+    .tagLinks:hover {
+        /*font-size:15px;
     font-weight:bold;
     font-family:sans-serif;*/
-     background: #201E1B;
-     cursor:pointer;
-     color: #ffffff;
-
-}
+        background: #201E1B;
+        cursor: pointer;
+        color: #ffffff;
+    }
 
 #footer {
-    position:absolute;
-    margin-bottom:0;
-    width:100%;
+    position: absolute;
+    margin-bottom: 0;
+    width: 100%;
     height: 50px;
     background-color: #201E1B;
 }
 
 .inFooter {
     /*position:absolute;*/
-    font-family:sans-serif,Georgia;
-    font-size:1em;
-    color:white;
+    font-family: sans-serif,Georgia;
+    font-size: 1em;
+    color: white;
     text-decoration: none;
     /*display:inline;*/
     padding-left: 4%;
     /*margin-top: 100%;*/
-    margin-bottom:0;
+    margin-bottom: 0;
     /*margin-bottom: 0px;*/
-   
 }
 
 .linkContact {
- padding-left: 34%;
+    padding-left: 34%;
 }
 
 #documentsManaging {
-   
-    width:334px;
-    position:relative;
+    width: 334px;
+    position: relative;
     top: 0px;
     left: 0px;
 }
 
-.inDocumentsManaging{
-
-   display:inline;
-
+.inDocumentsManaging {
+    display: inline;
 }
+
 #tagsManaging {
-    margin-top:20px;
-    position:relative;
+    margin-top: 20px;
+    position: relative;
     /*float:right;*/
 }
-#tagsManagingButton .tagButton{
-    margin-left:20px;
+
+#tagsManagingButton .tagButton {
+    margin-left: 20px;
 }
 
 .infoLabel {
     /*float:right;*/
-    color:red;
-    
+    color: red;
 }
 
-#divAddEssentials{
-margin-left:2%;
+#divAddEssentials {
+    margin-left: 2%;
 }
 
-#divMainInfo{
-margin-left:2%;
+#divMainInfo {
+    margin-left: 2%;
 }
 
 #verifyTag {
-    color:red;
+    color: red;
 }
 
-.textBoxSearchQuery{
-    overflow:visible;
+.textBoxSearchQuery {
+    overflow: visible;
     width: 289px;
 }
+
 ul.ui-autocomplete {
-    background:white;
-    width:200px;
+    background: white;
+    width: 200px;
 }
 
 .hide {
-    display:none;
+    display: none;
 }
 
 #pageBody {
-    overflow:auto;
-    margin-left:8%;
+    overflow: auto;
+    margin-left: 8%;
+
 }
 
+#pageBodyTagInfo {
+        overflow: auto;
+    margin-left: 6%;
+    margin-right:15%;
+}
 .inlineProfile {
-    
-    float:left;
+    float: left;
 }
 
 
 #tagsManaging {
-    
-    width:335px;
+    width: 335px;
 }
 
 #nearProfile {
-    margin-left:5%;
-    width:70%;
-   
+    margin-left: 5%;
+    width: 70%;
 }
 
 #tabs {
-    height:30px;
+    height: 30px;
 }
 
-#tabs .userManagingTab {
-     background: #fffefe;
-    margin: 2px 2px 2px 0;
-    padding: 3px 7px 4px 6px;
-    border: 1px solid #e1ecf4;
-    border-bottom: 0px;
-    
-    margin-left:10px;
-}
+    #tabs .userManagingTab {
+        background: #fffefe;
+        margin: 2px 2px 2px 0;
+        padding: 3px 7px 4px 6px;
+        border: 1px solid #e1ecf4;
+        border-bottom: 0px;
+        margin-left: 10px;
+    }
 
-#tabs .userManagingTab:hover {
-    cursor:pointer;
-    background: #ff6a00;
-}
+        #tabs .userManagingTab:hover {
+            cursor: pointer;
+            background: #ff6a00;
+        }
 
-#tagsManaging {    top: 0px;
+#tagsManaging {
+    top: 0px;
     left: 0px;
 }
 
@@ -416,95 +416,133 @@ a {
 
 
 .editDocumentLink {
-    font-family:sans-serif;
+    font-family: sans-serif;
     font-size: larger;
 }
 
 
-/* unvisited link */
-.editDocumentLink:link {
-    color: #0c65a5;
-     text-decoration:none;
+    /* unvisited link */
+    .editDocumentLink:link {
+        color: #0c65a5;
+        text-decoration: none;
+    }
 
-}
+    /* visited link */
+    .editDocumentLink:visited {
+        color: #0c65a5;
+        text-decoration: none;
+    }
 
-/* visited link */
-.editDocumentLink:visited {
-    color: #0c65a5;
-     text-decoration:none;
-}
+    /* mouse over link */
+    .editDocumentLink:hover {
+        text-decoration: underline;
+    }
 
-/* mouse over link */
-.editDocumentLink:hover {
-    text-decoration:underline;
-}
-
-.editTagLink{
-    font-family:sans-serif;
+.editTagLink {
+    font-family: sans-serif;
     font-size: larger;
 }
-/* unvisited link */
-.editTagLink:link {
-    color: #0c65a5;
-     text-decoration:none;
+    /* unvisited link */
+    .editTagLink:link {
+        color: #0c65a5;
+        text-decoration: none;
+    }
 
-}
+    /* visited link */
+    .editTagLink:visited {
+        color: #0c65a5;
+        text-decoration: none;
+    }
 
-/* visited link */
-.editTagLink:visited {
-    color: #0c65a5;
-     text-decoration:none;
-}
-
-/* mouse over link */
-.editTagLink:hover {
-    text-decoration:underline;
-}
+    /* mouse over link */
+    .editTagLink:hover {
+        text-decoration: underline;
+    }
 
 #tagsManaging h2 {
-    font-family:Arial;
-    text-decoration:none;
-        font-size: 19px;
-        font-weight:400;
-        color:#222426;
+    font-family: Arial;
+    text-decoration: none;
+    font-size: 19px;
+    font-weight: 400;
+    color: #222426;
 }
 
 #documentsManaging h2 {
-    font-family:Arial;
-    text-decoration:none;
-        font-size: 19px;
-        font-weight:400;
-        color:#222426;
+    font-family: Arial;
+    text-decoration: none;
+    font-size: 19px;
+    font-weight: 400;
+    color: #222426;
 }
 
 .usernameLabel {
-
-     color:#222426;
+    color: #222426;
 }
 
-.ButtonAsLink{
-   background-color:transparent;
-   border:none;
-   color:#222426;
-   cursor:pointer;
-   text-decoration:underline;
-   font-weight:bold;
-   padding: 0px;
- }
+.ButtonAsLink {
+    background-color: transparent;
+    border: none;
+    color: #222426;
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: bold;
+    padding: 0px;
+}
 
 #pageBody {
-    margin-left:3%;
+    margin-left: 3%;
 }
 
-.linkVoteUp{
-   margin-left:30px;
+.linkVoteUp {
+    margin-left: 30px;
     background: no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflfn2jz6.webp) -504px -142px;
     background-size: auto;
     width: 20px;
     height: 20px;
-
+    cursor: pointer;
 }
 
 .labelVote {
-    margin-left:30px;
+    margin-left: 30px;
+}
+
+.labelViews {
+    margin-left: 20px;
+    font-size: 13px;
+    color: gray;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 20px;
+}
+
+.inline {
+    display:inline;
+}
+
+
+
+#containerTagInfo{
+    font-family:sans-serif;
+}
+
+#containerTagDescription{
+    font-family:sans-serif;
+}
+
+h2 {
+    font-family:sans-serif;
+    font-weight:500;
+    color: #444;
+    font-size:large;
+}
+
+#h2TagInfo{
+    font-family:sans-serif;
+    font-weight:500;
+    color: #444;
+    font-size:x-large;
+}
+
+#labelTag {
+    color:gray;
+    text-decoration:underline;
 }

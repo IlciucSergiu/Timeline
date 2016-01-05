@@ -731,6 +731,8 @@
     <Content Include="Account\Web.config" />
     <Content Include="LoginUser.aspx" />
     <Content Include="SignUpUser.aspx" />
+    <Content Include="TagInfo.aspx" />
+    <Content Include="TagsMap.aspx" />
     <Content Include="UserManaging.aspx" />
     <Content Include="WebFormTimeline.aspx" />
     <Content Include="MySecondTry1\css\.DS_Store" />
@@ -971,6 +973,20 @@
       <DependentUpon>SignUpUser.aspx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="TagInfo.aspx.cs">
+      <DependentUpon>TagInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TagInfo.aspx.designer.cs">
+      <DependentUpon>TagInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TagsMap.aspx.cs">
+      <DependentUpon>TagsMap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TagsMap.aspx.designer.cs">
+      <DependentUpon>TagsMap.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UserManaging.aspx.cs">
       <DependentUpon>UserManaging.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
