@@ -75,7 +75,7 @@ namespace MyTimelineASPTry
 
         string userId, itemId;
         public bool setDate = false, showEssential = false;
-        string gender, scope, cancelRequest, saveId;
+        string scope, cancelRequest, saveId;
 
 
         protected void buttonSubmit_Click(object sender, EventArgs e)

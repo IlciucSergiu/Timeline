@@ -73,7 +73,7 @@ namespace MyTimelineASPTry
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string password { get; set; }
-        public string email { get; set; }
+        public string email { get; set; } 
         public string gender { get; set; }
         public string salt { get; set; }
 
@@ -97,7 +97,7 @@ namespace MyTimelineASPTry
         public DateTime dateAdded { get; set; }
         //public BsonArray childrenNames { get; set;}
         public BsonArray documentsBelonging { get; set; }
-        public BsonArray tagSynonyms { get; set; }
+
        
     }
 
