@@ -9,20 +9,14 @@
     <link rel="stylesheet" href="MySecondTry1/css/jquery-ui-1.10.3.custom.css" type="text/css" />
     <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css" />
     <link rel="stylesheet" href="MySecondTry1/timeglider/timeglider.datepicker.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="MySecondTry1/css/MyTimeline.css" />
-    <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
-
-
-
-
-
-
+   <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
+    
 </head>
 <body id="background">
-    <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+   
+     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/testSergiu.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/AddData.js"></script>
-
     <form runat="server" id="mainForm">
         <div id="header">
             <!-- <h1 class="inHeader" id="bigTitle" >MyTry</h1> -->
@@ -70,12 +64,13 @@
 
 
                 if (jsonString != "") {
-                    //alert(jsonString);
+                    alert(jsonString);
+                    alert("welcome");
                     var jsonData = JSON.parse(jsonString);
-
+                   
                     var tg1 = $("#placement").timeline({
 
-                        "data_source": jsonData, //"MySecondTry1/json/sergiu3.json",
+                        "data_source": /*jsonData, */ "MySecondTry1/json/sergiu3.json",
                         "min_zoom": 15,
                         "max_zoom": 60
                     }
