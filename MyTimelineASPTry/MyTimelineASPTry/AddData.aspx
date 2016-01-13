@@ -48,12 +48,12 @@
 
             <div id="datesPosition">
                 <p>
-                    Date of birth:
+                  Start date :
                 <input type="text" class="datepicker" id="dateBirth" runat="server" placeholder="yyyy-mm-dd" />
                 </p>
                 &nbsp;&nbsp;&nbsp;
          <p >
-             Date of death
+             End date :
              <input type="text" class="datepicker" id="dateDeath" runat="server"  placeholder="yyyy-mm-dd"/>
          </p>
                 &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" class="checkContemporary" /><br />

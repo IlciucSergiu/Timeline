@@ -51,13 +51,21 @@ namespace MyTimelineASPTry
              BsonArray parentTags = new BsonArray();
              parentTags.Add(parentTag);
 
+            BsonArray tagSynonyms = new BsonArray();
+            foreach (string tagSynonym in textBoxSynonyms.Text.Split(';'))
+            {
+                if (tagSynonym.Length > 2)
+                    tagSynonyms.Add(tagSynonym);
+            }
 
-             try {
+
+            try {
                  var update = Builders<TagsCollection>.Update
                 .Set("tagName", textBoxTagName.Text.ToLower())
                 .Set("parentTags", parentTags)
                 .Set("relativeImportance", textBoxRelativeImportance.Value.ToString())
                 .Set("description", textBoxTagShortDescription.Text)
+                .Set("tagSynonyms", tagSynonyms)
                 .Set("tagInfo", CKEditorInformation.Text);
 
 
@@ -90,6 +98,10 @@ namespace MyTimelineASPTry
                 textBoxRelativeImportance.Value = documents.relativeImportance.ToString();
                 textBoxTagShortDescription.Text = documents.description;
                 CKEditorInformation.Text = documents.tagInfo;
+
+                if(documents.tagSynonyms != null)
+                foreach (string synonym in documents.tagSynonyms)
+                    textBoxSynonyms.Text += synonym + ";";
 
             }
             else

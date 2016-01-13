@@ -12,15 +12,11 @@
     <link rel="stylesheet" type="text/css" href="MySecondTry1/css/MyTimeline.css" />
     <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
 
-
-
-
-
-
 </head>
+
 <body id="background">
+    
     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="MySecondTry1/js/testSergiu.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/AddData.js"></script>
 
     <form runat="server" id="mainForm">
@@ -38,24 +34,55 @@
             <asp:LinkButton ID="linkButtonLogout" runat="server" CssClass="linkLogout" OnClick="linkButtonLogout_Click" Visible="False">Logout</asp:LinkButton>
 
 
-
-
-
-
-
-
-
-
-        </div>
+  </div>
 
 
 
         <div id='placement' style="height: 400px"></div>
 
 
+        
+       
 
 
         <script>
+            
+            
+
+             $(document).ready(function () {
+                 
+                 
+                 jsonString = '<%=jsonData%>';
+                 
+                 if (jsonString != "") {
+                    // alert(jsonString);
+                  
+
+                  
+
+                tg1 = $("#placement").timeline({
+
+                    "data_source": JSON.parse(jsonString),
+                        "min_zoom": 15,
+                        "max_zoom": 60
+                    }
+                    );
+
+              
+
+                 }
+
+                  // if ('<%=setDate%>' == "True") {
+                 //   alert(document.getElementById('hiddenFieldStartDate').value);
+                 //    var timelineClone = tg1.data("timeline");
+                 //   timelineClone.goTo(document.getElementById('hiddenFieldStartDate').value.toString());
+                       
+                 //  }
+
+                if ('<%=showIndividual%>' == "True")
+                    $("#individualInfo").css("display", "block");
+
+             });
 
             function UpdHidCriteria(criteria) {
                 // alert(criteria);
@@ -66,32 +93,7 @@
 
             var tg1;
 
-            $(document).ready(function () {
-
-
-                //if (jsonString != "") {
-                //alert(jsonString);
-
-
-                tg1 = $("#placement").timeline({
-
-                    "data_source": JSON.parse('<%=jsonData%>'.toString()),
-                        "min_zoom": 15,
-                        "max_zoom": 60
-                    }
-                    );
-
-               // if ('<%=setDate%>' == "True") {
-                 //   alert(document.getElementById('hiddenFieldStartDate').value);
-                 //    var timelineClone = tg1.data("timeline");
-                 //   timelineClone.goTo(document.getElementById('hiddenFieldStartDate').value.toString());
-                       
-                  //  }
-
-                // }
-                if ('<%=showIndividual%>' == "True")
-                    $("#individualInfo").css("display", "block");
-            });
+           
 
             $(function () {
                 $("#linkVoteUp").click(function (e) {
@@ -161,7 +163,7 @@
         </script>
 
 
-        <script src="MySecondTry1/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
+         <script src="MySecondTry1/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
 
         <script src="MySecondTry1/js/underscore-min.js" type="text/javascript" charset="utf-8"></script>
         <script src="MySecondTry1/js/backbone-min.js" type="text/javascript" charset="utf-8"></script>

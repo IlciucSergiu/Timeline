@@ -4,6 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    
     <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
     <title></title>
 </head>
@@ -15,6 +16,9 @@
 
             <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail"  CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
         </div>
+        <script>
+            
+        </script>
     <div>
     <asp:treeview runat="server" ID="treeViewTagsMap" ></asp:treeview>
     </div>

@@ -30,8 +30,9 @@ namespace MyTimelineASPTry
         public string image { get; set; }
         public string importance { get; set; }
         public BsonArray tags { get; set; }
+        public DateTime dateAdded { get; set; }
 
-       
+
     }
 
     public class IndividualData
@@ -76,6 +77,10 @@ namespace MyTimelineASPTry
         public string email { get; set; } 
         public string gender { get; set; }
         public string salt { get; set; }
+        public DateTime dateSigned { get; set; }
+
+        public string emailVerification { get; set; }
+        public bool emailVerified { get; set; }
 
         public string image { get; set; }
         public int reputation { get; set; }
@@ -95,6 +100,8 @@ namespace MyTimelineASPTry
         public string description { get; set; }
         public string tagInfo { get; set; }
         public DateTime dateAdded { get; set; }
+        public BsonArray tagSynonyms { get; set; }
+        
         //public BsonArray childrenNames { get; set;}
         public BsonArray documentsBelonging { get; set; }
 

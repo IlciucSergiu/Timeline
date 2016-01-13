@@ -83,7 +83,7 @@ namespace MyTimelineASPTry
             await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\""
                 + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
                 + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                + 50 + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+                + 50 + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
                 + d.link + "\",\"image\" : \"" + d.image + "\"},");
             //await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
@@ -97,6 +97,7 @@ namespace MyTimelineASPTry
          "\"events\":[" + jsString.TrimEnd(',') + "]" +
      "}]";
 
+            
         }
 
         static string endDate(string date)
@@ -448,7 +449,18 @@ namespace MyTimelineASPTry
 
 
 
+        public string ReplaceToHTML(string text)
+        {
+            string[] plainChar = new string[] { "\"", "'"};
+            string[] HTMLChar = new string[] { "", "" };
 
+            for (int i = 0; i < plainChar.Length; i++)
+            {
+                text = text.Replace(plainChar[i], HTMLChar[i]);
+            }
+
+            return text;
+        }
 
 
         [WebMethod]

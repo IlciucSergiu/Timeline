@@ -38,6 +38,22 @@ function AddTagItem() {
     
 }
 
+
+
+
+//function ReplaceSpecialChar(text) {
+
+//   var plainChar = [ "\"", "'", "&" ];
+//    var HTMLChar = [ "<q>", "&#39;", "&amp;" ];
+
+//    for (i = 0; i < plainChar.length; i++)
+//    {
+//        text = text.replace(plainChar[i], HTMLChar[i]);
+//    }
+
+//    return text;
+//}
+
 function VerifyIfInList() {
 
     var response = true;

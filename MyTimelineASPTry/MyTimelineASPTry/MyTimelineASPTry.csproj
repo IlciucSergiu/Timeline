@@ -165,6 +165,7 @@
   <ItemGroup>
     <Content Include="AddNewTag.aspx" />
     <Content Include="EditTag.aspx" />
+    <Content Include="EmailVerification.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="MySecondTry1\timeglider\img\11.jpg" />
     <Content Include="Account\AddPhoneNumber.aspx" />
@@ -947,6 +948,13 @@
     </Compile>
     <Compile Include="EditTag.aspx.designer.cs">
       <DependentUpon>EditTag.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EmailVerification.aspx.cs">
+      <DependentUpon>EmailVerification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EmailVerification.aspx.designer.cs">
+      <DependentUpon>EmailVerification.aspx</DependentUpon>
     </Compile>
     <Compile Include="Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>

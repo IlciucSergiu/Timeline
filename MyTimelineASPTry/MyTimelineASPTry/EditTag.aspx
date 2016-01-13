@@ -19,6 +19,9 @@
         <p>To see all tags added until now click <a href="TagsMap.aspx">here</a></p>
         <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" Height="24px" Width="178px"></asp:TextBox>
          <br />
+         <p>Short description</p>
+        <asp:TextBox ID="textBoxTagShortDescription" TextMode="MultiLine" runat="server" Height="86px" Width="279px"></asp:TextBox>
+       
         <br />
         <p>This tag needs to be appended to a parent tag</p>
         <asp:TextBox ID="textBoxParentName" runat="server" Width="187px" placeholder="parent"></asp:TextBox>
@@ -32,9 +35,12 @@
         </p>
         
          <br />
-        <p>Short description</p>
-        <asp:TextBox ID="textBoxTagShortDescription" TextMode="MultiLine" runat="server" Height="86px" Width="279px"></asp:TextBox>
        
+         <p>Add synonyms for this tag, these will be usefull for searching.(separate with ';')</p>
+         <asp:TextBox ID="textBoxSynonyms" runat="server" Width="363px"></asp:TextBox>
+        
+         <br />
+
         <hr />
        
         <br />
