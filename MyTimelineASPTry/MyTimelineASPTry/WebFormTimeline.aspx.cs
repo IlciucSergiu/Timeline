@@ -23,8 +23,8 @@ namespace MyTimelineASPTry
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
+           CKEditorFeedback.Toolbar =  CKEditorFeedback.ToolbarBasic;
+           
             if (Session["userLogged"] != null)
                 if (Session["userLogged"].ToString() == "True")
                 {
@@ -308,7 +308,7 @@ namespace MyTimelineASPTry
                 await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
                     + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
                     + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                    + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+                    + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
                     + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
 
@@ -342,7 +342,7 @@ namespace MyTimelineASPTry
             await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
                 + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
                 + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                + GetImportance(d.tags, searchQuery) + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+                + GetImportance(d.tags, searchQuery) + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
                 + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
             // await collection.Find(filter).ForEachAsync(d => jsString += GetImportance(d.tags,searchQuery));

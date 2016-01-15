@@ -194,7 +194,7 @@ h3 {
 
 
 #individualInfo {
-    display: none;
+    /*display: none;*/
     margin-left: 7%;
 }
 
@@ -545,4 +545,22 @@ h2 {
 #labelTag {
     color:gray;
     text-decoration:underline;
+}
+.profileImage {
+    max-width: 190px;
+    height: auto;
+    max-height: 250px;
+}
+
+#improvePage {
+    margin-left: 70%;
+}
+#feedbackMessage {
+    margin-left: 60px;
+}
+
+.buttonSendFeedback {
+
+    margin-left: 725px;
+    margin-top: 3px;
 }

@@ -229,6 +229,24 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl additionalLinks;
         
         /// <summary>
+        /// CKEditorFeedback control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CKEditor.NET.CKEditorControl CKEditorFeedback;
+        
+        /// <summary>
+        /// buttonSendFeedback control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonSendFeedback;
+        
+        /// <summary>
         /// linkButtonContact control.
         /// </summary>
         /// <remarks>

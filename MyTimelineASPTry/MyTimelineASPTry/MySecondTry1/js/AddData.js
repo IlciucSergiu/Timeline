@@ -3,13 +3,20 @@
 function AddTagItem() {
 
     $(".verifyTag").text("");
-    VerifyIfInList();
+   // VerifyIfInList();
     if (VerifyTagItem() && VerifyIfInList()) {
         if ($("#inputImportanceTag").val() != "") {
             // alert($("#inputImportanceTag").val());
             var tagName = $(".textBoxAddTag").val().toString().toLowerCase();
             $(".textBoxAddTag").val(null);
             var tagImportance = $("#inputImportanceTag").val();
+
+            //alert("here");
+            var documentId = $("#hiddenId").val();
+            //alert(documentId);
+
+            InsertInTagCollection(tagName,documentId,tagImportance);
+
             $("#inputImportanceTag").val(null);
             try {
                 var tagValue = tagName + "-" + tagImportance.toString();
@@ -38,21 +45,68 @@ function AddTagItem() {
     
 }
 
+function InsertInTagCollection(tagName,documentId,relativeImportance) {
+
+    //alert(userId1);
+
+    try {
+        var dataValue = { documentId: documentId, tagName: tagName, relativeImportance: relativeImportance };
+       alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "AddData.aspx/InsertInTagCollection",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+               alert("We returned: " + result.d);
+                if (result.d == "worked") {
+                 
+                }
+               
+            }
+        });
+    }
+    catch (e) {
+        alert("Error" + e.message);
+    }
+}
 
 
+function RemoveInTagCollection(tagName, documentId) {
 
-//function ReplaceSpecialChar(text) {
+    //alert(userId1);
 
-//   var plainChar = [ "\"", "'", "&" ];
-//    var HTMLChar = [ "<q>", "&#39;", "&amp;" ];
+    try {
+        var dataValue = { documentId: documentId, tagName: tagName};
+        alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "AddData.aspx/RemoveInTagCollection",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                alert("We returned: " + result.d);
+                
 
-//    for (i = 0; i < plainChar.length; i++)
-//    {
-//        text = text.replace(plainChar[i], HTMLChar[i]);
-//    }
-
-//    return text;
-//}
+            }
+        });
+    }
+    catch (e) {
+        alert("Error" + e.message);
+    }
+}
 
 function VerifyIfInList() {
 
@@ -182,6 +236,14 @@ $(function () {
 
 
     $('#buttonRemoveTags').click(function () {
+        if ($(".listBoxTags option:selected").text() != "") {
+        var documentId = $("#hiddenId").val();
+        alert(documentId);
+        var tagName = $(".listBoxTags option:selected").text().split(' ')[0];
+        alert(tagName + "   " + documentId);
+
+        RemoveInTagCollection(tagName, documentId)
+
         $(".listBoxTags option:selected").remove();
         var listString = "";
         $(".listBoxTags option").each(function () {
@@ -191,7 +253,12 @@ $(function () {
         });
         // alert(listString);
         UpdHidTag(listString);
-    });
+        }
+        else {
+            $(".verifyTag").text("No tag was selected.");
+        }
+    }
+    );
 
     $('#buttonRemoveLinks').click(function () {
         $(".listBoxLinks option:selected").remove();
@@ -245,6 +312,10 @@ $(function () {
         }
     });
 
+    $(".textBoxImageLink").on('blur', function () {
+        alert($(".textBoxImageLink").val());
+        $(".documentImage").attr("src", $(".textBoxImageLink").val())
+    });
 
     $(".textBoxSearchQuery").on('keydown keypress focus', function () {
         try {
@@ -419,25 +490,7 @@ function VerifyTagExistence( tagName) {
         success: function (result) {
 
             response = result.d;
-           // var availableTags = result.d.split("{;}");
-           // alert(result.d);
-
-            //if (availableTags != "") {
-            //    //alert("asdf");
-            //    if ($.inArray($(".textBoxAddTag").val(), availableTags) != -1) {
-            //        // alert($.inArray($(".textBoxAddTag").val(), availableTags));
-
-            //        response = true;
-            //    }
-            //    else {
-            //        $(".verifyTag").text("This tag does not exist!");
-            //    }
-
-            //}
-            //else {
-            //    $(".verifyTag").text("This tag does not exist!");
-            //    response = false;
-            //}
+           
 
         }
     });

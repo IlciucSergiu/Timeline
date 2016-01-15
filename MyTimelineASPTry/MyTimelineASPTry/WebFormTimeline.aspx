@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebFormTimeline.aspx.cs" Inherits="MyTimelineASPTry.WebFormTimeline" Async="true" %>
+<%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>
 
 <!DOCTYPE html>
 
@@ -207,7 +208,7 @@
         <div id="individualInfo">
 
             <div id="divEssentialInfo" class="imageInline">
-                <asp:Image ID="imageProfile" runat="server" Height="209px" Width="183px" />
+                <asp:Image ID="imageProfile" runat="server" CssClass="profileImage" />
             </div>
             <div class="imageInline" id="labelsInfo">
                 <asp:Label ID="labelName" runat="server" CssClass="essentialLabels" Width="300px" Font-Size="X-Large"></asp:Label><br />
@@ -220,7 +221,7 @@
                 &nbsp;&nbsp; <a href="#" class="linkVoteDown">vote down</a><br />
                 <asp:Label ID="labelVote" runat="server" Text="voting status" CssClass="hide labelVote"></asp:Label>
                 <br />
-
+                
                 <div id="divTags" runat="server" class="essentialLabels">
                 </div>
 
@@ -242,6 +243,17 @@
                 <div id="additionalLinks" runat="server">
                 </div>
 
+                <a href="#" id="improvePage" title="Send feeback to the editor and propose improvements.">Improve this page</a>
+
+                <div id="feedbackMessage">
+                    <h2>Help the editor by sending usefull information, tips or resources.</h2>
+                   <div id="ckEditorFeedback">
+            <CKEditor:CKEditorControl ID="CKEditorFeedback" BasePath="/ckeditor/" runat="server" Height="200" Width="800" ></CKEditor:CKEditorControl>
+                       <asp:Button ID="buttonSendFeedback" runat="server" Text="Send" Height="33px" Width="75px" CssClass="buttonSendFeedback" />
+        </div>
+                    
+
+                </div><br /><br />
             </div>
 
         </div>

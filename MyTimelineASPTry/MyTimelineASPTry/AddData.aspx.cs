@@ -26,6 +26,7 @@ namespace MyTimelineASPTry
 
             if (scope == "modify")
             {
+                hiddenId.Value = itemId;
                 InitializeItem(userId, itemId);
             }
 
@@ -113,7 +114,7 @@ namespace MyTimelineASPTry
                 else
                     endDate = dateDeath.Value;
                 saveId = textBoxCompleteName.Text.ToLower().Replace(" ", "_");//firstName.Text.ToLower() + "_" + lastName.Text.ToLower();
-                Response.Write(saveId);
+                //Response.Write(saveId);
                 ViewState["itemId"] = saveId;
 
                 BsonArray separatedNames = new BsonArray();
@@ -272,7 +273,7 @@ namespace MyTimelineASPTry
             ViewState["dateBirth"] = dateBirth.Value;
             dateDeath.Value = documents.enddate;
             ViewState["dateDeath"] = dateDeath.Value;
-            Response.Write(dateBirth.Value);
+            //Response.Write(dateBirth.Value);
 
           
             textBoxDescription.Text = documents.description;
@@ -280,6 +281,7 @@ namespace MyTimelineASPTry
             //inputImportance.Value = documents.importance;
             textBoxLink.Text = documents.link;
             textBoxImage.Text = documents.image;
+            imageDocument.ImageUrl = documents.image;
             // textBoxProfession.Text = documents.profession;
             //textBoxNationality.Text = documents.nationality;
             // textBoxReligion.Text = documents.religion;
@@ -661,6 +663,8 @@ namespace MyTimelineASPTry
             listBoxTags.Items.Add(textBoxTagName.Text + " " + inputImportanceTag.Value);
         }
 
+       
+
         protected void buttonSearchTag_Click(object sender, EventArgs e)
         {
 
@@ -677,6 +681,8 @@ namespace MyTimelineASPTry
 
             collection.Find(filter).ForEachAsync(d => Response.Write(d.tagName.ToString()));
         }
+
+       
 
         [WebMethod]
         public static string FindTagOptions(string inputValue)
@@ -698,8 +704,116 @@ namespace MyTimelineASPTry
 
         }
 
+        [WebMethod]
+        public static string InsertInTagCollection(string tagName, string documentId, int relativeImportance)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
 
-       public string ReplaceToHTML( string text)
+
+            var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
+
+       var filter = Builders<DocumentInfo>.Filter.Regex("id", new BsonRegularExpression(documentId));
+
+            DocumentInfo documentInfo = new DocumentInfo();
+            collectionDocument.Find(filter).ForEachAsync(d => {
+                documentInfo._id = d._id;
+                documentInfo.name = d.name;
+                documentInfo.id = d.id;
+                
+                }).Wait();
+
+            // introduc inregistrarea tagului in document
+            BsonDocument tagDocument = new BsonDocument {
+
+                        { "tagName", tagName },
+                        { "tagImportance", relativeImportance }
+                 };
+
+            var updateDocument = Builders<DocumentInfo>.Update
+                    .Push(p => p.tags, tagDocument);
+
+            collectionDocument.UpdateOneAsync(filter, updateDocument).Wait();
+
+
+
+            var collectionTags = db.GetCollection<TagsCollection>("Tags");
+
+            BsonDocument documentsBelonging = new BsonDocument()
+            {
+
+                { "_id", documentInfo._id },
+                { "id", documentInfo.id },
+                { "documentName", documentInfo.name },
+                { "relativeImportance", relativeImportance}
+
+            };
+
+           
+
+            
+
+            var filterTag = Builders<TagsCollection>.Filter.Regex("tagName", tagName);
+            var updateTag = Builders<TagsCollection>.Update
+                   // .Inc("votes", 1)
+                    .Push(p => p.documentsBelonging, documentsBelonging);
+
+                collectionTags.UpdateOneAsync(filterTag, updateTag).Wait();
+                
+            
+
+            return "True";
+
+        }
+
+
+        [WebMethod]
+        public static string RemoveInTagCollection(string tagName, string documentId)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+
+            var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
+
+            var filter = Builders<DocumentInfo>.Filter.Regex("id", new BsonRegularExpression(documentId));
+
+            DocumentInfo documentInfo = new DocumentInfo();
+            collectionDocument.Find(filter).ForEachAsync(d => {
+                documentInfo._id = d._id;
+                documentInfo.name = d.name;
+                documentInfo.id = d.id;
+
+            }).Wait();
+
+
+            // sterg inregistrarea tagului din document
+         var updateDocument = Builders<DocumentInfo>.Update
+                    .Pull(p => p.tags, new BsonDocument(){
+    { "tagName", tagName } } );
+
+            collectionDocument.UpdateOneAsync(filter, updateDocument).Wait();
+
+
+            // sterg inregistrarea din  tag
+            var collectionTags = db.GetCollection<TagsCollection>("Tags");
+
+
+            var filterTag = Builders<TagsCollection>.Filter.Regex("tagName", tagName);
+            var updateTag = Builders<TagsCollection>.Update
+
+                    .Pull(p => p.documentsBelonging, new BsonDocument(){
+    { "_id", documentInfo._id } });
+
+            collectionTags.UpdateOneAsync(filterTag, updateTag).Wait();
+
+
+
+            return "Deleted";
+
+        }
+
+        public string ReplaceToHTML( string text)
         {
             string[] plainChar = new string[] { "\"", "'", "&" };
             string[] HTMLChar = new string[] { "<q>", "&#39;", "&amp;" };
