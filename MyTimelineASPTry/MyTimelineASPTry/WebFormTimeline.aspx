@@ -52,8 +52,7 @@
 
         <script>
 
-            // Can also be used with $(document).ready()
-
+           
 
             $(document).ready(function () {
 
