@@ -11,12 +11,11 @@
     <link rel="stylesheet" href="MySecondTry1/css/jquery-ui-1.10.3.custom.css" type="text/css" />
     <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css" />
     <link rel="stylesheet" href="MySecondTry1/timeglider/timeglider.datepicker.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="MySecondTry1/css/MyTimeline.css" />
     <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
 
 
 
-    <link href="Scripts/imageSlider5/js-image-slider.css" rel="stylesheet" />
+
 
 
 </head>
@@ -25,7 +24,6 @@
 
     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/AddData.js"></script>
-
     <form runat="server" id="mainForm">
         <div id="header">
 
@@ -70,11 +68,17 @@
 
                     tg1 = $("#placement").timeline({
 
-                        "data_source": JSON.parse(jsonString),
+                if (jsonString != "") {
+                    //alert(jsonString);
+                    var jsonData = JSON.parse(jsonString);
+
+                    var tg1 = $("#placement").timeline({
+
+                        "data_source": jsonData, //"MySecondTry1/json/sergiu3.json",
                         "min_zoom": 15,
                         "max_zoom": 60
                     }
-                        );
+                );
 
 
 
@@ -187,25 +191,25 @@
         <div id="scripts">
 
 
-            <script src="MySecondTry1/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
 
-            <script src="MySecondTry1/js/underscore-min.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/js/backbone-min.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/js/json2.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/js/jquery.tmpl.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/js/ba-tinyPubSub.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/js/jquery.mousewheel.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/js/jquery.ui.ipad.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/js/globalize.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/js/ba-debug.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/js/underscore-min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/js/backbone-min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/js/json2.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/js/jquery.tmpl.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/js/ba-tinyPubSub.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/js/jquery.mousewheel.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/js/jquery.ui.ipad.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/js/globalize.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/js/ba-debug.min.js" type="text/javascript" charset="utf-8"></script>
 
-            <script src="MySecondTry1/timeglider/TG_Date.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/timeglider/TG_Org.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/timeglider/TG_Timeline.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/timeglider/TG_TimelineView.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/timeglider/TG_Mediator.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/timeglider/timeglider.timeline.widget.js" type="text/javascript" charset="utf-8"></script>
-            <script src="MySecondTry1/timeglider/timeglider.datepicker.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/timeglider/TG_Date.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/timeglider/TG_Org.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/timeglider/TG_Timeline.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/timeglider/TG_TimelineView.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/timeglider/TG_Mediator.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/timeglider/timeglider.timeline.widget.js" type="text/javascript" charset="utf-8"></script>
+        <script src="MySecondTry1/timeglider/timeglider.datepicker.js" type="text/javascript" charset="utf-8"></script>
         </div>
         <asp:Label ID="labelTime" runat="server" Text="Time" Visible="False"></asp:Label>
 
@@ -258,8 +262,8 @@
                 </div>
 
                 <div id="additionalResources">
-                    <h3>Additional resources</h3>
-                    <hr />
+                <h3>Additional resources</h3>
+                <hr />
                     <a id="images">Images</a>
                     <a id="videos">Videos</a>
                     <a id="books">Books</a>
@@ -281,10 +285,10 @@
                 </div>
 
                 <div id="relatedPages">
-                    <h3>Related pages</h3>
-                    <hr />
-                    <div id="additionalLinks" runat="server">
-                    </div>
+                <h3>Related pages</h3>
+                <hr />
+                <div id="additionalLinks" runat="server">
+                </div>
                 </div>
 
                 <a id="improvePage" title="Send feeback to the editor and propose improvements.">Improve this page</a>
@@ -297,7 +301,7 @@
                     </div>
 
 
-                </div>
+            </div>
 
                 <br />
                 <br />
