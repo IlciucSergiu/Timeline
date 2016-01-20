@@ -50,9 +50,10 @@
 
 
 
-        <script>
+      <script>
 
-           
+            // Can also be used with $(document).ready()
+
 
             $(document).ready(function () {
 
@@ -67,17 +68,11 @@
 
                     tg1 = $("#placement").timeline({
 
-                if (jsonString != "") {
-                    //alert(jsonString);
-                    var jsonData = JSON.parse(jsonString);
-
-                    var tg1 = $("#placement").timeline({
-
-                        "data_source": jsonData, //"MySecondTry1/json/sergiu3.json",
+                        "data_source": JSON.parse(jsonString),
                         "min_zoom": 15,
                         "max_zoom": 60
                     }
-                );
+                        );
 
 
 
