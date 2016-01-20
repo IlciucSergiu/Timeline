@@ -64,6 +64,13 @@ namespace MyTimelineASPTry
         public int votes { get; set; }
 
         public BsonArray alreadyVoted { get; set; }
+
+        public BsonArray documentFeedback { get; set; }
+
+        public BsonArray videoLinks { get; set; }
+
+        public BsonArray imagesLinks { get; set; }
+
     }
 
     public class UserData

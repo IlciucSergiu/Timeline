@@ -495,7 +495,7 @@ a {
 
 .linkVoteUp {
     margin-left: 30px;
-    background: no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflfn2jz6.webp) -504px -142px;
+    /*background: no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflfn2jz6.webp) -504px -142px;*/
     background-size: auto;
     width: 20px;
     height: 20px;
@@ -552,15 +552,58 @@ h2 {
     max-height: 250px;
 }
 
+
+.imageProfile {
+     max-width: 190px;
+    height: auto;
+    max-height: 250px;
+}
+
 #improvePage {
     margin-left: 70%;
+
 }
 #feedbackMessage {
-    margin-left: 60px;
+    display:none;
+    margin-left: 20px;
 }
 
 .buttonSendFeedback {
 
     margin-left: 725px;
     margin-top: 3px;
+}
+
+#divDocumentFeedback {
+    float:left;
+    clear:left;
+    margin-left:3%;
+    
+}
+
+a:hover {
+    cursor:pointer;
+}
+
+#feedbackShow {
+    cursor:pointer;
+}
+.divDocumentFeedback {
+    font-family:sans-serif;
+    /*border:0.5px solid black;*/
+
+    
+}
+
+.slideImage {
+
+    
+    width:60%;
+    /*max-height: 500px;
+    min-height:500px;*/
+}
+
+.documentSlideshow {
+    margin-left:5%;
+    margin-top:3%;
 }

@@ -734,6 +734,26 @@
     <Content Include="Account\Web.config" />
     <Content Include="LoginUser.aspx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="image-slider.slider\deep-minified.html" />
+    <Content Include="image-slider.slider\img\002.jpg" />
+    <Content Include="image-slider.slider\img\003.jpg" />
+    <Content Include="image-slider.slider\img\004.jpg" />
+    <Content Include="image-slider.slider\img\005.jpg" />
+    <Content Include="image-slider.slider\img\006.jpg" />
+    <Content Include="image-slider.slider\img\007.jpg" />
+    <Content Include="image-slider.slider\img\008.jpg" />
+    <Content Include="image-slider.slider\img\009.jpg" />
+    <Content Include="image-slider.slider\img\010.jpg" />
+    <Content Include="image-slider.slider\img\011.jpg" />
+    <Content Include="image-slider.slider\img\a02.png" />
+    <Content Include="image-slider.slider\img\icon_chrome.png" />
+    <Content Include="image-slider.slider\img\loading.gif" />
+    <Content Include="image-slider.slider\js\jquery-1.9.1.min.js" />
+    <Content Include="image-slider.slider\js\jssor.slider.debug.js" />
+    <Content Include="image-slider.slider\js\jssor.slider.min.js" />
+    <Content Include="image-slider.slider\js\jssor.slider.mini.js" />
+    <Content Include="image-slider.slider\no-jquery.html" />
+    <Content Include="image-slider.slider\with-jquery.html" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="SignUpUser.aspx" />
@@ -1020,7 +1040,9 @@
       <DependentUpon>WebFormTimeline.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\jsImgSlider\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

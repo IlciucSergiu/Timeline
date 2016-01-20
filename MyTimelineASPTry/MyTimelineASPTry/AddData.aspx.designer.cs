@@ -310,6 +310,24 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.LinkButton linkButtonEdit;
         
         /// <summary>
+        /// labelFeedbackNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelFeedbackNumber;
+        
+        /// <summary>
+        /// feedbackContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl feedbackContent;
+        
+        /// <summary>
         /// CKEditorInformation control.
         /// </summary>
         /// <remarks>
@@ -353,6 +371,24 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+        
+        /// <summary>
+        /// textBoxVideoId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBoxVideoId;
+        
+        /// <summary>
+        /// textBoxLinksImages control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBoxLinksImages;
         
         /// <summary>
         /// textBoxAddBooks control.

@@ -43,7 +43,7 @@ namespace MyTimelineASPTry
 
         public static string jsonData { get; set; }
 
-        public string jsString;
+        public string jsString, videoId;
 
         protected void buttonLogin_Click(object sender, EventArgs e)
         {
@@ -69,12 +69,6 @@ namespace MyTimelineASPTry
 
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
-
-
-
-
-
-            //var documents = await collection.Find(new BsonDocument()).FirstAsync();
 
             var filter = Builders<DocumentInfo>.Filter.Eq("name", "Ilciuc"); ;
 
@@ -154,7 +148,7 @@ namespace MyTimelineASPTry
 
 
         public bool showIndividual = false;
-        //string eventId;
+        
         protected void buttonSearchId_Click(object sender, EventArgs e)
         {
             showIndividual = true;
@@ -195,7 +189,7 @@ namespace MyTimelineASPTry
 
             htmlInfo.InnerHtml = "";
             additionalLinks.InnerHtml = "";
-            additionalResources.InnerHtml = "";
+            documentBooks.InnerHtml = "";
 
             if (ItemExists(itemId))
             {
@@ -218,9 +212,9 @@ namespace MyTimelineASPTry
                 if (item.additionalBooks != null)
                     foreach (var book in item.additionalBooks)
                     {
-                        additionalResources.InnerHtml += "<br />" + book.ToString();
+                        documentBooks.InnerHtml += "<br />" + book.ToString();
                     }
-                additionalResources.InnerHtml += "<br /><br />";
+                documentBooks.InnerHtml += "<br /><br />";
 
                 // additionalLinks.InnerHtml = "Additional links";
                 if (item.additionalLinks != null)
@@ -230,6 +224,23 @@ namespace MyTimelineASPTry
 
                     }
                 additionalLinks.InnerHtml += "<br /><br />";
+                
+                if(item.videoLinks != null)
+                { 
+                    documentVideos.Controls.Add(new LiteralControl { Text = "<div  id=\"player\"></div>" });
+                    videoId = item.videoLinks[0].ToString();
+               // Response.Write(item.videoLinks[0].ToString());
+                }
+
+                if (item.imagesLinks != null)
+                {
+                    foreach(string image in item.imagesLinks)
+                 documentSlideshow.Controls.Add(new LiteralControl { Text = "<img  class=\"slideImage\" src=\""+ image + "\"/>" });
+                    
+                    //Response.Write(item.imagesLinks[0].ToString());
+                }
+
+               
 
             }
             sw.Stop();
@@ -619,5 +630,19 @@ namespace MyTimelineASPTry
             
         }
 
+        protected void buttonSendFeedback_Click(object sender, EventArgs e)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+            var collection = db.GetCollection<IndividualData>("IndividualData");
+
+            var filter = Builders<IndividualData>.Filter.Eq("id", hiddenId.Value);
+
+            var update = Builders<IndividualData>.Update
+               .Push( p => p.documentFeedback, CKEditorFeedback.Text);
+
+            collection.UpdateOneAsync(filter, update);
+        }
     }
 }

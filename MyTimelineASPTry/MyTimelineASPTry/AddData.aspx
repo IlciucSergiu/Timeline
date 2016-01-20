@@ -16,9 +16,7 @@
     <link rel="stylesheet" href="/resources/demos/style.css" />
    
     
-    <style type="text/css">
-        .documentImage {}
-    </style>
+   
    
     
 </head>
@@ -188,8 +186,14 @@
                 <asp:LinkButton ID="linkButtonEdit" runat="server" CssClass="linkLabel" OnClick="linkButtonEdit_Click"  OnClientClick="setDate()">edit</asp:LinkButton>
 
             </div>
-            <br />
+            <br /><br /><br /><br />
+            
+            <div id="divDocumentFeedback" >
+                <h2 id="feedbackShow">Feedback <asp:Label ID="labelFeedbackNumber" runat="server" Text="(0)"></asp:Label></h2>
+                <div id="feedbackContent" runat="server" class="hide">
 
+                </div>
+            </div>
         
         <div id="ckEditor">
             <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000" ></CKEditor:CKEditorControl>
@@ -206,6 +210,13 @@
 
             
         </p>
+
+            <p>Insert id of a youtube video or the entire link</p>
+            <asp:TextBox ID="textBoxVideoId" runat="server" Width="296px" ></asp:TextBox>
+            
+
+                <p>Insert links of additional images</p>
+            <asp:TextBox ID="textBoxLinksImages" runat="server" Width="296px" ></asp:TextBox>
             <p>
             
             Title : 
