@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,6 +39,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AspNet.ScriptManager.jQuery, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.2.1.4\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="CKEditor.NET, Version=3.6.6.2, Culture=neutral, PublicKeyToken=e379cdf2f8354999, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Programe\ckeditor_aspnet_3.6.6.2\bin\Release\CKEditor.NET.dll</HintPath>
@@ -77,9 +82,6 @@
     </Reference>
     <Reference Include="AspNet.ScriptManager.bootstrap">
       <HintPath>..\packages\AspNet.ScriptManager.bootstrap.3.0.0\lib\net45\AspNet.ScriptManager.bootstrap.dll</HintPath>
-    </Reference>
-    <Reference Include="AspNet.ScriptManager.jQuery">
-      <HintPath>..\packages\AspNet.ScriptManager.jQuery.1.10.2\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ScriptManager.MSAjax">
       <HintPath>..\packages\Microsoft.AspNet.ScriptManager.MSAjax.5.0.0\lib\net45\Microsoft.ScriptManager.MSAjax.dll</HintPath>
@@ -163,6 +165,7 @@
   <ItemGroup>
     <Content Include="AddNewTag.aspx" />
     <Content Include="EditTag.aspx" />
+    <Content Include="EmailVerification.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="MySecondTry1\timeglider\img\11.jpg" />
     <Content Include="Account\AddPhoneNumber.aspx" />
@@ -730,7 +733,32 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
     <Content Include="LoginUser.aspx" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="image-slider.slider\deep-minified.html" />
+    <Content Include="image-slider.slider\img\002.jpg" />
+    <Content Include="image-slider.slider\img\003.jpg" />
+    <Content Include="image-slider.slider\img\004.jpg" />
+    <Content Include="image-slider.slider\img\005.jpg" />
+    <Content Include="image-slider.slider\img\006.jpg" />
+    <Content Include="image-slider.slider\img\007.jpg" />
+    <Content Include="image-slider.slider\img\008.jpg" />
+    <Content Include="image-slider.slider\img\009.jpg" />
+    <Content Include="image-slider.slider\img\010.jpg" />
+    <Content Include="image-slider.slider\img\011.jpg" />
+    <Content Include="image-slider.slider\img\a02.png" />
+    <Content Include="image-slider.slider\img\icon_chrome.png" />
+    <Content Include="image-slider.slider\img\loading.gif" />
+    <Content Include="image-slider.slider\js\jquery-1.9.1.min.js" />
+    <Content Include="image-slider.slider\js\jssor.slider.debug.js" />
+    <Content Include="image-slider.slider\js\jssor.slider.min.js" />
+    <Content Include="image-slider.slider\js\jssor.slider.mini.js" />
+    <Content Include="image-slider.slider\no-jquery.html" />
+    <Content Include="image-slider.slider\with-jquery.html" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="SignUpUser.aspx" />
+    <Content Include="TagInfo.aspx" />
+    <Content Include="TagsMap.aspx" />
     <Content Include="UserManaging.aspx" />
     <Content Include="WebFormTimeline.aspx" />
     <Content Include="MySecondTry1\css\.DS_Store" />
@@ -766,11 +794,9 @@
     <Content Include="ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="ckeditor\skins\moono\readme.md" />
     <Content Include="MySecondTry1\timeglider\img\abideinchrist_cs_librivox_archive.torrent" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -804,7 +830,7 @@
     </Content>
     <Content Include="Bundle.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -943,6 +969,13 @@
     <Compile Include="EditTag.aspx.designer.cs">
       <DependentUpon>EditTag.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EmailVerification.aspx.cs">
+      <DependentUpon>EmailVerification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EmailVerification.aspx.designer.cs">
+      <DependentUpon>EmailVerification.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -971,6 +1004,20 @@
       <DependentUpon>SignUpUser.aspx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="TagInfo.aspx.cs">
+      <DependentUpon>TagInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TagInfo.aspx.designer.cs">
+      <DependentUpon>TagInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TagsMap.aspx.cs">
+      <DependentUpon>TagsMap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TagsMap.aspx.designer.cs">
+      <DependentUpon>TagsMap.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UserManaging.aspx.cs">
       <DependentUpon>UserManaging.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -993,7 +1040,9 @@
       <DependentUpon>WebFormTimeline.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\jsImgSlider\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

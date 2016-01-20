@@ -83,6 +83,7 @@
 
             <div id="nearProfile" class="inlineProfile">
                 <div id="tabs">
+                    <a class="userManagingTab">Profile</a>
                     <a class="userManagingTab">Documents</a>
                     <a class="userManagingTab">Tags</a>
                     <a class="userManagingTab">Other</a>
@@ -104,8 +105,14 @@
                     <div id="tagsContainer" runat="server">
                     </div>
 
+                </div>
 
+                <div id="profileManaging" class="tabsContainer Profile hide" >
 
+                    <h2>Edit your profile </h2>
+                       
+                    <div id="profileContent" runat="server">
+                    </div>
 
                 </div>
             </div>

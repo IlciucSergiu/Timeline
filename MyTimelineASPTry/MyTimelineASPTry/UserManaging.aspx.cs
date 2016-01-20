@@ -83,15 +83,17 @@ namespace MyTimelineASPTry
             var filterDocument = Builders<IndividualData>.Filter.Eq("owner", userId);
 
             int totalNumberOfViews = 0;
+            int totalNumberOfVotes = 0;
             await document.Find(filterDocument).ForEachAsync(d =>
             {
                 //if(d.timesViewed != null)
                // Response.Write(d.timesViewed.ToString());
-                totalNumberOfViews += d.timesViewed;  
+                totalNumberOfViews += d.timesViewed;
+                totalNumberOfVotes += d.votes;
             });
 
 
-            int reputation = totalNumberOfViews / 10;
+            int reputation = (totalNumberOfViews / 10) + (totalNumberOfVotes * 2);
            
            labelReputation.Text = "Reputation " + reputation.ToString();
 

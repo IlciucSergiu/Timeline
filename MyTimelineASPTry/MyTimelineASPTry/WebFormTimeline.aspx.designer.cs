@@ -121,6 +121,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.HiddenField hiddenId;
         
         /// <summary>
+        /// hiddenFieldStartDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hiddenFieldStartDate;
+        
+        /// <summary>
         /// ScriptManagerMain control.
         /// </summary>
         /// <remarks>
@@ -166,6 +175,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Label labelDates;
         
         /// <summary>
+        /// labelNumberOfViews control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelNumberOfViews;
+        
+        /// <summary>
         /// labelVote control.
         /// </summary>
         /// <remarks>
@@ -193,13 +211,40 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl htmlInfo;
         
         /// <summary>
-        /// additionalResources control.
+        /// documentImages control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl additionalResources;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentImages;
+        
+        /// <summary>
+        /// documentSlideshow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentSlideshow;
+        
+        /// <summary>
+        /// documentVideos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentVideos;
+        
+        /// <summary>
+        /// documentBooks control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentBooks;
         
         /// <summary>
         /// additionalLinks control.
@@ -211,13 +256,22 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl additionalLinks;
         
         /// <summary>
-        /// labelNumberOfViews control.
+        /// CKEditorFeedback control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelNumberOfViews;
+        protected global::CKEditor.NET.CKEditorControl CKEditorFeedback;
+        
+        /// <summary>
+        /// buttonSendFeedback control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonSendFeedback;
         
         /// <summary>
         /// linkButtonContact control.

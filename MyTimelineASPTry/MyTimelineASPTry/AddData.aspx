@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="/resources/demos/style.css" />
    
     
+   
+   
+    
 </head>
 <body>
     <form runat="server" id="formMainForm">
@@ -48,12 +51,12 @@
 
             <div id="datesPosition">
                 <p>
-                    Date of birth:
+                  Start date :
                 <input type="text" class="datepicker" id="dateBirth" runat="server" placeholder="yyyy-mm-dd" />
                 </p>
                 &nbsp;&nbsp;&nbsp;
          <p >
-             Date of death
+             End date :
              <input type="text" class="datepicker" id="dateDeath" runat="server"  placeholder="yyyy-mm-dd"/>
          </p>
                 &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" class="checkContemporary" /><br />
@@ -66,10 +69,11 @@
              <div id="addTags">
 
                 <br />
+                 <input id="hiddenId" type="hidden" runat="server"/>
                <br />
                  <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" CssClass="textBoxAddTag"></asp:TextBox> 
                -
-                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick=" AddTagItem(); return false;"   />
+                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick=" AddTagItem(); return false;"    />
                 
                   &nbsp;&nbsp;
                  <input id="buttonRemoveTags" type="button" value="Remove" /> <asp:Label ID="labelInfo" runat="server" Text="" CssClass="verifyTag" ForeColor="Red"></asp:Label> <!-- <p id="verifyTag" ></p> -->
@@ -88,7 +92,10 @@
             <asp:TextBox ID="textBoxDescription" TextMode="MultiLine" runat="server" Height="121px" Width="353px"></asp:TextBox><br />
 
             <asp:Label ID="labelImage" runat="server" Text="Link to image"></asp:Label><br />
-            <asp:TextBox ID="textBoxImage" runat="server" Width="345px"></asp:TextBox><br />
+            <asp:TextBox ID="textBoxImage" runat="server" Width="345px" CssClass="textBoxImageLink"></asp:TextBox>
+            <br />
+            <asp:Image ID="imageDocument" runat="server" CssClass="documentImage profileImage" />
+            <br />
 
             <asp:Label ID="labelLink" runat="server" Text="Link to aditional resources"></asp:Label><br />
             <asp:TextBox ID="textBoxLink" runat="server" Width="345px"></asp:TextBox>
@@ -169,7 +176,7 @@
             <br />
 
             <div id="divEssentialInfo" class="imageInline">
-                <asp:Image ID="imageProfile" runat="server" Height="177px" Width="151px" />
+                <asp:Image ID="imageProfile" runat="server" CssClass="imageProfile" />
             </div>
             <div class="imageInline" id="labelsInfo">
                 <asp:Label ID="labelName" runat="server" Text="Name" CssClass="essentialLabels" Width="300px"></asp:Label><br />
@@ -179,8 +186,14 @@
                 <asp:LinkButton ID="linkButtonEdit" runat="server" CssClass="linkLabel" OnClick="linkButtonEdit_Click"  OnClientClick="setDate()">edit</asp:LinkButton>
 
             </div>
-            <br />
+            <br /><br /><br /><br />
+            
+            <div id="divDocumentFeedback" >
+                <h2 id="feedbackShow">Feedback <asp:Label ID="labelFeedbackNumber" runat="server" Text="(0)"></asp:Label></h2>
+                <div id="feedbackContent" runat="server" class="hide">
 
+                </div>
+            </div>
         
         <div id="ckEditor">
             <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000" ></CKEditor:CKEditorControl>
@@ -197,6 +210,13 @@
 
             
         </p>
+
+            <p>Insert id of a youtube video or the entire link</p>
+            <asp:TextBox ID="textBoxVideoId" runat="server" Width="296px" ></asp:TextBox>
+            
+
+                <p>Insert links of additional images</p>
+            <asp:TextBox ID="textBoxLinksImages" runat="server" Width="296px" ></asp:TextBox>
             <p>
             
             Title : 

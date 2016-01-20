@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using DevOne.Security.Cryptography.BCrypt;
+using System.Net.Mail;
 
 
 namespace MyTimelineASPTry
@@ -49,7 +50,9 @@ namespace MyTimelineASPTry
 
                // Response.Write(hashedPassword + "<br />");
 
-
+                   
+                        string emailVerification = RandomString(20);
+                    SendEmail(textBoxEmail.Text, emailVerification);
                 //Response.Write(BCryptHelper.CheckPassword("mere",hashedPassword));
                 BsonDocument document = new BsonDocument
             {
@@ -59,7 +62,10 @@ namespace MyTimelineASPTry
                 { "password", hashedPassword },
                 { "salt", salt },
                 { "email", textBoxEmail.Text },
-                { "gender", gender }
+                { "emailVerification", emailVerification },
+                { "emailVerified", false },
+                { "gender", gender },
+                { "dateSigned", DateTime.UtcNow }
             };
                collection.InsertOneAsync(document);
                 Response.Redirect("LoginUser.aspx", false);
@@ -147,5 +153,33 @@ namespace MyTimelineASPTry
                 return false;
         }
 
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public void SendEmail(string emailAddress, string verificationKey)
+        {
+            MailMessage mailMessage = new MailMessage("eu_sergiuu14@yahoo.com", emailAddress);
+            mailMessage.Subject = "TimeTrail verify email";
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Body = "Use this key to activate your account : "+ verificationKey + "<br/> Or follow this link : <a href=\"http://TimeTrail.com/EmailVerification.aspx?email="
+                +emailAddress+"&key="+verificationKey
+                +"<br> Good luck!"
+                + "<br> Regards <h3>TimeTrail</h3>";
+
+            SmtpClient smtpClient = new SmtpClient("smtp.mail.yahoo.com", 587);
+            smtpClient.Credentials = new System.Net.NetworkCredential()
+            {
+                UserName = "eu_sergiuu14@yahoo.com",
+                Password = "biologie"
+            
+            };
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(mailMessage);
+        }
     }
 }

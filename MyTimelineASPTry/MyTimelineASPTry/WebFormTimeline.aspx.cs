@@ -23,8 +23,8 @@ namespace MyTimelineASPTry
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
+           CKEditorFeedback.Toolbar =  CKEditorFeedback.ToolbarBasic;
+           
             if (Session["userLogged"] != null)
                 if (Session["userLogged"].ToString() == "True")
                 {
@@ -43,7 +43,7 @@ namespace MyTimelineASPTry
 
         public static string jsonData { get; set; }
 
-        public string jsString;
+        public string jsString, videoId;
 
         protected void buttonLogin_Click(object sender, EventArgs e)
         {
@@ -70,12 +70,6 @@ namespace MyTimelineASPTry
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
 
-
-
-
-
-            //var documents = await collection.Find(new BsonDocument()).FirstAsync();
-
             var filter = Builders<DocumentInfo>.Filter.Eq("name", "Ilciuc"); ;
 
             //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
@@ -83,20 +77,21 @@ namespace MyTimelineASPTry
             await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\""
                 + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
                 + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                + 50 + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+                + 50 + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
                 + d.link + "\",\"image\" : \"" + d.image + "\"},");
             //await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
 
             jsonData = "[{" +
-         "\"id\": \"important_personalities\"," +
-         "\"title\": \"Important Personalities\"," +
+         "\"id\": \"main_data\"," +
+         "\"title\": \"TimeTrail\"," +
          "\"initial_zoom\": \"40\"," +
                 //"\"focus_date\": \"1998-03-11 12:00:00\","+
          "\"image_lane_height\": 50," +
          "\"events\":[" + jsString.TrimEnd(',') + "]" +
      "}]";
 
+            
         }
 
         static string endDate(string date)
@@ -153,7 +148,7 @@ namespace MyTimelineASPTry
 
 
         public bool showIndividual = false;
-        //string eventId;
+        
         protected void buttonSearchId_Click(object sender, EventArgs e)
         {
             showIndividual = true;
@@ -161,12 +156,13 @@ namespace MyTimelineASPTry
 
         }
 
+        public bool setDate = false;
         async void InitializeData()
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-
+            setDate = true;
             string itemId = hiddenId.Value;
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
@@ -193,7 +189,7 @@ namespace MyTimelineASPTry
 
             htmlInfo.InnerHtml = "";
             additionalLinks.InnerHtml = "";
-            additionalResources.InnerHtml = "";
+            documentBooks.InnerHtml = "";
 
             if (ItemExists(itemId))
             {
@@ -216,9 +212,9 @@ namespace MyTimelineASPTry
                 if (item.additionalBooks != null)
                     foreach (var book in item.additionalBooks)
                     {
-                        additionalResources.InnerHtml += "<br />" + book.ToString();
+                        documentBooks.InnerHtml += "<br />" + book.ToString();
                     }
-                additionalResources.InnerHtml += "<br /><br />";
+                documentBooks.InnerHtml += "<br /><br />";
 
                 // additionalLinks.InnerHtml = "Additional links";
                 if (item.additionalLinks != null)
@@ -228,6 +224,23 @@ namespace MyTimelineASPTry
 
                     }
                 additionalLinks.InnerHtml += "<br /><br />";
+                
+                if(item.videoLinks != null)
+                { 
+                    documentVideos.Controls.Add(new LiteralControl { Text = "<div  id=\"player\"></div>" });
+                    videoId = item.videoLinks[0].ToString();
+               // Response.Write(item.videoLinks[0].ToString());
+                }
+
+                if (item.imagesLinks != null)
+                {
+                    foreach(string image in item.imagesLinks)
+                 documentSlideshow.Controls.Add(new LiteralControl { Text = "<img  class=\"slideImage\" src=\""+ image + "\"/>" });
+                    
+                    //Response.Write(item.imagesLinks[0].ToString());
+                }
+
+               
 
             }
             sw.Stop();
@@ -306,14 +319,14 @@ namespace MyTimelineASPTry
                 await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
                     + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
                     + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                    + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+                    + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
                     + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
 
 
                 jsonData = "[{" +
              "\"id\": \"" + searchQuery + "\"," +
-             "\"title\": \"Important Personalities\"," +
+             "\"title\": \""+ searchQuery.First().ToString().ToUpper() + searchQuery.Substring(1) +"\"," +
              "\"initial_zoom\": \"40\"," +
                     //"\"focus_date\": \"1998-03-11 12:00:00\","+
              "\"image_lane_height\": 50," +
@@ -340,7 +353,7 @@ namespace MyTimelineASPTry
             await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
                 + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
                 + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                + GetImportance(d.tags, searchQuery) + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
+                + GetImportance(d.tags, searchQuery) + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
                 + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
             // await collection.Find(filter).ForEachAsync(d => jsString += GetImportance(d.tags,searchQuery));
@@ -447,7 +460,18 @@ namespace MyTimelineASPTry
 
 
 
+        public string ReplaceToHTML(string text)
+        {
+            string[] plainChar = new string[] { "\"", "'"};
+            string[] HTMLChar = new string[] { "", "" };
 
+            for (int i = 0; i < plainChar.Length; i++)
+            {
+                text = text.Replace(plainChar[i], HTMLChar[i]);
+            }
+
+            return text;
+        }
 
 
         [WebMethod]
@@ -606,5 +630,19 @@ namespace MyTimelineASPTry
             
         }
 
+        protected void buttonSendFeedback_Click(object sender, EventArgs e)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+            var collection = db.GetCollection<IndividualData>("IndividualData");
+
+            var filter = Builders<IndividualData>.Filter.Eq("id", hiddenId.Value);
+
+            var update = Builders<IndividualData>.Update
+               .Push( p => p.documentFeedback, CKEditorFeedback.Text);
+
+            collection.UpdateOneAsync(filter, update);
+        }
     }
 }

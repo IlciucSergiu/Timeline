@@ -30,8 +30,9 @@ namespace MyTimelineASPTry
         public string image { get; set; }
         public string importance { get; set; }
         public BsonArray tags { get; set; }
+        public DateTime dateAdded { get; set; }
 
-       
+
     }
 
     public class IndividualData
@@ -63,6 +64,13 @@ namespace MyTimelineASPTry
         public int votes { get; set; }
 
         public BsonArray alreadyVoted { get; set; }
+
+        public BsonArray documentFeedback { get; set; }
+
+        public BsonArray videoLinks { get; set; }
+
+        public BsonArray imagesLinks { get; set; }
+
     }
 
     public class UserData
@@ -73,9 +81,13 @@ namespace MyTimelineASPTry
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string password { get; set; }
-        public string email { get; set; }
+        public string email { get; set; } 
         public string gender { get; set; }
         public string salt { get; set; }
+        public DateTime dateSigned { get; set; }
+
+        public string emailVerification { get; set; }
+        public bool emailVerified { get; set; }
 
         public string image { get; set; }
         public int reputation { get; set; }
@@ -90,11 +102,13 @@ namespace MyTimelineASPTry
         public string tagName { get; set; }
         public string id { get; set; }
         public string owner { get; set; }
-        public string parentName { get; set; }
+        public BsonArray parentTags { get; set; }
         public int relativeImportance { get; set; }
         public string description { get; set; }
         public string tagInfo { get; set; }
         public DateTime dateAdded { get; set; }
+        public BsonArray tagSynonyms { get; set; }
+        
         //public BsonArray childrenNames { get; set;}
         public BsonArray documentsBelonging { get; set; }
 

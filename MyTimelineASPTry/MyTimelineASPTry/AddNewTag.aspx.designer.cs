@@ -40,6 +40,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.TextBox textBoxTagName;
         
         /// <summary>
+        /// textBoxTagShortDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBoxTagShortDescription;
+        
+        /// <summary>
         /// textBoxParentName control.
         /// </summary>
         /// <remarks>
@@ -47,6 +56,15 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox textBoxParentName;
+        
+        /// <summary>
+        /// hiddenFieldParentTagId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hiddenFieldParentTagId;
         
         /// <summary>
         /// textBoxRelativeImportance control.
@@ -58,13 +76,13 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl textBoxRelativeImportance;
         
         /// <summary>
-        /// textBoxTagShortDescription control.
+        /// textBoxSynonyms control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textBoxTagShortDescription;
+        protected global::System.Web.UI.WebControls.TextBox textBoxSynonyms;
         
         /// <summary>
         /// CKEditorInformation control.

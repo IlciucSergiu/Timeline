@@ -3,13 +3,20 @@
 function AddTagItem() {
 
     $(".verifyTag").text("");
-    VerifyIfInList();
+   // VerifyIfInList();
     if (VerifyTagItem() && VerifyIfInList()) {
         if ($("#inputImportanceTag").val() != "") {
             // alert($("#inputImportanceTag").val());
             var tagName = $(".textBoxAddTag").val().toString().toLowerCase();
             $(".textBoxAddTag").val(null);
             var tagImportance = $("#inputImportanceTag").val();
+
+            //alert("here");
+            var documentId = $("#hiddenId").val();
+            //alert(documentId);
+
+            InsertInTagCollection(tagName,documentId,tagImportance);
+
             $("#inputImportanceTag").val(null);
             try {
                 var tagValue = tagName + "-" + tagImportance.toString();
@@ -36,6 +43,67 @@ function AddTagItem() {
         }
     }
     
+}
+
+function InsertInTagCollection(tagName,documentId,relativeImportance) {
+
+    //alert(userId1);
+
+    try {
+        var dataValue = { documentId: documentId, tagName: tagName, relativeImportance: relativeImportance };
+      // alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "AddData.aspx/InsertInTagCollection",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+               alert("We returned: " + result.d);
+                
+               
+            }
+        });
+    }
+    catch (e) {
+        alert("Error" + e.message);
+    }
+}
+
+
+function RemoveInTagCollection(tagName, documentId) {
+
+    //alert(userId1);
+
+    try {
+        var dataValue = { documentId: documentId, tagName: tagName};
+       // alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "AddData.aspx/RemoveInTagCollection",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                alert("We returned: " + result.d);
+                
+
+            }
+        });
+    }
+    catch (e) {
+        alert("Error" + e.message);
+    }
 }
 
 function VerifyIfInList() {
@@ -140,6 +208,7 @@ function AddLinkItem() {
 
 $(function () {
 
+   //alert("sadtag");
 
     $(".textBoxSearchQuery").keydown(function (event) {
         if (e.keyCode == 13) {
@@ -165,6 +234,14 @@ $(function () {
 
 
     $('#buttonRemoveTags').click(function () {
+        if ($(".listBoxTags option:selected").text() != "") {
+        var documentId = $("#hiddenId").val();
+        //alert(documentId);
+        var tagName = $(".listBoxTags option:selected").text().split(' ')[0];
+        //alert(tagName + "   " + documentId);
+
+        RemoveInTagCollection(tagName, documentId);
+
         $(".listBoxTags option:selected").remove();
         var listString = "";
         $(".listBoxTags option").each(function () {
@@ -174,7 +251,12 @@ $(function () {
         });
         // alert(listString);
         UpdHidTag(listString);
-    });
+        }
+        else {
+            $(".verifyTag").text("No tag was selected.");
+        }
+    }
+    );
 
     $('#buttonRemoveLinks').click(function () {
         $(".listBoxLinks option:selected").remove();
@@ -228,6 +310,35 @@ $(function () {
         }
     });
 
+    $(".textBoxImageLink").on('blur', function () {
+        alert($(".textBoxImageLink").val());
+        $(".documentImage").attr("src", $(".textBoxImageLink").val())
+    });
+
+    $("#feedbackShow").click(function () {
+       
+        if ($("#feedbackContent").css("display") == "none")
+            $("#feedbackContent").css("display", "block");
+        else
+            $("#feedbackContent").css("display", "none");
+       
+    });
+
+    $("#improvePage").click(function () {
+
+       // 
+        if ($("#feedbackMessage").css("display") == "none")
+        {
+            //alert("adgadsg");
+            $("#feedbackMessage").css("display", "block");
+        }
+        else {
+            $("#feedbackMessage").css("display", "none");
+        }
+
+        return false;
+
+    });
 
     $(".textBoxSearchQuery").on('keydown keypress focus', function () {
         try {
@@ -259,7 +370,116 @@ $(function () {
     });
 
 
+   // $('#pageBody').click(function () { alert("sdasdg") });
+
+    $(".textBoxAddParentTag").on('keydown keypress focus', function () {
+        //alert("here");
+        if ($(".textBoxAddParentTag").val() != "")
+        try {
+            var dataValue = { inputValue: $(".textBoxAddParentTag").val() };
+
+            $.ajax({
+                type: "POST",
+                url: "AddNewTag.aspx/FindTagParentOptions",
+                data: JSON.stringify(dataValue),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+
+                error: function (err) {
+
+                    alert("Errort: " + err.responseText);
+                },
+                success: function (result) {
+                    var arrayTagNames = [];
+                    var arrayTagId = [];
+                    var availableTags = result.d.split("{;}").forEach(function (item) {
+                        //array2.push(item);
+                        var array3 = item.split("{0}");
+                       // alert(array3[0]);
+                        arrayTagNames.push(array3[0]);
+                        arrayTagId.push(array3[1]);
+                    });
+                    // alert(array2);
+                   // $('#debug1').text(arrayTagNames);
+                   // $('#debug2').text(arrayTagId);
+
+                    $(".textBoxAddParentTag").autocomplete({
+                        source: arrayTagNames,
+                        select: function (event, ui) {
+                            var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                            $('#debug2').text(parentId);
+                            UpdHidId(parentId);
+                            //alert(ui.item.label);
+                           // $('hiddenFieldParentTagId').val(parentId);
+                          //  alert($('hiddenFieldParentTagId').val);
+                           // $(".textBoxAddParentTag").val(ui.item.label);
+                           
+                        }
+                    });
+                }
+            });
+        }
+        catch (e) {
+            alert("Error" + e.message);
+        }
+    });
+
+    $(".textBoxAddParentTag").focusout(function () {
+       // alert($(".textBoxAddParentTag").val());
+        if (!VerifyTagExistence($(".textBoxAddParentTag").val())) {
+           // $("#verifyTag").css("display", "block");
+            $("#verifyTag").css("color", "red");
+            $("#verifyTag").text("This tag does not exist.");
+        }
+        else {
+            $("#verifyTag").text("");
+        }
+    });
+
+    $(".textBoxTagName").focusout(function () {
+        // alert($(".textBoxAddParentTag").val());
+        if (VerifyTagExistence($(".textBoxTagName").val())) {
+           // $("#verifyTagName").css("display", "block");
+            $("#verifyTagName").css("color", "red");
+            $("#verifyTagName").text("This tag already exists.");
+        }
+        else {
+            // $("#verifyTagName").css("display", "none");
+            $("#verifyTagName").text("");
+        }
+    });
+
+    $("#additionalResources a").click(function (e) {
+       // alert($(this).text());
+        tabName = $(this).text();
+        $('#additionalResources div.tab').each(function (i, obj) {
+            // alert($(this).attr('class'));
+            if ($(this).hasClass(tabName))
+                $(this).css("display", "block");
+            else
+                $(this).css("display", "none");
+        });
+        return false;
+    });
     
+    changeImage(1);
+
+    countTimes = 1;
+    $('.documentSlideshow img').click(function () {
+
+        imagesLengt = 0;
+        $('.documentSlideshow img').each(function (e) {
+            imagesLengt++;
+        });
+
+        if (countTimes == imagesLengt)
+            countTimes = 1;
+        else
+            countTimes = countTimes + 1;
+
+        changeImage(countTimes);
+    });
+
 });
 
 
@@ -303,6 +523,55 @@ function VoteUp(userId1) {
     }
 }
 
+function changeImage(numberDisplay) {
+    
+    
+    var count = 0;
+    $('.documentSlideshow img').each(function (e) {
+        count++;
+        if (count == numberDisplay) {
+            $(this).css("display", "block");
+           // return false;
+        }
+        else {
+            $(this).css("display", "none");
+            
+        }
+           
+        });
+}
+
+function VerifyTagExistence( tagName) {
+
+    var dataValue = { inputValue:tagName };
+    var response;
+    $.ajax({
+        type: "POST",
+        url: "AddNewTag.aspx/VerifyTagExistence",
+        data: JSON.stringify(dataValue),
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+
+        error: function (err) {
+
+            console.log("A aparut o eroare: " + err.responseText);
+            // return false;
+        },
+        success: function (result) {
+
+            response = result.d;
+           
+
+        }
+    });
+
+    return response;
+
+}
+
+
+
 $(function () {
 
     $(".tagLinks").click(function (e) {
@@ -343,6 +612,8 @@ $(function () {
 
 });
 
+
+
 // De pastrat
 //function SearchPersonalInfo(theId) {
 
@@ -372,3 +643,46 @@ $(function () {
 //        alert("Error" + e.message);
 //    }
 //}
+function LoadVideo(videoId1) {
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    alert(videoId1);
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '390',
+            width: '640',
+            videoId: videoId1,
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+        event.target.playVideo();
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+            setTimeout(stopVideo, 6000);
+            done = true;
+        }
+    }
+    function stopVideo() {
+        player.stopVideo();
+    }
+}

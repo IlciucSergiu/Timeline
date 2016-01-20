@@ -15,8 +15,11 @@ namespace MyTimelineASPTry
         {
             
                 //ViewState["itemId"] = Request.QueryString["itemId"];
+            if (!IsPostBack)
+            {
                 tagId = Request.QueryString["itemId"];
                 InitializeTagData(tagId, Session["userId"].ToString());
+            }
             
         }
 
@@ -35,12 +38,34 @@ namespace MyTimelineASPTry
            //string  tagId = Session["tagId"].ToString();
              var filter = Builders<TagsCollection>.Filter.Eq("id",tagId);
 
-             try {
+
+            
+             //ObjectId objectId = ObjectId.Parse(hiddenFieldParentTagId.Value.ToString());
+             BsonDocument parentTag = new BsonDocument
+                {
+                    { "parentName",textBoxParentName.Text.ToLower()},
+                    { "id", hiddenFieldParentTagId.Value },
+                   // {"_id", objectId}
+                   
+                };
+             BsonArray parentTags = new BsonArray();
+             parentTags.Add(parentTag);
+
+            BsonArray tagSynonyms = new BsonArray();
+            foreach (string tagSynonym in textBoxSynonyms.Text.Split(';'))
+            {
+                if (tagSynonym.Length > 2)
+                    tagSynonyms.Add(tagSynonym);
+            }
+
+
+            try {
                  var update = Builders<TagsCollection>.Update
-                .Set("tagName", textBoxTagName.Text)
-                .Set("parentName", textBoxParentName.Text)
+                .Set("tagName", textBoxTagName.Text.ToLower())
+                .Set("parentTags", parentTags)
                 .Set("relativeImportance", textBoxRelativeImportance.Value.ToString())
                 .Set("description", textBoxTagShortDescription.Text)
+                .Set("tagSynonyms", tagSynonyms)
                 .Set("tagInfo", CKEditorInformation.Text);
 
 
@@ -68,10 +93,15 @@ namespace MyTimelineASPTry
             if (documents.owner == userId)
             {
                 textBoxTagName.Text = documents.tagName.ToString();
-                textBoxParentName.Text = documents.parentName;
+                textBoxParentName.Text = documents.parentTags[0]["parentName"].ToString();
+                hiddenFieldParentTagId.Value = documents.parentTags[0]["id"].ToString();
                 textBoxRelativeImportance.Value = documents.relativeImportance.ToString();
                 textBoxTagShortDescription.Text = documents.description;
                 CKEditorInformation.Text = documents.tagInfo;
+
+                if(documents.tagSynonyms != null)
+                foreach (string synonym in documents.tagSynonyms)
+                    textBoxSynonyms.Text += synonym + ";";
 
             }
             else

@@ -26,6 +26,7 @@ namespace MyTimelineASPTry
 
             if (scope == "modify")
             {
+                hiddenId.Value = itemId;
                 InitializeItem(userId, itemId);
             }
 
@@ -56,8 +57,8 @@ namespace MyTimelineASPTry
 
                     buttonSubmit.Visible = false;
                     //if (Session["itemId"] != null)
-                       // ViewState["itemId"] = Session["itemId"].ToString();
-                     ViewState["itemId"] = Request.QueryString["itemId"];
+                    // ViewState["itemId"] = Session["itemId"].ToString();
+                    ViewState["itemId"] = Request.QueryString["itemId"];
 
 
                     //Response.Write("user : "+Session["userId"].ToString());
@@ -75,7 +76,7 @@ namespace MyTimelineASPTry
 
         string userId, itemId;
         public bool setDate = false, showEssential = false;
-        string gender, scope, cancelRequest, saveId;
+        string scope, cancelRequest, saveId;
 
 
         protected void buttonSubmit_Click(object sender, EventArgs e)
@@ -101,6 +102,10 @@ namespace MyTimelineASPTry
                 //}
                 //else { Response.Write("Please select a gender."); }
 
+              
+
+
+
                 string endDate;
                 if (checkBoxContemporary.Checked == true)
                 {
@@ -109,7 +114,7 @@ namespace MyTimelineASPTry
                 else
                     endDate = dateDeath.Value;
                 saveId = textBoxCompleteName.Text.ToLower().Replace(" ", "_");//firstName.Text.ToLower() + "_" + lastName.Text.ToLower();
-                Response.Write(saveId);
+                //Response.Write(saveId);
                 ViewState["itemId"] = saveId;
 
                 BsonArray separatedNames = new BsonArray();
@@ -134,7 +139,7 @@ namespace MyTimelineASPTry
 
                         { "tagName", separateTag[0] },
                         { "tagImportance", separateTag[1] }
-                 };
+                    };
 
 
                         tagsArray.Add(tagDocument);
@@ -143,21 +148,19 @@ namespace MyTimelineASPTry
 
                 BsonDocument document = new BsonDocument
             {
-                //{ "_id", firstName.Text.ToLower() +"_"+lastName.Text.ToLower() },
+
                  { "owner", Session["userId"].ToString() },
                 { "id", saveId },
                 { "name",separatedNames},
                 { "title", textBoxCompleteName.Text},
                 { "startdate", dateBirth.Value },
                 { "enddate", endDate},
-                { "description", textBoxDescription.Text },
-                //{ "importance", inputImportance.Value },
+                { "description", textBoxDescription.Text},
+
                 { "link", textBoxLink.Text },
                 { "image", textBoxImage.Text },
-                //{ "profession", textBoxProfession.Text },
-                //{ "nationality", textBoxNationality.Text },
-                //{ "religion", textBoxReligion.Text },
-                //{ "gender", gender },
+                { "dateAdded", DateTime.UtcNow },
+
                 { "tags", tagsArray }
             };
                 collection.InsertOneAsync(document);
@@ -240,10 +243,7 @@ namespace MyTimelineASPTry
             // labelNationality.Text = documents.nationality;
             //labelReligion.Text = documents.religion;
             imageProfile.ImageUrl = documents.image;
-            //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
-            // jsString = "";
-            // await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
-        }
+            }
 
         protected async void linkButtonEdit_Click(object sender, EventArgs e)
         {
@@ -273,12 +273,15 @@ namespace MyTimelineASPTry
             ViewState["dateBirth"] = dateBirth.Value;
             dateDeath.Value = documents.enddate;
             ViewState["dateDeath"] = dateDeath.Value;
-            Response.Write(dateBirth.Value);
+            //Response.Write(dateBirth.Value);
+
+          
             textBoxDescription.Text = documents.description;
 
             //inputImportance.Value = documents.importance;
             textBoxLink.Text = documents.link;
             textBoxImage.Text = documents.image;
+            imageDocument.ImageUrl = documents.image;
             // textBoxProfession.Text = documents.profession;
             //textBoxNationality.Text = documents.nationality;
             // textBoxReligion.Text = documents.religion;
@@ -325,6 +328,13 @@ namespace MyTimelineASPTry
             //    else { gender = "female"; }
             //}
             //else { Response.Write("Please select a gender."); }
+
+
+
+
+           
+
+           // Response.Write(ReplaceToHTML(textBoxDescription.Text));
 
             string endDate;
             if (checkBoxContemporary.Checked == true)
@@ -385,124 +395,96 @@ namespace MyTimelineASPTry
 
         protected async void InitializeItem(string initUserId, string initItemId)
         {
-            try { 
-
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
-            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
-            //var documents = await collection.Find(new BsonDocument()).FirstAsync();
-
-            var filter = Builders<DocumentInfo>.Filter.Eq("id", initItemId);
-            var documents = await collection.Find(filter).FirstAsync();
-
-
-            if (documents.owner == initUserId)
+            try
             {
-                labelName.Text = documents.name.ToString();
-                labelDates.Text = documents.startdate + " - " + documents.enddate;
-                // labelProfession.Text = documents.profession;
-                // labelNationality.Text = documents.nationality;
-                // labelReligion.Text = documents.religion;
-                imageProfile.ImageUrl = documents.image;
-                //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
-                // jsString = "";
-                // await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
-                //MongoClient mgClient = new MongoClient();
-                //var db1 = mgClient.GetDatabase("Timeline");
-                if (ItemExists(itemId))
+                MongoClient mclient = new MongoClient();
+                var db = mclient.GetDatabase("Timeline");
+
+                var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+                
+
+                var filter = Builders<DocumentInfo>.Filter.Eq("id", initItemId);
+                var documents = await collection.Find(filter).FirstAsync();
+
+
+                if (documents.owner == initUserId)
                 {
-                    var collection1 = db.GetCollection<IndividualData>("IndividualData");
-                    var filter1 = Builders<IndividualData>.Filter.Eq("id", itemId);
-                    var item = await collection1.Find(filter1).FirstAsync();
-
-
-                    listBoxLinks.Items.Clear();
-                    if (item.additionalLinks != null)
-                        foreach (var links in item.additionalLinks)
-                        {
-                            listBoxLinks.Items.Add(links.ToString());
-
-                        }
-
-                    // listBoxLinks.Items.Clear();
-                    if (!IsPostBack)
+                    labelName.Text = documents.name.ToString();
+                    labelDates.Text = documents.startdate + " - " + documents.enddate;
+                    
+                    imageProfile.ImageUrl = documents.image;
+                   
+                    if (ItemExists(itemId))
                     {
+                        var collection1 = db.GetCollection<IndividualData>("IndividualData");
+                        var filter1 = Builders<IndividualData>.Filter.Eq("id", itemId);
+                        var item = await collection1.Find(filter1).FirstAsync();
 
-                        CKEditorInformation.Text = item.htmlInformation;
 
+                        listBoxLinks.Items.Clear();
                         if (item.additionalLinks != null)
                             foreach (var links in item.additionalLinks)
                             {
-                                //listBoxLinks.Items.Add(links.ToString());
-                                hiddenFieldLinks.Value += links.ToString() + ";";
+                                listBoxLinks.Items.Add(links.ToString());
+
                             }
 
-                        if (item.additionalBooks != null)
-                            foreach (var book in item.additionalBooks)
+                      
+                        if (!IsPostBack)
+                        {
+
+                            CKEditorInformation.Text = item.htmlInformation;
+
+                            if (item.additionalLinks != null)
+                                foreach (var links in item.additionalLinks)
+                                {
+                                    //listBoxLinks.Items.Add(links.ToString());
+                                    hiddenFieldLinks.Value += links.ToString() + ";";
+                                }
+
+                            if (item.additionalBooks != null)
+                                foreach (var book in item.additionalBooks)
+                                {
+                                    listBoxBooks.Items.Add(book.ToString());
+                                }
+
+                            if (item.documentFeedback != null)
                             {
-                                listBoxBooks.Items.Add(book.ToString());
+                                LoadFeedback(item.documentFeedback);
                             }
+
+                            if (item.videoLinks != null)
+                            {
+                               textBoxVideoId.Text = item.videoLinks[0].ToString();
+                            }
+
+
+                            if (item.imagesLinks != null)
+                            {
+                                textBoxLinksImages.Text = item.imagesLinks[0].ToString();
+                            }
+
+                        }
 
 
                     }
 
-
                 }
-
-            }
-            else
-            {
-                Response.Redirect("Error.aspx", false);
-            }
+                else
+                {
+                    Response.Redirect("Error.aspx", false);
                 }
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                Response.Redirect("Error.aspx?"+ex.Message, false);
+                Response.Redirect("Error.aspx?" + ex.Message, false);
             }
         }
 
         protected async void buttomSaveChanges_Click(object sender, EventArgs e)
         {
-            //if (listBoxTags.Items.Count != 0)
-            //{
-            //    MongoClient mclient = new MongoClient();
-            //    var db = mclient.GetDatabase("Timeline");
-
-            //    var collection = db.GetCollection<PersonInfo>("Person");
-
-            //    string[] separateTag;
-            //    BsonArray tagsArray = new BsonArray();
-            //    foreach (ListItem tag in listBoxTags.Items)
-            //    {
-
-
-
-            //        separateTag = tag.Text.Split(' ');
-
-            //        BsonDocument tagDocument = new BsonDocument {
-
-            //            { "tagName", separateTag[0] },
-            //            { "tagImportance", separateTag[1] }
-            //        };
-
-
-            //        tagsArray.Add(tagDocument);
-
-            //        var filter = Builders<PersonInfo>.Filter.Eq("id", itemId);
-
-            //        var update = Builders<PersonInfo>.Update
-            //            .Set("tags", tagsArray);
-
-
-            //        var result = await collection.UpdateOneAsync(filter, update);
-            //    }
-
-
-            //}
-
-            //Response.Write(hiddenFieldLinks.Value);
+           
 
             if (ItemExists(itemId))
             {
@@ -512,11 +494,7 @@ namespace MyTimelineASPTry
 
                 var collection = db.GetCollection<IndividualData>("IndividualData");
 
-                //BsonArray linksArray = new BsonArray();
-                //foreach (ListItem link in listBoxLinks.Items)
-                //{
-                //    linksArray.Add(link.Text);
-                //}
+               
 
 
                 BsonArray linksArray = new BsonArray();
@@ -526,23 +504,29 @@ namespace MyTimelineASPTry
                         linksArray.Add(link);
 
                 }
-                //hiddenFieldLinks.Value = null;
+               
 
 
                 BsonArray booksArray = new BsonArray();
                 foreach (ListItem book in listBoxBooks.Items)
                 {
                     booksArray.Add(book.Text);
-                    // booksArray.Add(new bso);
+                    
                 }
 
+                BsonArray videoLinks = new BsonArray();
+                videoLinks.Add(textBoxVideoId.Text);
 
+                BsonArray imagesLinks = new BsonArray();
+                imagesLinks.Add(textBoxLinksImages.Text);
 
                 var filter = Builders<IndividualData>.Filter.Eq("id", itemId);
 
                 var update = Builders<IndividualData>.Update
                     .Set("htmlInformation", CKEditorInformation.Text)
                     .Set("additionalLinks", linksArray)
+                    .Set("videoLinks", videoLinks)
+                    .Set("imagesLinks", imagesLinks)
                     .Set("additionalBooks", booksArray);
 
 
@@ -555,12 +539,7 @@ namespace MyTimelineASPTry
                 var collection = db.GetCollection<BsonDocument>("IndividualData");
 
 
-                //BsonArray linksArray = new BsonArray();
-                //foreach (ListItem link in listBoxLinks.Items)
-                //{
-                //    linksArray.Add(link.Text);
-                //}
-
+               
                 BsonArray linksArray = new BsonArray();
                 foreach (string link in hiddenFieldLinks.Value.Split(';'))
                 {
@@ -576,7 +555,11 @@ namespace MyTimelineASPTry
                     // booksArray.Add(new bso);
                 }
 
+                BsonArray videoLinks = new BsonArray();
+                videoLinks.Add(textBoxVideoId.Text);
 
+                BsonArray imagesLinks = new BsonArray();
+                imagesLinks.Add(textBoxLinksImages.Text);
 
                 BsonDocument document = new BsonDocument
             {
@@ -587,8 +570,10 @@ namespace MyTimelineASPTry
                 { "htmlInformation", CKEditorInformation.Text },
                 { "additionalLinks", linksArray },
                 { "additionalBooks", booksArray},
-                {"timesViewed", 0}
-               
+                {"timesViewed", 0},
+                {"videoLinks", videoLinks},
+                {"imagesLinks", imagesLinks}
+
 
             };
                 await collection.InsertOneAsync(document);
@@ -642,20 +627,12 @@ namespace MyTimelineASPTry
 
         protected void buttonAddTag_Click(object sender, EventArgs e)
         {
-            //TableCell tagName = new TableCell();
-            //tagName.Text = textBoxTagName.Text;
-
-            // TableCell tagImportance = new TableCell();
-            //tagImportance.Text = inputImportance.ToString();
-
-            //TableRow tagRow = new TableRow();
-            //tagRow.Controls.Add(tagName);
-            //tagRow.Controls.Add(tagImportance);
-
-            //tableTags.Controls.Add(tagRow);
+            
 
             listBoxTags.Items.Add(textBoxTagName.Text + " " + inputImportanceTag.Value);
         }
+
+       
 
         protected void buttonSearchTag_Click(object sender, EventArgs e)
         {
@@ -673,6 +650,8 @@ namespace MyTimelineASPTry
 
             collection.Find(filter).ForEachAsync(d => Response.Write(d.tagName.ToString()));
         }
+
+       
 
         [WebMethod]
         public static string FindTagOptions(string inputValue)
@@ -694,8 +673,155 @@ namespace MyTimelineASPTry
 
         }
 
+        [WebMethod]
+        public static string InsertInTagCollection(string tagName, string documentId, int relativeImportance)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
 
 
+            var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
+
+       var filter = Builders<DocumentInfo>.Filter.Regex("id", new BsonRegularExpression(documentId));
+
+            DocumentInfo documentInfo = new DocumentInfo();
+            collectionDocument.Find(filter).ForEachAsync(d => {
+                documentInfo._id = d._id;
+                documentInfo.name = d.name;
+                documentInfo.id = d.id;
+                
+                }).Wait();
+
+            // introduc inregistrarea tagului in document
+            BsonDocument tagDocument = new BsonDocument {
+
+                        { "tagName", tagName },
+                        { "tagImportance", relativeImportance }
+                 };
+
+            var updateDocument = Builders<DocumentInfo>.Update
+                    .Push(p => p.tags, tagDocument);
+
+            collectionDocument.UpdateOneAsync(filter, updateDocument).Wait();
+
+
+
+            var collectionTags = db.GetCollection<TagsCollection>("Tags");
+
+            BsonDocument documentsBelonging = new BsonDocument()
+            {
+
+                { "_id", documentInfo._id },
+                { "id", documentInfo.id },
+                { "documentName", documentInfo.name },
+                { "relativeImportance", relativeImportance}
+
+            };
+
+           
+
+            
+
+            var filterTag = Builders<TagsCollection>.Filter.Regex("tagName", tagName);
+            var updateTag = Builders<TagsCollection>.Update
+                   // .Inc("votes", 1)
+                    .Push(p => p.documentsBelonging, documentsBelonging);
+
+                collectionTags.UpdateOneAsync(filterTag, updateTag).Wait();
+                
+            
+
+            return "True";
+
+        }
+
+
+        [WebMethod]
+        public static string RemoveInTagCollection(string tagName, string documentId)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+
+            var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
+
+            var filter = Builders<DocumentInfo>.Filter.Regex("id", new BsonRegularExpression(documentId));
+
+            DocumentInfo documentInfo = new DocumentInfo();
+            collectionDocument.Find(filter).ForEachAsync(d => {
+                documentInfo._id = d._id;
+                documentInfo.name = d.name;
+                documentInfo.id = d.id;
+
+            }).Wait();
+
+
+            // sterg inregistrarea tagului din document
+         var updateDocument = Builders<DocumentInfo>.Update
+                    .Pull(p => p.tags, new BsonDocument(){
+    { "tagName", tagName } } );
+
+            collectionDocument.UpdateOneAsync(filter, updateDocument).Wait();
+
+
+            // sterg inregistrarea din  tag
+            var collectionTags = db.GetCollection<TagsCollection>("Tags");
+
+
+            var filterTag = Builders<TagsCollection>.Filter.Regex("tagName", tagName);
+            var updateTag = Builders<TagsCollection>.Update
+
+                    .Pull(p => p.documentsBelonging, new BsonDocument(){
+    { "_id", documentInfo._id } });
+
+            collectionTags.UpdateOneAsync(filterTag, updateTag).Wait();
+
+
+
+            return "Deleted";
+
+        }
+
+        public string ReplaceToHTML( string text)
+        {
+            string[] plainChar = new string[] { "\"", "'", "&" };
+            string[] HTMLChar = new string[] { "<q>", "&#39;", "&amp;" };
+
+            for (int i = 0; i < plainChar.Length; i++)
+            {
+                text = text.Replace(plainChar[i], HTMLChar[i]);
+            }
+
+            return text;
+        }
+
+        public string ReplaceToText(string text)
+        {
+
+            string[] plainChar = new string[] { "\"", "'", "&" };
+            string[] HTMLChar = new string[] { "<q>", "&#39;", "&amp;" };
+
+            for (int i = 0; i < plainChar.Length; i++)
+            {
+                text = text.Replace(HTMLChar[i], plainChar[i]);
+            }
+
+            Response.Write(text);
+            return text;
+        }
+
+        public void LoadFeedback(BsonArray documentFeedback)
+        {
+            int count = 0;
+
+            foreach(string feedback in documentFeedback)
+            {
+                count++;
+               feedbackContent.Controls.Add(new LiteralControl { Text = "<div class=\"divDocumentFeedback\" id=\"feedbackMessage_" + count +"\" ><p>" + feedback + "<p /></div>" });
+
+            }
+            labelFeedbackNumber.Text = "("+ count +")";
+        }
 
 
     }

@@ -38,10 +38,16 @@ namespace MyTimelineASPTry
 
                 if (BCryptHelper.CheckPassword(textBoxPassword.Text, document.password))
                 {
+                    if (document.emailVerified) { 
                     Session["userId"] = document.email;
                     Session["userLogged"] = "True";
                     //Response.Write("Te-ai logat cu username " + Session["userId"].ToString() +"  si parola " +document.password);
                     Response.Redirect("UserManaging.aspx", false);
+                    }
+                    else
+                    {
+                        Response.Redirect("EmailVerification.aspx?email="+document.email, false);
+                    }
                 }
                 else
                 {
