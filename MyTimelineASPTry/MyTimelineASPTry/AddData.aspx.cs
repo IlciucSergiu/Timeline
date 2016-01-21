@@ -9,6 +9,9 @@ using MongoDB.Driver;
 using System.Web.Services;
 
 
+using Google.API.Search;
+
+
 namespace MyTimelineASPTry
 {
     public partial class AddData : System.Web.UI.Page
@@ -735,6 +738,20 @@ namespace MyTimelineASPTry
 
         }
 
+        protected void buttonSearchBook_Click(object sender, EventArgs e)
+        {
+            GbookSearchClient client = new GbookSearchClient("www.timetrail.com");
+            IList<IBookResult> results = client.Search(textBoxAddBooks.Text, 2);
+           // IList<IBookResult> results = client.Search(TextBox1.Text, 30);
+
+            foreach(IBookResult  book in results)
+            {
+                Response.Write(book.Title);
+                Response.Write(book.BookId);
+                Response.Write(book.Authors);
+                imageBookCover.ImageUrl = book.TbImage.Url;
+            }
+        }
 
         [WebMethod]
         public static string RemoveInTagCollection(string tagName, string documentId)

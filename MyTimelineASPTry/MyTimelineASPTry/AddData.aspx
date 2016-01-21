@@ -225,6 +225,66 @@
                &nbsp; <asp:Button ID="buttonAddBook" runat="server" Text="Add book" OnClick="buttonAddBook_Click"  />
 
             
+                <asp:Button ID="buttonSearchBook" runat="server" OnClick="buttonSearchBook_Click" Text="Search book" />
+                <asp:Button ID="buttonDetails" runat="server" Text="Details" OnClientClick="getBookDetails(); return false;" Width="62px"/>
+                <a id="book">book</a>
+                <script>
+
+                    $("#book").click(function () { getBookDetails2("0786853786"); });
+
+                    function getBookDetails2(isbn) {
+                        $.get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn, function (data) {
+
+
+                            var book = data.items[0];
+
+                            var title = (book["volumeInfo"]["title"]);
+
+                            alert(title);
+                            alert(JSON.stringify(data)+"asdgasd");
+                            //alert("Load was performed.");
+                        });
+                    }
+                    function getBookDetails(isbn) {
+
+                        alert("going for it");
+                        // Query the book database by ISBN code.
+                        isbn = isbn || "9781451648546"; // Steve Jobs book 
+
+                        var url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+
+                        var response = UrlFetchApp.fetch(url);
+                        var results = JSON.parse(response);
+
+
+                        if (results.totalItems) {
+
+                            // There'll be only 1 book per ISBN
+                            var book = results.items[0];
+
+                            var title = (book["volumeInfo"]["title"]);
+                            var subtitle = (book["volumeInfo"]["subtitle"]);
+                            var authors = (book["volumeInfo"]["authors"]);
+                            var printType = (book["volumeInfo"]["printType"]);
+                            var pageCount = (book["volumeInfo"]["pageCount"]);
+                            var publisher = (book["volumeInfo"]["publisher"]);
+                            var publishedDate = (book["volumeInfo"]["publishedDate"]);
+                            var webReaderLink = (book["accessInfo"]["webReaderLink"]);
+
+                            alert("done it");
+                            // For debugging
+                            Logger.log(book);
+
+                        }
+
+                       
+                       
+                    }
+                </script>
+               <br />
+                 <asp:Image ID="imageBookCover" runat="server" Height="151px" Width="126px" />
+
+            
         </p>
         <p>
 
