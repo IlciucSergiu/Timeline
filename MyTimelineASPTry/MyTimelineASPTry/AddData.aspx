@@ -14,31 +14,31 @@
     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="/resources/demos/style.css" />
-   
-    
-   
-   
-    
+
+
+
+
+
 </head>
 <body>
     <form runat="server" id="formMainForm">
-        
-         <asp:ScriptManager ID="ScriptManagerMain"
-            runat="server"
-            EnablePageMethods="true" 
-            ScriptMode="Release" 
-            LoadScriptsBeforeUI="true">
-    </asp:ScriptManager>
 
-    <div id="header">
-           
-        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail" CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
-           
+        <asp:ScriptManager ID="ScriptManagerMain"
+            runat="server"
+            EnablePageMethods="true"
+            ScriptMode="Release"
+            LoadScriptsBeforeUI="true">
+        </asp:ScriptManager>
+
+        <div id="header">
+
+            <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail" CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+
         </div>
-        
+
         <div id="divAddEssentials" runat="server">
 
-          <!--  <p>
+            <!--  <p>
                 &nbsp;&nbsp; First name:&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:TextBox ID="firstName" runat="server"></asp:TextBox>
             </p> -->
@@ -51,41 +51,43 @@
 
             <div id="datesPosition">
                 <p>
-                  Start date :
+                    Start date :
                 <input type="text" class="datepicker" id="dateBirth" runat="server" placeholder="yyyy-mm-dd" />
                 </p>
                 &nbsp;&nbsp;&nbsp;
-         <p >
+         <p>
              End date :
-             <input type="text" class="datepicker" id="dateDeath" runat="server"  placeholder="yyyy-mm-dd"/>
+             <input type="text" class="datepicker" id="dateDeath" runat="server" placeholder="yyyy-mm-dd" />
          </p>
                 &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" class="checkContemporary" /><br />
                 <br />
             </div>
-          
-            
+
+
             <br />
 
-             <div id="addTags">
+            <div id="addTags">
 
                 <br />
-                 <input id="hiddenId" type="hidden" runat="server"/>
-               <br />
-                 <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" CssClass="textBoxAddTag"></asp:TextBox> 
-               -
-                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick=" AddTagItem(); return false;"    />
-                
-                  &nbsp;&nbsp;
-                 <input id="buttonRemoveTags" type="button" value="Remove" /> <asp:Label ID="labelInfo" runat="server" Text="" CssClass="verifyTag" ForeColor="Red"></asp:Label> <!-- <p id="verifyTag" ></p> -->
-                 <br /> 
-                  <asp:HiddenField ID="hiddenFieldTags" runat="server" />
-                 <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px" CssClass="listBoxTags"></asp:ListBox>
+                <input id="hiddenId" type="hidden" runat="server" />
+                <br />
+                <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" CssClass="textBoxAddTag"></asp:TextBox>
+                -
+                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick=" AddTagItem(); return false;" />
+
+                &nbsp;&nbsp;
+                 <input id="buttonRemoveTags" type="button" value="Remove" />
+                <asp:Label ID="labelInfo" runat="server" Text="" CssClass="verifyTag" ForeColor="Red"></asp:Label>
+                <!-- <p id="verifyTag" ></p> -->
+                <br />
+                <asp:HiddenField ID="hiddenFieldTags" runat="server" />
+                <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px" CssClass="listBoxTags"></asp:ListBox>
                 <br />
             </div>
             <br />
 
 
-            
+
 
 
             <asp:Label ID="labelDescription" runat="server" Text="Description"></asp:Label><br />
@@ -103,11 +105,11 @@
             <br />
 
 
-            <asp:Button ID="buttonCancel" runat="server" Text="Cancel" OnClick="buttonCancel_Click" CssClass="essentialButtons"/>
-            <asp:Button ID="buttonSubmit" runat="server" Text="Save" OnClick="buttonSubmit_Click" Width="82px" CssClass="essentialButtons"/>
+            <asp:Button ID="buttonCancel" runat="server" Text="Cancel" OnClick="buttonCancel_Click" CssClass="essentialButtons" />
+            <asp:Button ID="buttonSubmit" runat="server" Text="Save" OnClick="buttonSubmit_Click" Width="82px" CssClass="essentialButtons" />
 
 
-            <asp:Button ID="buttonModify" runat="server" Text="Modify" CssClass="essentialButtons" OnClick="buttonModify_Click" Width="90px"/>
+            <asp:Button ID="buttonModify" runat="server" Text="Modify" CssClass="essentialButtons" OnClick="buttonModify_Click" Width="90px" />
 
 
             <br />
@@ -118,7 +120,7 @@
             <script src="MySecondTry1/js/AddData.js"></script>
 
             <script>
-         
+
                 $(document).ready(function () {
                     //alert("is ready");
                     if ('<%=setDate%>' == "True") {
@@ -141,24 +143,24 @@
                 });
                 //try {
                 function UpdHidTag(listString1) {
-                   
+
                     $('#' + '<%=hiddenFieldTags.ClientID %>').val(listString1);
-                   
-                         return false;
+
+                    return false;
                 }
 
                 function UpdHidLink(listString1) {
                     //alert(listString1);
                     $('#' + '<%=hiddenFieldLinks.ClientID %>').val(listString1);
-                  alert("In hidden: " + $('#' + '<%=hiddenFieldLinks.ClientID %>').val());
+                    alert("In hidden: " + $('#' + '<%=hiddenFieldLinks.ClientID %>').val());
                     return false;
                 }
-               // }
+                // }
                 //catch (err) {
                 //    alert(err.message);
-               // }
+                // }
             </script>
-             
+
         </div>
 
 
@@ -171,7 +173,7 @@
         <div id="divMainInfo" runat="server">
             <br />
             <asp:TextBox ID="textBoxId" runat="server" Width="128px" Visible="False"></asp:TextBox>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:Button ID="Button1" runat="server" Text="Search ID" OnClick="Button1_Click" Visible="False" />
             <br />
 
@@ -181,147 +183,105 @@
             <div class="imageInline" id="labelsInfo">
                 <asp:Label ID="labelName" runat="server" Text="Name" CssClass="essentialLabels" Width="300px"></asp:Label><br />
                 <asp:Label ID="labelDates" runat="server" Text="Dates" CssClass="essentialLabels" Width="300px"></asp:Label><br />
-               
 
-                <asp:LinkButton ID="linkButtonEdit" runat="server" CssClass="linkLabel" OnClick="linkButtonEdit_Click"  OnClientClick="setDate()">edit</asp:LinkButton>
+
+                <asp:LinkButton ID="linkButtonEdit" runat="server" CssClass="linkLabel" OnClick="linkButtonEdit_Click" OnClientClick="setDate()">edit</asp:LinkButton>
 
             </div>
-            <br /><br /><br /><br />
-            
-            <div id="divDocumentFeedback" >
-                <h2 id="feedbackShow">Feedback <asp:Label ID="labelFeedbackNumber" runat="server" Text="(0)"></asp:Label></h2>
-                <div id="feedbackContent" runat="server" class="hide">
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
 
-                </div>
+        <div id="divDocumentFeedback">
+            <h2 id="feedbackShow">Feedback
+                    <asp:Label ID="labelFeedbackNumber" runat="server" Text="(0)"></asp:Label></h2>
+            <div id="feedbackContent" runat="server" class="hide">
             </div>
-        
-        <div id="ckEditor">
-            <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000" ></CKEditor:CKEditorControl>
         </div>
 
-            <asp:HiddenField ID="hiddenFieldCk" runat="server" />
-            &nbsp;
+        <div id="ckEditor">
+            <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000"></CKEditor:CKEditorControl>
+        </div>
+
+        <asp:HiddenField ID="hiddenFieldCk" runat="server" />
+        &nbsp;
            
         <p>
-           <!-- <asp:LinkButton ID="LinkButton2" runat="server">Add additional resources</asp:LinkButton> -->
+            <!-- <asp:LinkButton ID="LinkButton2" runat="server">Add additional resources</asp:LinkButton> -->
             <asp:Label ID="labelAddResources" runat="server" Text="Add additional resources"></asp:Label>
             <br />
             <asp:LinkButton ID="LinkButton1" runat="server"> Add book </asp:LinkButton>
 
-            
+
         </p>
 
-            <p>Insert id of a youtube video or the entire link</p>
-            <asp:TextBox ID="textBoxVideoId" runat="server" Width="296px" ></asp:TextBox>
-            
-
-                <p>Insert links of additional images</p>
-            <asp:TextBox ID="textBoxLinksImages" runat="server" Width="296px" ></asp:TextBox>
-            <p>
-            
-            Title : 
-            <asp:TextBox ID="textBoxAddBooks" runat="server" Width="147px"></asp:TextBox>
-
-               &nbsp; <asp:Button ID="buttonAddBook" runat="server" Text="Add book" OnClick="buttonAddBook_Click"  />
-
-            
-                <asp:Button ID="buttonSearchBook" runat="server" OnClick="buttonSearchBook_Click" Text="Search book" />
-                <asp:Button ID="buttonDetails" runat="server" Text="Details" OnClientClick="getBookDetails(); return false;" Width="62px"/>
-                <a id="book">book</a>
-                <script>
-
-                    $("#book").click(function () { getBookDetails2("0786853786"); });
-
-                    function getBookDetails2(isbn) {
-                        $.get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn, function (data) {
+        <p>Insert id of a youtube video or the entire link</p>
+        <asp:TextBox ID="textBoxVideoId" runat="server" Width="296px"></asp:TextBox>
 
 
-                            var book = data.items[0];
-
-                            var title = (book["volumeInfo"]["title"]);
-
-                            alert(title);
-                            alert(JSON.stringify(data)+"asdgasd");
-                            //alert("Load was performed.");
-                        });
-                    }
-                    function getBookDetails(isbn) {
-
-                        alert("going for it");
-                        // Query the book database by ISBN code.
-                        isbn = isbn || "9781451648546"; // Steve Jobs book 
-
-                        var url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
-
-                        var response = UrlFetchApp.fetch(url);
-                        var results = JSON.parse(response);
+        <p>Insert links of additional images</p>
+        <asp:TextBox ID="textBoxLinksImages" runat="server" Width="296px"></asp:TextBox>
+        
+        <br />
+        <br />
 
 
-                        if (results.totalItems) {
+        <asp:TextBox ID="textBoxAddBooks" runat="server" Width="147px" CssClass="textBoxBook"></asp:TextBox>
+        <input id="buttonSearchBook" type="button" value="Search book" />&nbsp;<br /><br />
+        <br />
 
-                            // There'll be only 1 book per ISBN
-                            var book = results.items[0];
+        <div class="addBook">
+        <asp:ListBox ID="listBoxBooks" runat="server" Width="226px" Height="129px" CssClass="listBoxBooks"></asp:ListBox><br />
+         <input id="buttonRemoveBook" type="button" value="Remove book"  onclick="RemoveThisBook()"/>
+        </div>
 
-                            var title = (book["volumeInfo"]["title"]);
-                            var subtitle = (book["volumeInfo"]["subtitle"]);
-                            var authors = (book["volumeInfo"]["authors"]);
-                            var printType = (book["volumeInfo"]["printType"]);
-                            var pageCount = (book["volumeInfo"]["pageCount"]);
-                            var publisher = (book["volumeInfo"]["publisher"]);
-                            var publishedDate = (book["volumeInfo"]["publishedDate"]);
-                            var webReaderLink = (book["accessInfo"]["webReaderLink"]);
 
-                            alert("done it");
-                            // For debugging
-                            Logger.log(book);
 
-                        }
+        <div id="divAddBook" class="addBook">
+            <div id="booksOptions"></div>
 
-                       
-                       
-                    }
-                </script>
-               <br />
-                 <asp:Image ID="imageBookCover" runat="server" Height="151px" Width="126px" />
+            <div id="bookSelectedBook" class="">
 
-            
+                <img id="selectedBookImage" src="#" class="selectedBookInfo" />
+                <input id="hiddenIsbn" type="hidden" />
+                <div id="selectedBookInfo" class="selectedBookInfo">
+                    <p id="selectedBookTitle"></p>
+                    <p id="selectedBookAuthors"></p>
+                    <p id="selectedBookDescription"></p>
+                    <p id="selectedBookPages"></p>
+                    <input id="buttonAddThisBook" type="button" value="Add this book" onclick="AddThisBook()" /><br />
+                </div>
+            </div>
+            <p id="bookInfo"></p>
+        </div>
+       
+
+        <p>
         </p>
+        <div id="addLinks">
+            <asp:TextBox ID="textBoxAddLink" runat="server" Width="256px" CssClass="textBoxAddLink"></asp:TextBox>
+            <asp:Button ID="buttonAddLink" runat="server" Text="Add" OnClick="buttonAddLink_Click" Width="74px" OnClientClick="AddLinkItem(); return false;" />&nbsp;&nbsp;
+                <input id="buttonRemoveLinks" type="button" value="Remove" />
+        </div>
         <p>
 
-        
-          <!--  <asp:LinkButton ID="linkButtonAddLink" runat="server" OnClientClick="showAddLink();return false" >Add links to external resources</asp:LinkButton> -->
-        
-            <asp:ListBox ID="listBoxBooks" runat="server"  Width="185px"></asp:ListBox>
-        
-        </p>
-            <p>
-
-        
-            <asp:Label ID="labelAddLinks" runat="server" Text="Add links to external resources"></asp:Label>
-        
-        </p>
-            <div id="addLinks" >
-                <asp:TextBox ID="textBoxAddLink" runat="server" Width="256px" CssClass="textBoxAddLink"></asp:TextBox>
-                <asp:Button ID="buttonAddLink" runat="server" Text="Add" OnClick="buttonAddLink_Click" Width="74px" OnClientClick="AddLinkItem(); return false;"/>&nbsp;&nbsp;
-                <input id="buttonRemoveLinks" type="button" value="Remove" /></div>
-            <p>
-
             <asp:ListBox ID="listBoxLinks" runat="server" Height="53px" Width="300px" CssClass="listBoxLinks"></asp:ListBox>
-                <asp:HiddenField ID="hiddenFieldLinks" runat="server"  />
-            </p>
-            <asp:Button ID="buttomSaveChanges" runat="server" Text="Save" OnClick="buttomSaveChanges_Click" Width="83px" />
-        </div>
-        
-        <script>
-            
+            <asp:HiddenField ID="hiddenFieldLinks" runat="server" />
+        </p>
+        <asp:Button ID="buttomSaveChanges" runat="server" Text="Save" OnClick="buttomSaveChanges_Click" Width="83px" />
 
-           function showAddLink()
-            {
-               $("#addLinks").css("display", "block");
+
+        <script>
+
+
+            function showAddLink() {
+                $("#addLinks").css("display", "block");
             }
 
         </script>
-            
+
     </form>
     <br />
 

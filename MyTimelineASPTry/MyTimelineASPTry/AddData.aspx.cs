@@ -449,7 +449,9 @@ namespace MyTimelineASPTry
                             if (item.additionalBooks != null)
                                 foreach (var book in item.additionalBooks)
                                 {
-                                    listBoxBooks.Items.Add(book.ToString());
+                                    if (book["title"] != null)
+                                        listBoxBooks.Items.Add(book["title"].ToString());
+                                    else Response.Write("this book has no title");
                                 }
 
                             if (item.documentFeedback != null)
@@ -749,7 +751,7 @@ namespace MyTimelineASPTry
                 Response.Write(book.Title);
                 Response.Write(book.BookId);
                 Response.Write(book.Authors);
-                imageBookCover.ImageUrl = book.TbImage.Url;
+               // imageBookCover.ImageUrl = book.TbImage.Url;
             }
         }
 
@@ -798,6 +800,36 @@ namespace MyTimelineASPTry
             return "Deleted";
 
         }
+
+        [WebMethod]
+        public static string AddSelectedBook(string title, string isbn,string imageUrl,string documentId)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+            var collection = db.GetCollection<IndividualData>("IndividualData");
+
+            BsonDocument book = new BsonDocument()
+            {
+                { "title", title },
+                { "isbn", isbn },
+                { "imageUrl", imageUrl },
+            };
+
+
+            var filter = Builders<IndividualData>.Filter.Regex("id", documentId);
+
+            var update = Builders<IndividualData>.Update
+                    // .Inc("votes", 1)
+                    .Push(p => p.additionalBooks, book);
+
+            collection.UpdateOneAsync(filter, update).Wait();
+
+            return "Inserted";
+
+        }
+
+
 
         public string ReplaceToHTML( string text)
         {

@@ -607,3 +607,48 @@ a:hover {
     margin-left:5%;
     margin-top:3%;
 }
+
+.divBookOption {
+    display:inline-block;
+}
+
+.divBookOption .bookOption {
+    max-height: 170px;
+}
+
+.selectedBookInfo{
+    display:inline-block;
+    vertical-align:top;
+    
+}
+
+#selectedBookInfo{
+     width:500px;
+}
+
+#bookSelectedBook {
+    margin-left: 3%;
+    width:700px;
+}
+
+
+#selectedBookDescription {
+
+    max-width: 500px;
+    max-height: 100px;
+    overflow:hidden;
+    
+}
+
+#buttonAddThisBook {
+    float:right;
+}
+
+.addBook {
+    display:inline-block;
+    vertical-align:top;
+}
+
+#buttonRemoveBook {
+    margin-left: 100px;
+}

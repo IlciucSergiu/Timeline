@@ -400,51 +400,6 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.TextBox textBoxAddBooks;
         
         /// <summary>
-        /// buttonAddBook control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonAddBook;
-        
-        /// <summary>
-        /// buttonSearchBook control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonSearchBook;
-        
-        /// <summary>
-        /// buttonDetails control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonDetails;
-        
-        /// <summary>
-        /// imageBookCover control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imageBookCover;
-        
-        /// <summary>
-        /// linkButtonAddLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton linkButtonAddLink;
-        
-        /// <summary>
         /// listBoxBooks control.
         /// </summary>
         /// <remarks>
@@ -452,15 +407,6 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox listBoxBooks;
-        
-        /// <summary>
-        /// labelAddLinks control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelAddLinks;
         
         /// <summary>
         /// textBoxAddLink control.
