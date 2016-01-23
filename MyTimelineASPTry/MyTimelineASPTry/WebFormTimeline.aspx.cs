@@ -23,8 +23,8 @@ namespace MyTimelineASPTry
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           CKEditorFeedback.Toolbar =  CKEditorFeedback.ToolbarBasic;
-           
+            CKEditorFeedback.Toolbar = CKEditorFeedback.ToolbarBasic;
+
             if (Session["userLogged"] != null)
                 if (Session["userLogged"].ToString() == "True")
                 {
@@ -86,12 +86,12 @@ namespace MyTimelineASPTry
          "\"id\": \"main_data\"," +
          "\"title\": \"TimeTrail\"," +
          "\"initial_zoom\": \"40\"," +
-                //"\"focus_date\": \"1998-03-11 12:00:00\","+
+         //"\"focus_date\": \"1998-03-11 12:00:00\","+
          "\"image_lane_height\": 50," +
          "\"events\":[" + jsString.TrimEnd(',') + "]" +
      "}]";
 
-            
+
         }
 
         static string endDate(string date)
@@ -148,7 +148,7 @@ namespace MyTimelineASPTry
 
 
         public bool showIndividual = false;
-        
+
         protected void buttonSearchId_Click(object sender, EventArgs e)
         {
             showIndividual = true;
@@ -189,7 +189,7 @@ namespace MyTimelineASPTry
 
             htmlInfo.InnerHtml = "";
             additionalLinks.InnerHtml = "";
-            documentBooks.InnerHtml = "";
+
 
             if (ItemExists(itemId))
             {
@@ -206,17 +206,9 @@ namespace MyTimelineASPTry
                 htmlInfo.InnerHtml = item.htmlInformation;
 
                 labelNumberOfViews.Text = "viewed " + (item.timesViewed + 1).ToString() + " times";
-                // listBoxLinks.Items.Clear();
 
-                // additionalResources.InnerHtml = "Additional resources";
-                if (item.additionalBooks != null)
-                    foreach (var book in item.additionalBooks)
-                    {
-                        documentBooks.InnerHtml += "<br />" + book.ToString();
-                    }
-                documentBooks.InnerHtml += "<br /><br />";
 
-                // additionalLinks.InnerHtml = "Additional links";
+
                 if (item.additionalLinks != null)
                     foreach (var links in item.additionalLinks)
                     {
@@ -224,23 +216,35 @@ namespace MyTimelineASPTry
 
                     }
                 additionalLinks.InnerHtml += "<br /><br />";
-                
-                if(item.videoLinks != null)
-                { 
+
+                if (item.videoLinks != null)
+                {
                     documentVideos.Controls.Add(new LiteralControl { Text = "<div  id=\"player\"></div>" });
                     videoId = item.videoLinks[0].ToString();
-               // Response.Write(item.videoLinks[0].ToString());
+
                 }
 
                 if (item.imagesLinks != null)
                 {
-                    foreach(string image in item.imagesLinks)
-                 documentSlideshow.Controls.Add(new LiteralControl { Text = "<img  class=\"slideImage\" src=\""+ image + "\"/>" });
-                    
-                    //Response.Write(item.imagesLinks[0].ToString());
+                    foreach (string image in item.imagesLinks)
+                        documentSlideshow.Controls.Add(new LiteralControl { Text = "<img  class=\"slideImage\" src=\"" + image + "\"/>" });
+
+
                 }
 
-               
+                if (item.additionalBooks != null)
+                {
+                    foreach (BsonDocument book in item.additionalBooks)
+                    {
+
+
+                        booksContainer.Controls.Add(new LiteralControl { Text = "<img  id=\"" + book["isbn"] + "\"  class=\"documentBook\" src=\"" + book["imageUrl"] + "\"/>" });
+
+                    }
+
+                }
+
+
 
             }
             sw.Stop();
@@ -326,9 +330,9 @@ namespace MyTimelineASPTry
 
                 jsonData = "[{" +
              "\"id\": \"" + searchQuery + "\"," +
-             "\"title\": \""+ searchQuery.First().ToString().ToUpper() + searchQuery.Substring(1) +"\"," +
+             "\"title\": \"" + searchQuery.First().ToString().ToUpper() + searchQuery.Substring(1) + "\"," +
              "\"initial_zoom\": \"40\"," +
-                    //"\"focus_date\": \"1998-03-11 12:00:00\","+
+             //"\"focus_date\": \"1998-03-11 12:00:00\","+
              "\"image_lane_height\": 50," +
              "\"events\":[" + jsString.TrimEnd(',') + "]" +
          "}]";
@@ -365,7 +369,7 @@ namespace MyTimelineASPTry
          "\"id\": \"" + searchQuery + "\"," +
          "\"title\": \"" + searchQuery.First().ToString().ToUpper() + searchQuery.Substring(1) + "\"," +
          "\"initial_zoom\": \"40\"," +
-                //"\"focus_date\": \"1998-03-11 12:00:00\","+
+         //"\"focus_date\": \"1998-03-11 12:00:00\","+
          "\"image_lane_height\": 50," +
          "\"events\":[" + jsString.TrimEnd(',') + "]" +
      "}]";
@@ -462,7 +466,7 @@ namespace MyTimelineASPTry
 
         public string ReplaceToHTML(string text)
         {
-            string[] plainChar = new string[] { "\"", "'"};
+            string[] plainChar = new string[] { "\"", "'" };
             string[] HTMLChar = new string[] { "", "" };
 
             for (int i = 0; i < plainChar.Length; i++)
@@ -506,7 +510,7 @@ namespace MyTimelineASPTry
            "\"id\": \"" + searchQuery + "\"," +
            "\"title\": \"" + searchQuery.First().ToString().ToUpper() + searchQuery.Substring(1) + "\"," +
            "\"initial_zoom\": \"40\"," +
-                //"\"focus_date\": \"1998-03-11 12:00:00\","+
+           //"\"focus_date\": \"1998-03-11 12:00:00\","+
            "\"image_lane_height\": 50," +
            "\"events\":[" + jsString.TrimEnd(',') + "]" +
        "}]";
@@ -605,29 +609,32 @@ namespace MyTimelineASPTry
 
             bool notYet = true;
             int pos;
-            collection.Find(filter).ForEachAsync(d => {
-                if (d.alreadyVoted != null) { 
-                 pos = Array.IndexOf(d.alreadyVoted.ToArray(), userId);
-                
-                if (pos != -1)
-                    notYet = false;
+            collection.Find(filter).ForEachAsync(d =>
+            {
+                if (d.alreadyVoted != null)
+                {
+                    pos = Array.IndexOf(d.alreadyVoted.ToArray(), userId);
+
+                    if (pos != -1)
+                        notYet = false;
                 }
-             }).Wait();
+            }).Wait();
 
-           
-            if (notYet){ 
-            var update = Builders<IndividualData>.Update
-                .Inc("votes", 1)
-                .Push(p => p.alreadyVoted, userId);
 
-            collection.UpdateOneAsync(filter, update).Wait();
-            return "worked";
+            if (notYet)
+            {
+                var update = Builders<IndividualData>.Update
+                    .Inc("votes", 1)
+                    .Push(p => p.alreadyVoted, userId);
+
+                collection.UpdateOneAsync(filter, update).Wait();
+                return "worked";
             }
             else
             {
                 return "already";
             }
-            
+
         }
 
         protected void buttonSendFeedback_Click(object sender, EventArgs e)
@@ -640,7 +647,7 @@ namespace MyTimelineASPTry
             var filter = Builders<IndividualData>.Filter.Eq("id", hiddenId.Value);
 
             var update = Builders<IndividualData>.Update
-               .Push( p => p.documentFeedback, CKEditorFeedback.Text);
+               .Push(p => p.documentFeedback, CKEditorFeedback.Text);
 
             collection.UpdateOneAsync(filter, update);
         }

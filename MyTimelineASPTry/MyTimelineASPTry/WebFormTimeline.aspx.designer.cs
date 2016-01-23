@@ -238,13 +238,13 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentVideos;
         
         /// <summary>
-        /// documentBooks control.
+        /// booksContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentBooks;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl booksContainer;
         
         /// <summary>
         /// additionalLinks control.

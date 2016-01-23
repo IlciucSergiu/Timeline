@@ -19,9 +19,27 @@
 
 
 
+    
+
+
+
+
+
+   
+
+
+
+
+
+    
+
+
+
+
+
 </head>
-<body>
-    <form runat="server" id="formMainForm">
+<body >
+    <form runat="server" id="formMainForm" >
 
         <asp:ScriptManager ID="ScriptManagerMain"
             runat="server"
@@ -36,6 +54,7 @@
 
         </div>
 
+        <div id="pageBody">
         <div id="divAddEssentials" runat="server">
 
             <!--  <p>
@@ -99,7 +118,7 @@
             <asp:Image ID="imageDocument" runat="server" CssClass="documentImage profileImage" />
             <br />
 
-            <asp:Label ID="labelLink" runat="server" Text="Link to aditional resources"></asp:Label><br />
+            <asp:Label ID="labelLink" runat="server" Text="Link to main source &quot;usualy Wikipedia&quot; "></asp:Label><br />
             <asp:TextBox ID="textBoxLink" runat="server" Width="345px"></asp:TextBox>
             <br />
             <br />
@@ -172,9 +191,7 @@
 
         <div id="divMainInfo" runat="server">
             <br />
-            <asp:TextBox ID="textBoxId" runat="server" Width="128px" Visible="False"></asp:TextBox>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button ID="Button1" runat="server" Text="Search ID" OnClick="Button1_Click" Visible="False" />
+            
             <br />
 
             <div id="divEssentialInfo" class="imageInline">
@@ -208,41 +225,38 @@
         <asp:HiddenField ID="hiddenFieldCk" runat="server" />
         &nbsp;
            
-        <p>
-            <!-- <asp:LinkButton ID="LinkButton2" runat="server">Add additional resources</asp:LinkButton> -->
-            <asp:Label ID="labelAddResources" runat="server" Text="Add additional resources"></asp:Label>
-            <br />
-            <asp:LinkButton ID="LinkButton1" runat="server"> Add book </asp:LinkButton>
+        
+            
+           <h1>Add aditional resources</h1>
+           
 
 
-        </p>
-
+        <hr />
+        <h2>Add video's</h2>
         <p>Insert id of a youtube video or the entire link</p>
         <asp:TextBox ID="textBoxVideoId" runat="server" Width="296px"></asp:TextBox>
 
-
-        <p>Insert links of additional images</p>
+        <hr />
+        <h2>Add images</h2>
+        <p>Insert links to additional images</p>
         <asp:TextBox ID="textBoxLinksImages" runat="server" Width="296px"></asp:TextBox>
         
         <br />
         <br />
 
-
-        <asp:TextBox ID="textBoxAddBooks" runat="server" Width="147px" CssClass="textBoxBook"></asp:TextBox>
+        <hr />
+        <h2>Add books</h2>
+        <asp:TextBox ID="textBoxAddBooks" runat="server" Width="199px" CssClass="textBoxBook" Height="23px"></asp:TextBox>
         <input id="buttonSearchBook" type="button" value="Search book" />&nbsp;<br /><br />
-        <br />
+        
 
         <div class="addBook">
-        <asp:ListBox ID="listBoxBooks" runat="server" Width="226px" Height="129px" CssClass="listBoxBooks"></asp:ListBox><br />
+            <div id="booksOptions" ></div><br />
+        <asp:ListBox ID="listBoxBooks" runat="server" Width="264px" Height="129px" CssClass="listBoxBooks" ViewStateMode="Enabled"></asp:ListBox>
         
-        </div>
-
-
-
-        <div id="divAddBook" class="addBook">
-            <div id="booksOptions"></div>
-
-            <div id="bookSelectedBook" class="hide">
+            <div id="divAddBook" class="addBook">
+            
+            |<div id="bookSelectedBook" class="hide">
 
                 <img id="selectedBookImage" src="#" class="selectedBookInfo" />
                 <input id="hiddenIsbn" type="hidden" />
@@ -256,10 +270,10 @@
             </div>
             <p id="bookInfo"></p>
         </div>
-       
+       </div>
 
-        <p>
-        </p>
+        
+        <hr /><h2>Add links</h2>
         <div id="addLinks">
             <asp:TextBox ID="textBoxAddLink" runat="server" Width="256px" CssClass="textBoxAddLink"></asp:TextBox>
             <asp:Button ID="buttonAddLink" runat="server" Text="Add" OnClick="buttonAddLink_Click" Width="74px" OnClientClick="AddLinkItem(); return false;" />&nbsp;&nbsp;
@@ -273,6 +287,7 @@
         <asp:Button ID="buttomSaveChanges" runat="server" Text="Save" OnClick="buttomSaveChanges_Click" Width="83px" />
 
 
+            
         <script>
 
 
@@ -281,6 +296,7 @@
             }
 
         </script>
+            </div>
 
     </form>
     <br />

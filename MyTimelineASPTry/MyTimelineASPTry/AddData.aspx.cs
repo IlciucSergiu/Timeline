@@ -230,23 +230,7 @@ namespace MyTimelineASPTry
 
 
 
-        protected async void Button1_Click(object sender, EventArgs e)
-        {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
-            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
-            //var documents = await collection.Find(new BsonDocument()).FirstAsync();
-
-            var filter = Builders<DocumentInfo>.Filter.Eq("id", textBoxId.Text); ;
-            var documents = await collection.Find(filter).FirstAsync();
-            labelName.Text = documents.name.ToString();
-            labelDates.Text = documents.startdate + " - " + documents.enddate;
-            // labelProfession.Text = documents.profession;
-            // labelNationality.Text = documents.nationality;
-            //labelReligion.Text = documents.religion;
-            imageProfile.ImageUrl = documents.image;
-            }
+      
 
         protected async void linkButtonEdit_Click(object sender, EventArgs e)
         {
@@ -398,8 +382,8 @@ namespace MyTimelineASPTry
 
         protected async void InitializeItem(string initUserId, string initItemId)
         {
-            try
-            {
+           // try
+            //{
 
                 MongoClient mclient = new MongoClient();
                 var db = mclient.GetDatabase("Timeline");
@@ -433,8 +417,27 @@ namespace MyTimelineASPTry
 
                             }
 
-                      
-                        if (!IsPostBack)
+                    listBoxBooks.Items.Clear();
+                    if (item.additionalBooks != null)
+                        foreach (var book in item.additionalBooks)
+                        {
+                            if (book["title"] != null)
+                            {
+                                ListItem listBook = new ListItem();
+                                listBook.Value = (book["isbn"].ToString());
+
+                                if (book["authors"] != null)
+                                    listBook.Text = (book["title"].ToString() + " - " + book["authors"].ToString());
+                                else
+                                    listBook.Text = (book["title"].ToString());
+
+                                listBoxBooks.Items.Add(listBook);
+                            }
+                            else Response.Write("this book has no title");
+                        }
+
+
+                    if (!IsPostBack)
                         {
 
                             CKEditorInformation.Text = item.htmlInformation;
@@ -446,19 +449,7 @@ namespace MyTimelineASPTry
                                     hiddenFieldLinks.Value += links.ToString() + ";";
                                 }
 
-                            if (item.additionalBooks != null)
-                                foreach (var book in item.additionalBooks)
-                                {
-                                    if (book["title"] != null)
-                                    {
-                                        ListItem listBook = new ListItem();
-                                        listBook.Value = (book["isbn"].ToString());
-                                        listBook.Text = (book["title"].ToString());
-
-                                        listBoxBooks.Items.Add(listBook);
-                                    }
-                                    else Response.Write("this book has no title");
-                                }
+                           
 
                             if (item.documentFeedback != null)
                             {
@@ -486,11 +477,11 @@ namespace MyTimelineASPTry
                 {
                     Response.Redirect("Error.aspx", false);
                 }
-            }
-            catch (Exception ex)
-            {
-                Response.Redirect("Error.aspx?" + ex.Message, false);
-            }
+           // }
+           // catch (Exception ex)
+           // {
+           //     Response.Redirect("Error.aspx?" + ex.Message, false);
+            //}
         }
 
         protected async void buttomSaveChanges_Click(object sender, EventArgs e)
@@ -518,12 +509,7 @@ namespace MyTimelineASPTry
                
 
 
-                BsonArray booksArray = new BsonArray();
-                foreach (ListItem book in listBoxBooks.Items)
-                {
-                    booksArray.Add(book.Text);
-                    
-                }
+               
 
                 BsonArray videoLinks = new BsonArray();
                 videoLinks.Add(textBoxVideoId.Text);
@@ -537,8 +523,8 @@ namespace MyTimelineASPTry
                     .Set("htmlInformation", CKEditorInformation.Text)
                     .Set("additionalLinks", linksArray)
                     .Set("videoLinks", videoLinks)
-                    .Set("imagesLinks", imagesLinks)
-                    .Set("additionalBooks", booksArray);
+                    .Set("imagesLinks", imagesLinks);
+                    
 
 
                 var result = await collection.UpdateOneAsync(filter, update);
@@ -808,7 +794,7 @@ namespace MyTimelineASPTry
         }
 
         [WebMethod]
-        public static string AddSelectedBook(string title, string isbn,string imageUrl,string documentId)
+        public static string AddSelectedBook(string title,string authors, string isbn,string imageUrl,string documentId)
         {
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
@@ -818,6 +804,7 @@ namespace MyTimelineASPTry
             BsonDocument book = new BsonDocument()
             {
                 { "title", title },
+                { "authors", authors },
                 { "isbn", isbn },
                 { "imageUrl", imageUrl },
             };
