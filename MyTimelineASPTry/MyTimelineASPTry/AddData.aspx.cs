@@ -450,7 +450,13 @@ namespace MyTimelineASPTry
                                 foreach (var book in item.additionalBooks)
                                 {
                                     if (book["title"] != null)
-                                        listBoxBooks.Items.Add(book["title"].ToString());
+                                    {
+                                        ListItem listBook = new ListItem();
+                                        listBook.Value = (book["isbn"].ToString());
+                                        listBook.Text = (book["title"].ToString());
+
+                                        listBoxBooks.Items.Add(listBook);
+                                    }
                                     else Response.Write("this book has no title");
                                 }
 
@@ -828,6 +834,28 @@ namespace MyTimelineASPTry
             return "Inserted";
 
         }
+
+
+        [WebMethod]
+        public static string RemoveSelectedBook(string title, string isbn, string documentId)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+
+            var collection = db.GetCollection<IndividualData>("IndividualData");
+
+            var filter = Builders<IndividualData>.Filter.Regex("id", documentId);
+
+            var update = Builders<IndividualData>.Update
+                    .Pull(p => p.additionalBooks, new BsonDocument(){
+    { "isbn", isbn } });
+
+            collection.UpdateOneAsync(filter, update).Wait();
+
+            return "Deleted";
+
+        }
+
 
 
 

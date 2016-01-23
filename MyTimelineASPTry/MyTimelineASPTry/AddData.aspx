@@ -234,7 +234,7 @@
 
         <div class="addBook">
         <asp:ListBox ID="listBoxBooks" runat="server" Width="226px" Height="129px" CssClass="listBoxBooks"></asp:ListBox><br />
-         <input id="buttonRemoveBook" type="button" value="Remove book"  onclick="RemoveThisBook()"/>
+        
         </div>
 
 
@@ -242,7 +242,7 @@
         <div id="divAddBook" class="addBook">
             <div id="booksOptions"></div>
 
-            <div id="bookSelectedBook" class="">
+            <div id="bookSelectedBook" class="hide">
 
                 <img id="selectedBookImage" src="#" class="selectedBookInfo" />
                 <input id="hiddenIsbn" type="hidden" />
@@ -251,7 +251,7 @@
                     <p id="selectedBookAuthors"></p>
                     <p id="selectedBookDescription"></p>
                     <p id="selectedBookPages"></p>
-                    <input id="buttonAddThisBook" type="button" value="Add this book" onclick="AddThisBook()" /><br />
+                    <input id="buttonAddThisBook" type="button" value="Add this book" onclick="AddThisBook()" />  <input id="buttonRemoveBook" type="button" value="Remove book"  onclick="RemoveThisBook()"/><br />
                 </div>
             </div>
             <p id="bookInfo"></p>

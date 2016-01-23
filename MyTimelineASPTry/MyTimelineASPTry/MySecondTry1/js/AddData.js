@@ -499,7 +499,11 @@ $(function () {
 
         var query = $(".textBoxBook").val();
         // alert(query);
-
+        $("#booksOptions").html("");
+        $("#buttonRemoveBook").css("display", "none");
+        $("#buttonAddThisBook").css("display", "block");
+         $("#bookSelectedBook").css("display", "none");
+       
 
         $.get("https://www.googleapis.com/books/v1/volumes?q=" + query, function (data) {
 
@@ -531,6 +535,10 @@ $(function () {
     });
 
 
+    $("#listBoxBooks").click(function (e) {
+        ListBookSelected(this);
+    });
+    
 });
 
 function BookImageClick(e) {
@@ -538,18 +546,95 @@ function BookImageClick(e) {
 
 
     var isbn = $(e).attr('id');
-    // alert(isbn);
+     //alert(isbn);
     $("#hiddenIsbn").val(isbn);
 
+    $.ajax({
+        url: "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn.toString(),
+        type: 'GET',
+       // async: false,
+        success: function (data) {
+
+           // alert("ajax");
+            // alert(JSON.stringify(data));
+            if(data["totalItems"] != "0")
+                {
+            $("#booksOptions").html("");
+
+            var book = data.items[0];
+
+            //var title = (book["volumeInfo"]["title"]);
+
+            // alert(title);
+
+            $("#selectedBookImage").attr("src", book["volumeInfo"]["imageLinks"]["smallThumbnail"]);
+
+            $("#selectedBookTitle").text(book["volumeInfo"]["title"]);
+            $("#selectedBookAuthors").text(book["volumeInfo"]["authors"]);
+            $("#selectedBookDescription").text(book["volumeInfo"]["description"]);
+            $("#selectedBookPages").text("Pages: " + book["volumeInfo"]["pageCount"]);
+            $("#bookSelectedBook").css("display", "block");
+            }
+            else {
+                alert("this book is not availible");
+            }
+        },
+        error: function (data) {
+            alert("woops"); //or whatever
+        }
+
+    });
+
+    //return false;
+
+
+    //$.get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn, function (data) {
+
+    //    alert("get");
+
+    //    $("#booksOptions").html("");
+
+    //    var book = data.items[0];
+
+    //    //var title = (book["volumeInfo"]["title"]);
+
+    //    // alert(title);
+
+    //    $("#selectedBookImage").attr("src", book["volumeInfo"]["imageLinks"]["smallThumbnail"]);
+
+    //    $("#selectedBookTitle").text(book["volumeInfo"]["title"]);
+    //    $("#selectedBookAuthors").text(book["volumeInfo"]["authors"]);
+    //    $("#selectedBookDescription").text(book["volumeInfo"]["description"]);
+    //    $("#selectedBookPages").text("Pages: " + book["volumeInfo"]["pageCount"]);
+    //    $("#bookSelectedBook").css("display", "block");
+    //});
+
+
+
+}
+
+function ListBookSelected(e) {
+
+
+
+    
+    var title = $(e).find(':selected').text();
+    var isbn = $(e).find(':selected').val();
+   // alert(isbn);
+    $("#hiddenIsbn").val(isbn);
+
+   
+
     $.get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn, function (data) {
+
+
+        
 
         $("#booksOptions").html("");
 
         var book = data.items[0];
 
-        //var title = (book["volumeInfo"]["title"]);
-
-        // alert(title);
+       
 
         $("#selectedBookImage").attr("src", book["volumeInfo"]["imageLinks"]["smallThumbnail"]);
 
@@ -557,6 +642,9 @@ function BookImageClick(e) {
         $("#selectedBookAuthors").text(book["volumeInfo"]["authors"]);
         $("#selectedBookDescription").text(book["volumeInfo"]["description"]);
         $("#selectedBookPages").text("Pages: " + book["volumeInfo"]["pageCount"]);
+       
+        $("#buttonRemoveBook").css("display", "block");
+        $("#buttonAddThisBook").css("display", "none");
         $("#bookSelectedBook").css("display", "block");
     });
 
@@ -575,7 +663,7 @@ function AddThisBook() {
     // $("#bookSelectedBook").css("display", "block");
     if(CheckInListBox(title, ".listBoxBooks"))
     {
-        alert("good");
+       // alert("good");
     
     var dataValue = { title: title, isbn: isbn, imageUrl: imageUrl, documentId: documentId };
     // alert(JSON.stringify(dataValue));
@@ -594,7 +682,7 @@ function AddThisBook() {
             // alert("We returned: " + result.d);
             if (result.d == "Inserted") {
 
-                $('.listBoxBooks').append("<option value=" + $("#selectedBookTitle").text() + ">" + $("#selectedBookTitle").text() + "</option>");
+                $('.listBoxBooks').append("<option value=" + isbn + ">" + $("#selectedBookTitle").text() + "</option>");
 
             }
 
@@ -606,6 +694,55 @@ function AddThisBook() {
         alert("already here");
     }
 }
+
+
+function RemoveThisBook() {
+
+    var documentId = $("#hiddenId").val();
+    var isbn = $("#hiddenIsbn").val();
+    var selectedIsbn = $('#listBoxBooks :selected').val();
+    var title = $('#listBoxBooks :selected').text();
+
+    //alert(selectedIsbn + "----" + isbn);
+    //var imageUrl = $("#selectedBookImage").attr("src");
+   // var title = $("#selectedBookTitle").text();
+
+
+    // $("#bookSelectedBook").css("display", "block");
+   
+
+        var dataValue = { title: title, isbn: isbn, documentId: documentId };
+        // alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "AddData.aspx/RemoveSelectedBook",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                alert("We returned: " + result.d);
+                if (result.d == "Deleted") {
+
+                    $('#listBoxBooks :selected').remove();
+                }
+
+            }
+        });
+
+        $("#selectedBookImage").attr("src", "#");
+
+        $("#selectedBookTitle").text("");
+        $("#selectedBookAuthors").text("");
+        $("#selectedBookDescription").text("");
+        $("#selectedBookPages").text("");
+        $("#bookSelectedBook").css("display", "none");
+}
+
 
 
 function VoteUp(userId1) {

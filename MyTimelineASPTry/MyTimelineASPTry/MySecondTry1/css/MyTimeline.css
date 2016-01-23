@@ -610,6 +610,7 @@ a:hover {
 
 .divBookOption {
     display:inline-block;
+    max-width:60%;
 }
 
 .divBookOption .bookOption {
@@ -650,5 +651,5 @@ a:hover {
 }
 
 #buttonRemoveBook {
-    margin-left: 100px;
+   float:right;
 }
