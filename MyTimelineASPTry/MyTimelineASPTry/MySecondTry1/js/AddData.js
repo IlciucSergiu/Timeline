@@ -463,7 +463,7 @@ $(function () {
         }
     });
 
-    $("#additionalResources a").click(function (e) {
+    $("#additionalResources a.tab").click(function (e) {
         // alert($(this).text());
         tabName = $(this).text();
         $('#additionalResources div.tab').each(function (i, obj) {
@@ -494,13 +494,27 @@ $(function () {
         changeImage(countTimes);
     });
 
+    $('#imagesCollection img').click(function () {
+
+        imageUrl = $(this).attr("src");
+        imagesLengt = 0;
+
+        $('#imagesCollection img').each(function (e) {
+            imagesLengt++;
+
+            if ($(this).attr("src") == imageUrl)
+                countTimes = imagesLengt;
+        });
+
+        changeImage(countTimes);
+    });
 
     $("#buttonSearchBook").click(function () {
 
         var query = $(".textBoxBook").val();
         // alert(query);
         $("#booksOptions").html("");
-       
+
         $("#buttonRemoveBook").css("display", "none");
         $("#buttonAddThisBook").css("display", "block");
         $("#bookSelectedBook").css("display", "none");
@@ -546,6 +560,20 @@ $(function () {
         BookImageClick(this);
     });
 
+    $('#selectedBookSelfLink').on("click", function () {
+
+        var url = $("#selectedBookSelfLink").attr("href");
+        window.open(url);
+        return false;
+    });
+
+
+    $('.imageCollection').on("click", function () {
+        ImageLinkClick(this);
+    });
+
+
+
 });
 
 function BookImageClick(e) {
@@ -563,9 +591,9 @@ function BookImageClick(e) {
         success: function (data) {
 
             // alert("ajax");
-            // alert(JSON.stringify(data));
+            //alert(JSON.stringify(data));
             if (data["totalItems"] != "0") {
-               // $("#booksOptions").html("");
+                // $("#bookInfo").html(JSON.stringify(data));
 
                 var book = data.items[0];
 
@@ -579,6 +607,7 @@ function BookImageClick(e) {
                 $("#selectedBookAuthors").text(book["volumeInfo"]["authors"]);
                 $("#selectedBookDescription").text(book["volumeInfo"]["description"]);
                 $("#selectedBookPages").text("Pages: " + book["volumeInfo"]["pageCount"]);
+                $("#selectedBookSelfLink").attr("href", book["accessInfo"]["webReaderLink"]);
                 $("#bookSelectedBook").css("display", "block");
             }
             else {
@@ -619,6 +648,34 @@ function BookImageClick(e) {
 
 }
 
+
+function ImageLinkClick(e) {
+    $('.imageCollection').each(function () {
+        $(this).css({
+
+            "border-width": "0px",
+
+        });
+    });
+    $(e).css({
+        "border-color": "#789",
+        "border-left-width": "5px",
+        "border-right-width": "5px",
+        "border-bottom-width": "1px",
+        "border-top-width": "1px",
+        //"border-width": "5px",
+        "border-style": "solid"
+    });
+
+    //src dupa care il sterg
+    $("#hiddenSrcDelete").val($(e).attr("src"));
+
+}
+
+
+
+
+
 function ListBookSelected(e) {
 
 
@@ -637,7 +694,7 @@ function ListBookSelected(e) {
 
 
         $("#booksOptions").html("");
-        $("#booksOptions").css("display","none");
+        $("#booksOptions").css("display", "none");
 
         var book = data.items[0];
 
@@ -672,7 +729,7 @@ function AddThisBook() {
     if (CheckInListBox(isbn, ".listBoxBooks")) {
         // alert("good");
 
-        var dataValue = { title: title,authors:authors, isbn: isbn, imageUrl: imageUrl, documentId: documentId };
+        var dataValue = { title: title, authors: authors, isbn: isbn, imageUrl: imageUrl, documentId: documentId };
         // alert(JSON.stringify(dataValue));
         //alert(document.getElementById('hiddenId').value);
         $.ajax({
@@ -689,7 +746,7 @@ function AddThisBook() {
                 // alert("We returned: " + result.d);
                 if (result.d == "Inserted") {
 
-                    $('.listBoxBooks').append("<option value=" + isbn + ">" + $("#selectedBookTitle").text() +" - "+ authors + "</option>");
+                    $('.listBoxBooks').append("<option value=" + isbn + ">" + $("#selectedBookTitle").text() + " - " + authors + "</option>");
 
                 }
 
@@ -702,6 +759,128 @@ function AddThisBook() {
     }
 }
 
+function AddAdditionalImage() {
+
+    var documentId = $("#hiddenId").val();
+    var imageUrl = $("#textBoxLinksImages").val();
+
+    //if (!IsValidImageUrl2(imageUrl)) {
+    //    $("#imageValidator").text("This url is not valid!");
+    //    return false;
+    //}
+
+    $("#textBoxLinksImages").val("");
+    //alert(imageUrl);
+    var valid = true;
+    $('#addedImages img').each(function (e) {
+        if ($(this).attr("src") == imageUrl) {
+            valid = false;
+            //alert("already");
+            return false;
+        }
+    });
+
+    if (!valid) {
+        $("#imageValidator").text("This image is already in collection!");
+        return false;
+    }
+
+
+
+
+
+    var dataValue = { imageUrl: imageUrl, documentId: documentId };
+    //alert(JSON.stringify(dataValue));
+    //alert(document.getElementById('hiddenId').value);
+    $.ajax({
+        type: "POST",
+        url: "AddData.aspx/AddAdditionalImage",
+        data: JSON.stringify(dataValue),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        // async: false,
+        error: function (err) {
+            alert("Error: " + err.responseText);
+        },
+        success: function (result) {
+            // alert("We returned: " + result.d);
+            if (result.d == "Inserted") {
+
+                $('#addedImages').append('<img class="imageCollection" src="' + imageUrl + '" />');
+
+                $('.imageCollection').on("click", function () {
+                    ImageLinkClick(this);
+                });
+
+            }
+
+        }
+    });
+
+
+}
+
+
+function DeleteAdditionalImage() {
+
+    var documentId = $("#hiddenId").val();
+    var imageUrl = $("#hiddenSrcDelete").val();
+
+    var dataValue = { imageUrl: imageUrl, documentId: documentId };
+    // alert(JSON.stringify(dataValue));
+    //alert(document.getElementById('hiddenId').value);
+    $.ajax({
+        type: "POST",
+        url: "AddData.aspx/DeleteAdditionalImage",
+        data: JSON.stringify(dataValue),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        // async: false,
+        error: function (err) {
+            alert("Error: " + err.responseText);
+        },
+        success: function (result) {
+            alert("We returned: " + result.d);
+            if (result.d == "Deleted") {
+
+                $('#addedImages img').each(function () {
+
+                    if ($(this).attr("src") == imageUrl)
+                        $(this).remove();
+                });
+
+
+
+
+            }
+
+        }
+    });
+
+
+}
+
+function myCallback(url, answer) {
+    alert(url + ': ' + answer);
+}
+
+function IsValidImageUrl(url, callback) {
+    $("<img>", {
+        src: url,
+        error: function () { callback(url, false); },
+        load: function () { callback(url, true); }
+    });
+}
+
+function IsValidImageUrl2(url) {
+    var image = new Image();
+    image.src = url;
+    if (image.width == 0) {
+        alert("no image");
+        return false;
+    }
+    else return true;
+}
 
 function RemoveThisBook() {
 

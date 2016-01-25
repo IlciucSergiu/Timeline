@@ -244,6 +244,15 @@ namespace MyTimelineASPTry
 
                 }
 
+                if (item.imagesLinks != null)
+                {
+                    foreach (string imageLink in item.imagesLinks)
+                    {
+                       imagesCollection.Controls.Add(new LiteralControl { Text = "<img   class=\"imageCollection\" src=\"" + imageLink + "\"/>" });
+
+                    }
+                }
+
 
 
             }

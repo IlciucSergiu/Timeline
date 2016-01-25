@@ -594,7 +594,9 @@ a:hover {
 }
 
 .slideImage {
-    width: 60%;
+    
+    max-width: 60%;
+    max-height: 500px;
     /*max-height: 500px;
     min-height:500px;*/
 }
@@ -690,4 +692,32 @@ a:hover {
            padding-left: 0px;
            padding-right: 0px;
              padding-top:0px;
+        }
+
+.flexImages {
+    
+    border: solid;
+    border-width:thin;
+    border-color: lightslategrey;
+    display: flex;
+    width: 82%;
+    height: 175px;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+ .imageCollection {
+        max-height: 100px;
+        padding-left: 4px;
+         padding-right: 4px;
+        margin-top: 4px;
+       
+    }
+
+        .imageCollection:hover {
+            max-height:104px;
+           height:104px;
+           padding-left: 2px;
+           padding-right: 2px;
+            
         }

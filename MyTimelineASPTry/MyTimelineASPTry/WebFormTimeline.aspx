@@ -226,7 +226,7 @@
         <asp:HiddenField ID="hiddenFieldCriteria" runat="server" />
 
 
-        <div id="individualInfo" class="hide">
+        <%--<div id="individualInfo" class="hide">--%>
 
             <div id="divEssentialInfo" class="imageInline ">
                 <asp:Image ID="imageProfile" runat="server" CssClass="profileImage" />
@@ -258,9 +258,9 @@
                 <div id="additionalResources">
                     <h3>Additional resources</h3>
                     <hr />
-                    <a id="images">Images</a>
-                    <a id="videos">Videos</a>
-                    <a id="books">Books</a>
+                    <a id="images" class="tab">Images</a>
+                    <a id="videos" class="tab">Videos</a>
+                    <a id="books" class="tab">Books</a>
 
                     <div id="documentImages" class="Images tab" runat="server">
 
@@ -270,6 +270,8 @@
                         <!-- Place somewhere in the <body> of your page -->
                         <div id="documentSlideshow" class="documentSlideshow" runat="server">
                         </div>
+                        <div id="imagesCollection" runat="server">
+                        </div>
 
                     </div>
                     <div id="documentVideos" class="Videos hide tab" runat="server">
@@ -278,7 +280,7 @@
                     <div id="documentBooks" class="Books hide tab">
                         <div id="booksContainer" runat="server"></div>
 
-                        |<div id="bookSelectedBook" class="hide">
+                        <div id="bookSelectedBook" class="hide">
 
                             <img id="selectedBookImage" src="#" class="selectedBookInfo" />
                             <input id="hiddenIsbn" type="hidden" />
@@ -287,8 +289,11 @@
                                 <p id="selectedBookAuthors"></p>
                                 <p id="selectedBookDescription"></p>
                                 <p id="selectedBookPages"></p>
-                               
+                                <a id="selectedBookSelfLink" href="#" target="_blank">Read preview</a>
+                                
+
                             </div>
+                            <div id="booksOptions"></div>
                         </div>
                         
                     </div>
@@ -336,7 +341,7 @@
             // 3. This function creates an <iframe> (and YouTube player)
             //    after the API code downloads.
             //alert(videoId1);
-            var listId = ['VBEmqvVPOX4', 'AEMd6NDT5Z8', '1UqQaizM15Q'];
+            var listId = ['vwaA-dbVMW8', 'VBEmqvVPOX4', 'AEMd6NDT5Z8', '1UqQaizM15Q'];
             var player;
             function onYouTubeIframeAPIReady() {
                 player = new YT.Player('player', {

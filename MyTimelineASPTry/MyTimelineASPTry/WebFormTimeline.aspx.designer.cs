@@ -229,6 +229,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentSlideshow;
         
         /// <summary>
+        /// imagesCollection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl imagesCollection;
+        
+        /// <summary>
         /// documentVideos control.
         /// </summary>
         /// <remarks>

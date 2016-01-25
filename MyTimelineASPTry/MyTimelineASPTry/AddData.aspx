@@ -240,8 +240,12 @@
         <h2>Add images</h2>
         <p>Insert links to additional images</p>
         <asp:TextBox ID="textBoxLinksImages" runat="server" Width="296px"></asp:TextBox>
-        
-        <br />
+            <input id="hiddenSrcDelete" type="hidden" />
+            <input id="buttonAddImage" type="button" value="Add image" onclick="AddAdditionalImage()" />
+            <input id="buttonDeleteImage" type="button" value="Delete" onclick="DeleteAdditionalImage()"/><p id="imageValidator"></p><br />
+            <div id="addedImages" class="flexImages" runat="server">
+               
+            </div>
         <br />
 
         <hr />
