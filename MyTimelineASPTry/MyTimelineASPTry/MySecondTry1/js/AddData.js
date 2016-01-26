@@ -339,7 +339,7 @@ $(function () {
 
     });
 
-    $("#improvePage").click(function () {
+    $(".improvePage").click(function () {
 
         // 
         if ($("#feedbackMessage").css("display") == "none") {
@@ -350,7 +350,7 @@ $(function () {
             $("#feedbackMessage").css("display", "none");
         }
 
-        return false;
+        //return false;
 
     });
 
@@ -1028,12 +1028,12 @@ $(function () {
     });
     $(".linkContact").click(function (e) {
 
-        alert(this.innerHTML);
+       // alert(this.innerHTML);
 
 
 
         try {
-            var dataValue = { criteria: "clasicism" };
+            var dataValue = { criteria: "persons" };
 
             $.ajax({
                 type: "POST",

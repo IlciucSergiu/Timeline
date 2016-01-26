@@ -16,27 +16,6 @@
     <link rel="stylesheet" href="/resources/demos/style.css" />
 
 
-
-
-
-    
-
-
-
-
-
-   
-
-
-
-
-
-    
-
-
-
-
-
 </head>
 <body >
     <form runat="server" id="formMainForm" >
@@ -57,10 +36,7 @@
         <div id="pageBody">
         <div id="divAddEssentials" runat="server">
 
-            <!--  <p>
-                &nbsp;&nbsp; First name:&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:TextBox ID="firstName" runat="server"></asp:TextBox>
-            </p> -->
+            
             <p>
                 Complete name:&nbsp;&nbsp;
             <asp:TextBox ID="textBoxCompleteName" runat="server" Width="244px" Height="21px"></asp:TextBox>
@@ -89,7 +65,7 @@
 
                 <br />
                 <input id="hiddenId" type="hidden" runat="server" />
-                <br />
+                <p>To see all tags check <a href="TagsMap.aspx">tag map</a></p>
                 <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" CssClass="textBoxAddTag"></asp:TextBox>
                 -
                 <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick=" AddTagItem(); return false;" />

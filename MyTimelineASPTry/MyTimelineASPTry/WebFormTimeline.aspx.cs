@@ -14,8 +14,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using System.Web.Script.Services;
-
-
+using System.Text.RegularExpressions;
 
 namespace MyTimelineASPTry
 {
@@ -219,39 +218,92 @@ namespace MyTimelineASPTry
 
                 if (item.videoLinks != null)
                 {
-                    documentVideos.Controls.Add(new LiteralControl { Text = "<div  id=\"player\"></div>" });
-                    videoId = item.videoLinks[0].ToString();
+                    bool noVideo = true;
 
+                    foreach (string videoLink in item.videoLinks)
+                    {
+                        if (videoLink != "")
+                        {
+                            noVideo = false;
+                            documentVideos.Controls.Add(new LiteralControl { Text = "<div  id=\"player\"></div>" });
+                            videoId = item.videoLinks[0].ToString();
+                        }
+                    }
+
+                    if (noVideo)
+                        divNoVideo.Style.Add("display", "block");
+                    else
+                    {
+                        divNoVideo.Style.Add("display", "none");
+                    }
+
+                }
+                else {
+
+                    divNoVideo.Style.Add("display", "block");
                 }
 
                 if (item.imagesLinks != null)
                 {
-                    foreach (string image in item.imagesLinks)
-                        documentSlideshow.Controls.Add(new LiteralControl { Text = "<img  class=\"slideImage\" src=\"" + image + "\"/>" });
+                    bool noImage = true;
 
+                    foreach (string image in item.imagesLinks)
+                    {
+                        if (image != "")
+                        {
+                            noImage = false;
+                            documentSlideshow.Controls.Add(new LiteralControl { Text = "<img  class=\"slideImage\" src=\"" + image + "\"/>" });
+                            imagesCollection.Controls.Add(new LiteralControl { Text = "<img   class=\"imageCollection\" src=\"" + image + "\"/>" });
+                        }
+                    }
+                    //Response.Write("Are images");
+                    if (noImage)
+                    {
+                        // Response.Write("Still no image " + item.imagesLinks.Count);
+                        divNoImage.Style.Add("display", "block");
+                    }
+                    else
+                    {
+                        divNoImage.Style.Add("display", "none");
+                    }
 
                 }
+                else {
+                    // Response.Write("No image");
+                    divNoImage.Style.Add("display", "block");
+                }
+
+
+
 
                 if (item.additionalBooks != null)
                 {
+                    bool noBook = true;
+
                     foreach (BsonDocument book in item.additionalBooks)
                     {
-
-
-                        booksContainer.Controls.Add(new LiteralControl { Text = "<img  id=\"" + book["isbn"] + "\"  class=\"documentBook\" src=\"" + book["imageUrl"] + "\"/>" });
-
+                        if (book["isbn"] != "")
+                        {
+                            noBook = false;
+                            booksContainer.Controls.Add(new LiteralControl { Text = "<img  id=\"" + book["isbn"] + "\"  class=\"documentBook\" src=\"" + book["imageUrl"] + "\"/>" });
+                        }
                     }
-
-                }
-
-                if (item.imagesLinks != null)
-                {
-                    foreach (string imageLink in item.imagesLinks)
+                    if (noBook)
                     {
-                       imagesCollection.Controls.Add(new LiteralControl { Text = "<img   class=\"imageCollection\" src=\"" + imageLink + "\"/>" });
-
+                        divNoBook.Style.Add("display", "block");
+                    }
+                    else
+                    {
+                        divNoBook.Style.Add("display", "none");
                     }
                 }
+                else {
+                    divNoBook.Style.Add("display", "block");
+                }
+
+
+
+
 
 
 
@@ -286,70 +338,57 @@ namespace MyTimelineASPTry
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            string searchQuery = "";
-            if (hiddenFieldCriteria.Value.ToString() != "")
-            {
-                searchQuery = hiddenFieldCriteria.Value.ToString();
-                SearchQueryByTag(searchQuery);
-            }
-            else
-            {
-                if (textBoxSearchQuery.Text != "")
-                {
-                    searchQuery = textBoxSearchQuery.Text;
-                    if (searchQuery.Contains(':'))
-                        SearchQueryByCriteria(searchQuery);
-                    else
-                    {
 
-                        SearchQueryByTag(searchQuery);
-                    }
-                }
-            }
+
+            if (textBoxSearchQuery.Text != "")
+                QueryInterpretation(textBoxSearchQuery.Text);
+
             sw.Stop();
             labelTime.Text += "\r\n Search Query :" + sw.Elapsed.TotalMilliseconds.ToString();
 
 
         }
 
-        async void SearchQueryByCriteria(string searchQuery)
+        void QueryInterpretation(string searchQuery)
         {
-            if (searchQuery.Contains(':'))
+            if (searchQuery.Contains(":"))
             {
-                MongoClient mclient = new MongoClient();
-                var db = mclient.GetDatabase("Timeline");
-                var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
-                var filter = Builders<DocumentInfo>.Filter.Eq("name", "Mozart");
-
-
-
-
-                string[] category = searchQuery.Split(':');
-                filter = Builders<DocumentInfo>.Filter.Eq(category[0], category[1]);
-
-
-                jsString = "";
-                await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
-                    + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
-                    + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                    + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
-                    + d.link + "\",\"image\" : \"" + d.image + "\"},");
-
-
-
-                jsonData = "[{" +
-             "\"id\": \"" + searchQuery + "\"," +
-             "\"title\": \"" + searchQuery.First().ToString().ToUpper() + searchQuery.Substring(1) + "\"," +
-             "\"initial_zoom\": \"40\"," +
-             //"\"focus_date\": \"1998-03-11 12:00:00\","+
-             "\"image_lane_height\": 50," +
-             "\"events\":[" + jsString.TrimEnd(',') + "]" +
-         "}]";
+                SearchSpecificQuery(searchQuery);
             }
 
         }
 
-        async void SearchQueryByTag(string searchQuery)
+        void SearchSpecificQuery(string searchQuery)
+        {
+            string criteria = searchQuery.Split(':')[0];
+            string value = searchQuery.Split(':')[1];
+
+            criteria = criteria.TrimEnd().TrimStart();
+            value = value.TrimStart();
+            if (criteria.Contains(' ')) criteria = criteria.Substring(criteria.LastIndexOf(' ') + 1);
+
+            //Response.Write("x"+criteria+"-------"+value+"x");
+
+            if (criteria.ToLower() == "tag")
+            {
+                if (value.Contains(' ')) value = value.Substring(0, value.IndexOf(' '));
+                SearchQueryByTag(value.ToLower());
+            }
+            else if (criteria == "description")
+            {
+                SearchQueryByDescription(value);
+            }
+            else if (criteria == "name")
+            {
+                SearchQueryByName(value);
+            }
+
+        }
+
+
+
+
+        async void SearchQueryByCriteria(string searchQuery)
         {
 
             MongoClient mclient = new MongoClient();
@@ -358,21 +397,20 @@ namespace MyTimelineASPTry
             var filter = Builders<DocumentInfo>.Filter.Eq("name", "Mozart");
 
 
-            filter = Builders<DocumentInfo>.Filter.Eq("tags.tagName", searchQuery);
 
+
+            string[] category = searchQuery.Split(':');
+            filter = Builders<DocumentInfo>.Filter.Eq(category[0], category[1]);
 
 
             jsString = "";
             await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
                 + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
                 + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                + GetImportance(d.tags, searchQuery) + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
+                + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
                 + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
-            // await collection.Find(filter).ForEachAsync(d => jsString += GetImportance(d.tags,searchQuery));
 
-
-            //  Response.Write(jsString);
 
             jsonData = "[{" +
          "\"id\": \"" + searchQuery + "\"," +
@@ -384,10 +422,139 @@ namespace MyTimelineASPTry
      "}]";
 
 
-            hiddenFieldCriteria.Value = "";
-            // sw.Stop();
-            //labelTime.Text += "\r\n Search Query :" + sw.Elapsed.TotalMilliseconds.ToString();
+        }
 
+        string SearchQueryByTag(string tagName)
+        {
+
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+
+
+
+            var filter = Builders<DocumentInfo>.Filter.Eq("tags.tagName", tagName);
+
+
+
+            jsString = "";
+            collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
+               + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+               + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
+               + GetImportance(d.tags, tagName) + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
+               + d.link + "\",\"image\" : \"" + d.image + "\"},").Wait();
+
+            jsonData = "[{" +
+         "\"id\": \"" + tagName + "\"," +
+         "\"title\": \"" + tagName.First().ToString().ToUpper() + tagName.Substring(1) + "\"," +
+         "\"initial_zoom\": \"40\"," +
+         "\"image_lane_height\": 50," +
+         "\"events\":[" + jsString.TrimEnd(',') + "]" +
+     "}]";
+
+
+            hiddenFieldCriteria.Value = "";
+            return jsonData;
+        }
+
+
+        string SearchQueryByDescription(string keyWords)
+        {
+
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+
+
+            var filter = Builders<DocumentInfo>.Filter.Regex("description", new BsonRegularExpression("/" + keyWords + "/i"));
+
+            jsString = "";
+            collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
+               + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+               + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
+               + 50 + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
+               + d.link + "\",\"image\" : \"" + d.image + "\"},").Wait();
+
+
+            jsonData = "[{" +
+         "\"id\": \"" + keyWords.Replace(' ', '_') + "\"," +
+         "\"title\": \"" + keyWords + "\"," +
+         "\"initial_zoom\": \"40\"," +
+
+         "\"image_lane_height\": 50," +
+         "\"events\":[" + jsString.TrimEnd(',') + "]" +
+     "}]";
+
+            return jsonData;
+
+        }
+
+
+        string SearchQueryByName(string name)
+        {
+            Response.Write("Took it");
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+
+            string[] names = name.Split(' ');
+            string fullName = name;
+
+            var filter = Builders<DocumentInfo>.Filter.Regex("name", new BsonRegularExpression("/" + string.Join("|", names) + "/i"));
+
+            List<DocumentInfo> response = collection.Find(filter).ToListAsync().Result;
+
+
+
+            response.ForEach(d => {
+                d.importance = (40 + Convert.ToInt32(50 * HowManyMaches(d.name.ToString(), names))).ToString();
+                Response.Write(d.importance + "    ");
+                });
+            response.Where(s => ContainsAll(s.name.ToString(), names)).ToList().ForEach(d => d.importance = "65");
+
+            jsString = "";
+
+            response.ForEach(d => jsString += "{\"id\":\""
+               + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+               + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
+               + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
+               + d.link + "\",\"image\" : \"" + d.image + "\"},");
+
+
+            jsonData = "[{" +
+         "\"id\": \"" + name.Replace(' ', '_') + "\"," +
+         "\"title\": \"" + name + "\"," +
+         "\"initial_zoom\": \"40\"," +
+
+         "\"image_lane_height\": 50," +
+         "\"events\":[" + jsString.TrimEnd(',') + "]" +
+     "}]";
+
+            return jsonData;
+        }
+
+        float HowManyMaches(string theString, string[] theArray)
+        {
+
+            theArray = theArray.Select(s => s.ToLowerInvariant()).ToArray();
+            theString = theString.ToLower();
+            float matched = 0; 
+            foreach (string checkValue in theArray)
+            {
+                if (theString.Contains(checkValue))
+                    matched++;
+            }
+            return matched/theArray.Length;
+        }
+
+        bool ContainsAll(string theString, string[] theArray)
+        {
+            foreach (string checkValue in theArray)
+            {
+                if (!theString.ToLower().Contains(checkValue.ToLower()))
+                    return false;
+            }
+            return true;
         }
 
         static string GetImportance(BsonArray tags, string searchQuery)
@@ -645,6 +812,17 @@ namespace MyTimelineASPTry
             }
 
         }
+
+        protected void buttonSearchTag_Click(object sender, EventArgs e)
+        {
+            if (hiddenFieldCriteria.Value.ToString() != "")
+            {
+
+                SearchQueryByTag(hiddenFieldCriteria.Value.ToString());
+            }
+        }
+
+
 
         protected void buttonSendFeedback_Click(object sender, EventArgs e)
         {

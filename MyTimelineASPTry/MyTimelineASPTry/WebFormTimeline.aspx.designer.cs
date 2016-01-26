@@ -85,6 +85,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.LinkButton linkButtonLogout;
         
         /// <summary>
+        /// buttonSearchTag control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonSearchTag;
+        
+        /// <summary>
         /// labelTime control.
         /// </summary>
         /// <remarks>
@@ -211,13 +220,13 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl htmlInfo;
         
         /// <summary>
-        /// documentImages control.
+        /// divNoImage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentImages;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNoImage;
         
         /// <summary>
         /// documentSlideshow control.
@@ -245,6 +254,24 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentVideos;
+        
+        /// <summary>
+        /// divNoVideo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNoVideo;
+        
+        /// <summary>
+        /// divNoBook control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNoBook;
         
         /// <summary>
         /// booksContainer control.

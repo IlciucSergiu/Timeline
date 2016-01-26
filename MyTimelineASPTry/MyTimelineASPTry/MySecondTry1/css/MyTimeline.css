@@ -65,8 +65,9 @@ form {
 
 
 .imageInline {
-    display: inline;
-    float: left;
+    display: inline-block;
+    /*float: left;*/
+    vertical-align:top;
 }
 
 #ckEditor {
@@ -549,7 +550,6 @@ h2 {
 
 .profileImage {
     max-width: 190px;
-    height: auto;
     max-height: 250px;
 }
 
@@ -558,6 +558,7 @@ h2 {
     max-width: 190px;
     height: auto;
     max-height: 250px;
+    
 }
 
 #improvePage {
