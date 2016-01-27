@@ -382,6 +382,10 @@ namespace MyTimelineASPTry
             {
                 SearchQueryByName(value);
             }
+            else if (criteria == "info")
+            {
+                SearchQueryByInfo(value);
+            }
 
         }
 
@@ -492,12 +496,14 @@ namespace MyTimelineASPTry
 
         string SearchQueryByName(string name)
         {
-            Response.Write("Took it");
+
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
-            string[] names = name.Split(' ');
+            name = Regex.Replace(name, @"\s+", " ");
+           // Response.Write(name+"  :");
+            string[] names = name.Split(' ').Select(p => p.Trim()).ToArray();
             string fullName = name;
 
             var filter = Builders<DocumentInfo>.Filter.Regex("name", new BsonRegularExpression("/" + string.Join("|", names) + "/i"));
@@ -506,20 +512,30 @@ namespace MyTimelineASPTry
 
 
 
-            response.ForEach(d => {
+            response.ForEach(d =>
+            {
                 d.importance = (40 + Convert.ToInt32(50 * HowManyMaches(d.name.ToString(), names))).ToString();
-                Response.Write(d.importance + "    ");
-                });
-            response.Where(s => ContainsAll(s.name.ToString(), names)).ToList().ForEach(d => d.importance = "65");
+               // Response.Write(d.importance + "    ");
+            });
+            //response.Where(s => ContainsAll(s.name.ToString(), names)).ToList().ForEach(d => d.importance = "65");
 
             jsString = "";
 
-            response.ForEach(d => jsString += "{\"id\":\""
-               + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
-               + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-               + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
-               + d.link + "\",\"image\" : \"" + d.image + "\"},");
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
 
+            response.OrderByDescending(o => o.importance).ToList().Take(100).ToList().ForEach(d =>
+            {
+                jsString += "{\"id\":\""
+         + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+         + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
+         + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
+         + d.link + "\",\"image\" : \"" + d.image + "\"},";
+                Response.Write(d.importance + "    ");
+            });
+
+            sw.Stop();
+            Response.Write("  This operation   "+sw.Elapsed.TotalMilliseconds);
 
             jsonData = "[{" +
          "\"id\": \"" + name.Replace(' ', '_') + "\"," +
@@ -533,18 +549,111 @@ namespace MyTimelineASPTry
             return jsonData;
         }
 
+
+        string SearchQueryByInfo(string infoText)
+        {
+
+            infoText = Regex.Replace(infoText, @"\s+", " ");
+
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
+            var collectionIndividual = db.GetCollection<IndividualData>("IndividualData");
+
+            MongoClient mclientInfo = new MongoClient();
+            var dbInfo = mclient.GetDatabase("Timeline");
+            var collectionInfo = db.GetCollection<DocumentInfo>("DocumentsCollection");
+
+            //string[] names = name.Split(' ');
+            //string fullName = name;
+
+            var filter = Builders<IndividualData>.Filter.Regex("htmlInformation", new BsonRegularExpression("/" + infoText /*string.Join("|", )*/ + "/i"));
+
+           
+
+
+            Stopwatch sw = new Stopwatch();
+
+            sw.Start();
+
+            var filterDocument = Builders<DocumentInfo>.Filter.Regex("id", "gigi_becali");
+           
+
+            jsString = "";
+
+            List < string > listOfIds = new List<string>();
+
+           
+
+            collectionIndividual.Find(filter).ForEachAsync(d => listOfIds.Add(d.id)).Wait();
+
+            filterDocument = Builders<DocumentInfo>.Filter.In(d => d.id, listOfIds);
+
+
+            var response = collectionInfo.Find(filterDocument).ToListAsync().Result;
+  
+
+         sw.Stop();
+            Response.Write("  This operation  long array " + sw.Elapsed.TotalMilliseconds);
+
+
+            response.ForEach(d =>
+            {
+                d.importance = "60"/*(40 + Convert.ToInt32(50 * HowManyMaches(d.name.ToString(), names))).ToString()*/;
+                   // Response.Write(d.importance + "    ");
+               });
+
+
+
+
+
+            sw.Start();
+
+            response.OrderByDescending(o => o.importance).ToList().Take(100).ToList().ForEach(d =>
+            {
+                jsString += "{\"id\":\""
+         + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+         + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
+         + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
+         + d.link + "\",\"image\" : \"" + d.image + "\"},";
+                Response.Write(d.importance + "    ");
+            });
+
+            sw.Stop();
+            Response.Write("  This operation   " + sw.Elapsed.TotalMilliseconds);
+
+            string title = infoText;
+            if (infoText.Length > 20)
+                title = infoText.Substring(0, 20);
+
+
+
+            jsonData = "[{" +
+         "\"id\": \"" + title.Replace(' ', '_') + "\"," +
+         "\"title\": \"" + title + "\"," +
+         "\"initial_zoom\": \"40\"," +
+
+         "\"image_lane_height\": 50," +
+         "\"events\":[" + jsString.TrimEnd(',') + "]" +
+     "}]";
+
+            return jsonData;
+        }
+
+
         float HowManyMaches(string theString, string[] theArray)
         {
 
             theArray = theArray.Select(s => s.ToLowerInvariant()).ToArray();
             theString = theString.ToLower();
-            float matched = 0; 
+            float matched = 0;
             foreach (string checkValue in theArray)
             {
                 if (theString.Contains(checkValue))
                     matched++;
             }
-            return matched/theArray.Length;
+
+            //  Response.Write(" \n "+(matched / theArray.Length) + "  \n");
+            return matched / theArray.Length;
         }
 
         bool ContainsAll(string theString, string[] theArray)
