@@ -93,7 +93,7 @@
                         <asp:Button ID="buttonCreate" runat="server" Text="Create new" CssClass="userManButton " OnClick="buttonCreate_Click" /></h2>
 
 
-                    <div id="documentsContainer" runat="server">
+                    <div id="documentsContainer" runat="server" class="elementsContainer">
                     </div>
 
                 </div>
@@ -102,7 +102,7 @@
 
                     <h2>All your tags &nbsp; &nbsp;<asp:Label ID="labelNumberOfTags" runat="server" Text="()"></asp:Label>
                         <asp:Button ID="buttonCreateTag" runat="server" Text="Create tag" CssClass="userManButton" OnClick="buttonCreateTag_Click" /></h2>
-                    <div id="tagsContainer" runat="server">
+                    <div id="tagsContainer" runat="server" class="elementsContainer">
                     </div>
 
                 </div>
@@ -115,8 +115,11 @@
                     </div>
 
                 </div>
+
             </div>
+
         </div>
+        <br /><br /><br />
     </form>
 </body>
 </html>

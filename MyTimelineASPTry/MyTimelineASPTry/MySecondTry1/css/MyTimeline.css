@@ -722,3 +722,10 @@ a:hover {
            padding-right: 2px;
             
         }
+
+        .elementsContainer {
+            max-height:600px;
+            overflow:auto;
+        }
+
+        

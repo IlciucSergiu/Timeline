@@ -31,7 +31,7 @@ namespace MyTimelineASPTry
                 //ObjectId objectId = ObjectId.Parse(hiddenFieldParentTagId.Value.ToString());
                 BsonDocument parentTag = new BsonDocument
                 {
-                    { "parentName",textBoxParentName.Text.ToLower()},
+                    { "parentName",textBoxParentName.Text},
                     { "id", hiddenFieldParentTagId.Value },
                    // {"_id", objectId}
                    
@@ -46,12 +46,14 @@ namespace MyTimelineASPTry
                         tagSynonyms.Add(tagSynonym);
                 }
 
+                string id = textBoxTagName.Text.Replace(' ','_') + "_" + Session["userId"].ToString().Substring(0, 5);
+
                 BsonDocument document = new BsonDocument
             {
-                //{ "_id", firstName.Text.ToLower() +"_"+lastName.Text.ToLower() },
+                
                  
-                { "tagName",textBoxTagName.Text.ToLower()},
-                { "id", textBoxTagName.Text+"_"+Session["userId"].ToString().Substring(0,5) },
+                { "tagName",textBoxTagName.Text},
+                { "id",id },
                 { "owner", Session["userId"].ToString() },
                 { "parentTags", parentTags },
                 { "relativeImportance", textBoxRelativeImportance.Value},
@@ -75,10 +77,10 @@ namespace MyTimelineASPTry
 
             var collection = db.GetCollection<TagsCollection>("Tags");
 
-            //inputValue = "ev";
+            
 
 
-            var filter = Builders<TagsCollection>.Filter.Regex(/*"tagName"*/ u => u.tagName, new BsonRegularExpression(/*"^"+*/inputValue  /*+"/i"*/));
+            var filter = Builders<TagsCollection>.Filter.Regex(u => u.tagName, new BsonRegularExpression("/" + inputValue + "/i"));
 
             string tagOptions = "";
             collection.Find(filter).ForEachAsync(d => tagOptions += d.tagName.ToString() + "{0}" + d.id + "{;}").Wait();

@@ -225,14 +225,14 @@ $(function () {
 
     //alert("sadtag");
 
-    $(".textBoxSearchQuery").keydown(function (event) {
-        if (e.keyCode == 13) {
-            alert(e.keyCode);
-            $(".searchButton").click();
+    //$(".textBoxSearchQuery").keydown(function (event) {
+    //    if (e.keyCode == 13) {
+    //        alert(e.keyCode);
+    //        $(".searchButton").click();
 
-        }
+    //    }
 
-    });
+    //});
 
 
     $(".checkContemporary").click(function () {
@@ -367,7 +367,7 @@ $(function () {
 
                 error: function (err) {
 
-                    alert("Errort: " + err.responseText);
+                   // alert("Errort: " + err.responseText);
                 },
                 success: function (result) {
 
@@ -438,9 +438,73 @@ $(function () {
             }
     });
 
+    $(".textBoxEditParentTag").on('keydown keypress focus', function () {
+        //alert("here");
+        if ($(".textBoxEditParentTag").val() != "")
+            try {
+                var dataValue = { inputValue: $(".textBoxEditParentTag").val() };
+
+                $.ajax({
+                    type: "POST",
+                    url: "AddNewTag.aspx/FindTagParentOptions",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+
+                    error: function (err) {
+
+                        alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
+                        var arrayTagNames = [];
+                        var arrayTagId = [];
+                        var availableTags = result.d.split("{;}").forEach(function (item) {
+                            //array2.push(item);
+                            var array3 = item.split("{0}");
+                            // alert(array3[0]);
+                            arrayTagNames.push(array3[0]);
+                            arrayTagId.push(array3[1]);
+                        });
+                        // alert(array2);
+                        // $('#debug1').text(arrayTagNames);
+                        // $('#debug2').text(arrayTagId);
+
+                        $(".textBoxEditParentTag").autocomplete({
+                            source: arrayTagNames,
+                            select: function (event, ui) {
+                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                               // $('#debug2').text(parentId);
+                              //  UpdHidId(parentId);
+                                //alert(ui.item.label);
+                                // $('hiddenFieldParentTagId').val(parentId);
+                                //  alert($('hiddenFieldParentTagId').val);
+                                // $(".textBoxAddParentTag").val(ui.item.label);
+
+                            }
+                        });
+                    }
+                });
+            }
+            catch (e) {
+                alert("Error" + e.message);
+            }
+    });
+
     $(".textBoxAddParentTag").focusout(function () {
         // alert($(".textBoxAddParentTag").val());
         if (!VerifyTagExistence($(".textBoxAddParentTag").val())) {
+            // $("#verifyTag").css("display", "block");
+            $("#verifyTag").css("color", "red");
+            $("#verifyTag").text("This tag does not exist.");
+        }
+        else {
+            $("#verifyTag").text("");
+        }
+    });
+
+    $(".textBoxEditParentTag").focusout(function () {
+        // alert($(".textBoxAddParentTag").val());
+        if (!VerifyTagExistence($(".textBoxEditParentTag").val())) {
             // $("#verifyTag").css("display", "block");
             $("#verifyTag").css("color", "red");
             $("#verifyTag").text("This tag does not exist.");
@@ -548,6 +612,8 @@ $(function () {
 
         });
 
+       
+
     });
 
 
@@ -572,7 +638,14 @@ $(function () {
         ImageLinkClick(this);
     });
 
-
+    $("#textBoxSearchQuery").on('keydown keypress', function (e) {
+        if (e.keyCode == 13) {
+           // alert("pressed");
+            //document.getElementById().focus();
+            $(".searchButton").click();
+            return false;
+        }
+    });
 
 });
 

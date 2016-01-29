@@ -33,7 +33,10 @@ namespace MyTimelineASPTry
                 }
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            LoadTimelineConcat();
+
+            if (!IsPostBack)
+                LoadTimelineConcat();
+
             sw.Stop();
             labelTime.Text = "Page Load : " + sw.Elapsed.TotalMilliseconds.ToString();
 
@@ -61,8 +64,9 @@ namespace MyTimelineASPTry
 
 
 
-        protected async void LoadTimelineConcat()
+        protected void LoadTimelineConcat()
         {
+            // Response.Write("start    ");
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
 
@@ -73,11 +77,11 @@ namespace MyTimelineASPTry
 
             //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
             jsString = "";
-            await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\""
-                + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
-                + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                + 50 + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
-                + d.link + "\",\"image\" : \"" + d.image + "\"},");
+            collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\""
+               + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+               + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
+               + 50 + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
+               + d.link + "\",\"image\" : \"" + d.image + "\"},").Wait();
             //await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
 
@@ -90,7 +94,7 @@ namespace MyTimelineASPTry
          "\"events\":[" + jsString.TrimEnd(',') + "]" +
      "}]";
 
-
+            //Response.Write("    end");
         }
 
         static string endDate(string date)
@@ -269,7 +273,7 @@ namespace MyTimelineASPTry
 
                 }
                 else {
-                    // Response.Write("No image");
+                   
                     divNoImage.Style.Add("display", "block");
                 }
 
@@ -300,12 +304,6 @@ namespace MyTimelineASPTry
                 else {
                     divNoBook.Style.Add("display", "block");
                 }
-
-
-
-
-
-
 
             }
             sw.Stop();
@@ -355,114 +353,143 @@ namespace MyTimelineASPTry
             {
                 SearchSpecificQuery(searchQuery);
             }
+            else
+            {
+                SearchPlainTextQuery(searchQuery);
+            }
 
         }
+
+
 
         void SearchSpecificQuery(string searchQuery)
         {
             string criteria = searchQuery.Split(':')[0];
             string value = searchQuery.Split(':')[1];
 
-            criteria = criteria.TrimEnd().TrimStart();
+            criteria = criteria.TrimEnd().TrimStart().ToLower();
             value = value.TrimStart();
             if (criteria.Contains(' ')) criteria = criteria.Substring(criteria.LastIndexOf(' ') + 1);
 
             //Response.Write("x"+criteria+"-------"+value+"x");
 
-            if (criteria.ToLower() == "tag")
+            if (criteria == "tag")
             {
                 if (value.Contains(' ')) value = value.Substring(0, value.IndexOf(' '));
-                SearchQueryByTag(value.ToLower());
+                value = value.ToLower();
+                List<DocumentInfo> tagList = SearchQueryByTag(value);
+                ConcatenateList(tagList, value);
             }
             else if (criteria == "description")
             {
-                SearchQueryByDescription(value);
+                //Response.Write("describe");
+                List<DocumentInfo> responseList = SearchQueryByDescription(value);
+                ConcatenateList(responseList, value);
             }
             else if (criteria == "name")
             {
-                SearchQueryByName(value);
+                List<DocumentInfo> responseList = SearchQueryByName(value);
+                ConcatenateList(responseList, value);
+
             }
             else if (criteria == "info")
             {
-                SearchQueryByInfo(value);
+                List<DocumentInfo> responseList = SearchQueryByInfo(value);
+                ConcatenateList(responseList, value);
             }
 
         }
 
-
-
-
-        async void SearchQueryByCriteria(string searchQuery)
+        void SearchPlainTextQuery(string searchQuery)
         {
+            searchQuery = searchQuery.Trim();
+            //if (!searchQuery.Contains(' '))
+            //{
+            //    List<DocumentInfo> tagList = SearchQueryByTag(searchQuery);
+            //    ConcatenateList(tagList, searchQuery);
+            //}
 
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
-            var filter = Builders<DocumentInfo>.Filter.Eq("name", "Mozart");
+            Stopwatch sw = new Stopwatch();
 
+            sw.Start();
 
+            List<DocumentInfo> searchResponse = new List<DocumentInfo>();
 
+            //searchResponse =  searchResponse.Union(SearchQueryByTag(searchQuery).Where(d => Convert.ToInt32(d.importance) > Convert.ToInt32(searchResponse.Find(f => f.id == d.id).importance))).ToList();
+            //searchResponse = searchResponse.Union(SearchQueryByName(searchQuery).Where(d => Convert.ToInt32(d.importance) > Convert.ToInt32(searchResponse.Find(f => f.id == d.id).importance))).ToList();
+            //searchResponse = searchResponse.Union(SearchQueryByDescription(searchQuery).Where(d => Convert.ToInt32(d.importance) > Convert.ToInt32(searchResponse.Find(f => f.id == d.id).importance))).ToList();
+            //searchResponse = searchResponse.Union(SearchQueryByInfo(searchQuery).Where(d => Convert.ToInt32(d.importance) > Convert.ToInt32(searchResponse.Find(f => f.id == d.id).importance))).ToList();
 
-            string[] category = searchQuery.Split(':');
-            filter = Builders<DocumentInfo>.Filter.Eq(category[0], category[1]);
+             searchResponse.AddRange(SearchQueryByName(searchQuery));
+             searchResponse.AddRange(SearchQueryByTag(searchQuery));
+             searchResponse.AddRange(SearchQueryByDescription(searchQuery));
+             searchResponse.AddRange(SearchQueryByInfo(searchQuery));
+            searchResponse = searchResponse.GroupBy(item => item.id)
+                   .Select(g => g.OrderByDescending(i => i.importance)
+                   .First()).ToList();
 
+            sw.Stop();
+            Response.Write(searchResponse.Count + "   and took   "+ sw.Elapsed.TotalMilliseconds);
 
-            jsString = "";
-            await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
-                + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
-                + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-                + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
-                + d.link + "\",\"image\" : \"" + d.image + "\"},");
-
-
-
-            jsonData = "[{" +
-         "\"id\": \"" + searchQuery + "\"," +
-         "\"title\": \"" + searchQuery.First().ToString().ToUpper() + searchQuery.Substring(1) + "\"," +
-         "\"initial_zoom\": \"40\"," +
-         //"\"focus_date\": \"1998-03-11 12:00:00\","+
-         "\"image_lane_height\": 50," +
-         "\"events\":[" + jsString.TrimEnd(',') + "]" +
-     "}]";
-
-
+            ConcatenateList(searchResponse.Take(100).ToList(),searchQuery);
         }
 
-        string SearchQueryByTag(string tagName)
+        string ConcatenateList(List<DocumentInfo> theList, string title)
+        {
+            if (theList.Count > 0)
+            {
+                theList.ForEach(d => jsString += "{\"id\":\""
+            + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+            + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
+            + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
+            + d.link + "\",\"image\" : \"" + d.image + "\"},");
+
+                if (title.Length > 20)
+                    title = title.Substring(0, 20);
+
+
+                var first = theList.First();
+
+                jsonData = "[{" +
+             "\"id\": \"" + title.Replace(' ', '_') + "\"," +
+             "\"title\": \"" + title.First().ToString().ToUpper() + title.Substring(1) + "\"," +
+             "\"initial_zoom\": \"35\"," +
+             "\"focus_date\": \"" + first.startdate + " 12:00:00\"," +
+             "\"image_lane_height\": 50," +
+             "\"events\":[" + jsString.TrimEnd(',') + "]" +
+             "}]";
+
+                //Response.Write(jsonData);
+                return jsonData;
+            }
+            else return "None";
+        }
+
+
+
+
+        List<DocumentInfo> SearchQueryByTag(string tagName)
         {
 
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
-
-
 
             var filter = Builders<DocumentInfo>.Filter.Eq("tags.tagName", tagName);
 
+            List<DocumentInfo> documentResponse = collection.Find(filter).ToListAsync().Result;
 
+            documentResponse.ForEach(d =>
+            {
+                d.importance = GetImportance(d.tags, tagName);
 
-            jsString = "";
-            collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
-               + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
-               + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-               + GetImportance(d.tags, tagName) + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
-               + d.link + "\",\"image\" : \"" + d.image + "\"},").Wait();
+            });
 
-            jsonData = "[{" +
-         "\"id\": \"" + tagName + "\"," +
-         "\"title\": \"" + tagName.First().ToString().ToUpper() + tagName.Substring(1) + "\"," +
-         "\"initial_zoom\": \"40\"," +
-         "\"image_lane_height\": 50," +
-         "\"events\":[" + jsString.TrimEnd(',') + "]" +
-     "}]";
-
-
-            hiddenFieldCriteria.Value = "";
-            return jsonData;
+            return documentResponse.OrderByDescending(o => o.importance).Take(100).ToList();
         }
 
 
-        string SearchQueryByDescription(string keyWords)
+        List<DocumentInfo> SearchQueryByDescription(string keyWords)
         {
 
             MongoClient mclient = new MongoClient();
@@ -472,29 +499,22 @@ namespace MyTimelineASPTry
 
             var filter = Builders<DocumentInfo>.Filter.Regex("description", new BsonRegularExpression("/" + keyWords + "/i"));
 
-            jsString = "";
-            collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
-               + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
-               + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-               + 50 + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
-               + d.link + "\",\"image\" : \"" + d.image + "\"},").Wait();
+            List<DocumentInfo> documentResponse = collection.Find(filter).ToListAsync().Result;
+            documentResponse.ForEach(d =>
+            {
+                d.importance = "60";
+
+            });
 
 
-            jsonData = "[{" +
-         "\"id\": \"" + keyWords.Replace(' ', '_') + "\"," +
-         "\"title\": \"" + keyWords + "\"," +
-         "\"initial_zoom\": \"40\"," +
+            //Response.Write("---- going with list"+ documentResponse.Count);
 
-         "\"image_lane_height\": 50," +
-         "\"events\":[" + jsString.TrimEnd(',') + "]" +
-     "}]";
-
-            return jsonData;
+            return documentResponse.OrderByDescending(o => o.importance).Take(100).ToList();
 
         }
 
 
-        string SearchQueryByName(string name)
+        List<DocumentInfo> SearchQueryByName(string name)
         {
 
             MongoClient mclient = new MongoClient();
@@ -502,7 +522,7 @@ namespace MyTimelineASPTry
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
             name = Regex.Replace(name, @"\s+", " ");
-           // Response.Write(name+"  :");
+            // Response.Write(name+"  :");
             string[] names = name.Split(' ').Select(p => p.Trim()).ToArray();
             string fullName = name;
 
@@ -510,133 +530,55 @@ namespace MyTimelineASPTry
 
             List<DocumentInfo> response = collection.Find(filter).ToListAsync().Result;
 
-
-
             response.ForEach(d =>
-            {
-                d.importance = (40 + Convert.ToInt32(50 * HowManyMaches(d.name.ToString(), names))).ToString();
-               // Response.Write(d.importance + "    ");
-            });
-            //response.Where(s => ContainsAll(s.name.ToString(), names)).ToList().ForEach(d => d.importance = "65");
+           {
+               d.importance = (40 + Convert.ToInt32(50 * HowManyMaches(d.name.ToString(), names))).ToString();
 
-            jsString = "";
+           });
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            response.OrderByDescending(o => o.importance).ToList().Take(100).ToList().ForEach(d =>
-            {
-                jsString += "{\"id\":\""
-         + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
-         + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-         + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
-         + d.link + "\",\"image\" : \"" + d.image + "\"},";
-                Response.Write(d.importance + "    ");
-            });
-
-            sw.Stop();
-            Response.Write("  This operation   "+sw.Elapsed.TotalMilliseconds);
-
-            jsonData = "[{" +
-         "\"id\": \"" + name.Replace(' ', '_') + "\"," +
-         "\"title\": \"" + name + "\"," +
-         "\"initial_zoom\": \"40\"," +
-
-         "\"image_lane_height\": 50," +
-         "\"events\":[" + jsString.TrimEnd(',') + "]" +
-     "}]";
-
-            return jsonData;
+            return response.OrderByDescending(o => o.importance).ToList().Take(100).ToList();
         }
 
 
-        string SearchQueryByInfo(string infoText)
+        List<DocumentInfo> SearchQueryByInfo(string infoText)
         {
 
             infoText = Regex.Replace(infoText, @"\s+", " ");
 
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
+
             var collectionIndividual = db.GetCollection<IndividualData>("IndividualData");
-
-            MongoClient mclientInfo = new MongoClient();
-            var dbInfo = mclient.GetDatabase("Timeline");
             var collectionInfo = db.GetCollection<DocumentInfo>("DocumentsCollection");
-
-            //string[] names = name.Split(' ');
-            //string fullName = name;
 
             var filter = Builders<IndividualData>.Filter.Regex("htmlInformation", new BsonRegularExpression("/" + infoText /*string.Join("|", )*/ + "/i"));
 
-           
-
+            var filterDocument = Builders<DocumentInfo>.Filter.Regex("id", "gigi_becali");
 
             Stopwatch sw = new Stopwatch();
 
             sw.Start();
 
-            var filterDocument = Builders<DocumentInfo>.Filter.Regex("id", "gigi_becali");
-           
+            
 
-            jsString = "";
-
-            List < string > listOfIds = new List<string>();
-
-           
+            List<string> listOfIds = new List<string>();
 
             collectionIndividual.Find(filter).ForEachAsync(d => listOfIds.Add(d.id)).Wait();
 
             filterDocument = Builders<DocumentInfo>.Filter.In(d => d.id, listOfIds);
 
-
             var response = collectionInfo.Find(filterDocument).ToListAsync().Result;
-  
-
-         sw.Stop();
-            Response.Write("  This operation  long array " + sw.Elapsed.TotalMilliseconds);
-
-
-            response.ForEach(d =>
-            {
-                d.importance = "60"/*(40 + Convert.ToInt32(50 * HowManyMaches(d.name.ToString(), names))).ToString()*/;
-                   // Response.Write(d.importance + "    ");
-               });
-
-
-
-
-
-            sw.Start();
-
-            response.OrderByDescending(o => o.importance).ToList().Take(100).ToList().ForEach(d =>
-            {
-                jsString += "{\"id\":\""
-         + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
-         + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
-         + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
-         + d.link + "\",\"image\" : \"" + d.image + "\"},";
-                Response.Write(d.importance + "    ");
-            });
 
             sw.Stop();
-            Response.Write("  This operation   " + sw.Elapsed.TotalMilliseconds);
+           // Response.Write("  This operation  long array " + sw.Elapsed.TotalMilliseconds);
 
-            string title = infoText;
-            if (infoText.Length > 20)
-                title = infoText.Substring(0, 20);
+            response.ForEach(d =>
+                        {
+                            d.importance = "60";/*(40 + Convert.ToInt32(50 * HowManyMaches(d.name.ToString(), names))).ToString()*/
 
+                        });
 
-
-            jsonData = "[{" +
-         "\"id\": \"" + title.Replace(' ', '_') + "\"," +
-         "\"title\": \"" + title + "\"," +
-         "\"initial_zoom\": \"40\"," +
-
-         "\"image_lane_height\": 50," +
-         "\"events\":[" + jsString.TrimEnd(',') + "]" +
-     "}]";
-
-            return jsonData;
+            return response.OrderByDescending(o => o.importance).Take(100).ToList();
         }
 
 
@@ -926,8 +868,11 @@ namespace MyTimelineASPTry
         {
             if (hiddenFieldCriteria.Value.ToString() != "")
             {
+                string tagName = hiddenFieldCriteria.Value.ToString();
+                List<DocumentInfo> tagList = SearchQueryByTag(tagName);
+                ConcatenateList(tagList, tagName);
 
-                SearchQueryByTag(hiddenFieldCriteria.Value.ToString());
+                hiddenFieldCriteria.Value = "";
             }
         }
 

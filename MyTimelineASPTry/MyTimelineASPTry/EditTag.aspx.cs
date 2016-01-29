@@ -61,7 +61,7 @@ namespace MyTimelineASPTry
 
             try {
                  var update = Builders<TagsCollection>.Update
-                .Set("tagName", textBoxTagName.Text.ToLower())
+                .Set("tagName", textBoxTagName.Text)
                 .Set("parentTags", parentTags)
                 .Set("relativeImportance", textBoxRelativeImportance.Value.ToString())
                 .Set("description", textBoxTagShortDescription.Text)

@@ -667,7 +667,7 @@ namespace MyTimelineASPTry
 
 
 
-            var filter = Builders<TagsCollection>.Filter.Regex("tagName", new BsonRegularExpression(/*"^"+*/inputValue));
+            var filter = Builders<TagsCollection>.Filter.Regex("tagName", new BsonRegularExpression("/" + inputValue + "/i"));
 
             string tagOptions = "";
             collection.Find(filter).ForEachAsync(d => tagOptions += d.tagName.ToString() + "{;}").Wait();

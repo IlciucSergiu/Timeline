@@ -44,7 +44,7 @@
        
         <p>
         
-            <input id="textBoxRelativeImportance" type="number" runat="server" max="99" min="1" style="width: 72px" /><br />
+            <input id="textBoxRelativeImportance" type="number" runat="server" max="100" min="1" style="width: 72px" /><br />
         </p>
         
 
