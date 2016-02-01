@@ -138,9 +138,7 @@ h3 {
 }
 
 .userManButton {
-    border-style: solid;
-    border-color: #767d84;
-    border-width: thin;
+    border: thin solid #767d84;
     margin-left: 20px;
     background-color: transparent;
     color: #222426;
@@ -153,7 +151,7 @@ h3 {
     position: absolute;
     top: 0px;
     left: 221px;
-    width: 93px;
+    width: 141px;
 }
 
     .userManButton:hover {
@@ -728,4 +726,20 @@ a:hover {
             overflow:auto;
         }
 
+        #profileImageEdit {
+            max-height:150px;
+            max-width:150px;
+        }
         
+
+        #profileImage {
+            max-height:150px;
+            max-width:150px;
+        }
+        
+        #categoriesManaging {
+    width: 334px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+}

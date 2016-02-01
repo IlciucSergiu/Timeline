@@ -13,6 +13,12 @@ namespace MyTimelineASPTry
     {
         protected async void Page_Load(object sender, EventArgs e)
         {
+
+            CKEditorProfileInfo.Toolbar = CKEditorProfileInfo.ToolbarBasic;
+            CKEditorProfileInfo.Width = 700;
+            CKEditorProfileInfo.Height = 250;
+            //CKEditorProfileInfo.ResizeMaxHeight = 400;
+
             // Response.Write(listBoxOwns.Items.Count);
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
@@ -23,10 +29,24 @@ namespace MyTimelineASPTry
             {
                 LabelUsername.Text = d.firstName.ToString() + " " + d.lastName.ToString();
 
-                if (d.image != null)
-                    imageProfile.ImageUrl = d.image;
+                if (!IsPostBack)
+                {
+                    CKEditorProfileInfo.Text = d.profileInfo;
+                    textBoxProfileImage.Text = d.image;
+                }
+
+                    if (d.image != null)
+                {
+                  
+                    profileImage.Src = d.image;
+                    profileImageEdit.Src = d.image;
+                }
                 else
-                    imageProfile.ImageUrl = "https://cdn4.iconfinder.com/data/icons/linecon/512/photo-256.png";
+                {
+                    profileImage.Src = "https://cdn4.iconfinder.com/data/icons/linecon/512/photo-256.png";
+                  
+                    profileImageEdit.Src = "https://cdn4.iconfinder.com/data/icons/linecon/512/photo-256.png";
+                }
             });
 
             GetUserReputation(Session["userId"].ToString());
@@ -66,6 +86,23 @@ namespace MyTimelineASPTry
             }
                 );
             labelNumberOfTags.Text = "(" + numberOfTags + ")";
+
+
+
+
+            var collectionCategories = db.GetCollection<CategoriesCollection>("Categories");
+
+            int numberOfCategories = 0;
+            var filterCategories = Builders<CategoriesCollection>.Filter.Eq("owner", Session["userId"].ToString());
+            await collectionCategories.Find(filterCategories).ForEachAsync(d =>
+            {
+                numberOfCategories++;
+                categoriesContainer.Controls.Add(new LiteralControl { Text = "<hr><div class=\"tagsListElement\" > <a class=\"editTagLink\" href=\"EditCategory.aspx?itemId=" + d.id.ToString() + " \">" + d.categoryName + "</a></div>" });
+
+                // listBoxTags.Items.Add(d.id.ToString());
+            }
+                );
+            labelNumberOfCategories.Text = "(" + numberOfCategories + ")";
 
 
 
@@ -126,22 +163,35 @@ namespace MyTimelineASPTry
             Response.Redirect("WebFormTimeline.aspx", false);
         }
 
-        //protected void buttonEditTag_Click(object sender, EventArgs e)
-        //{
-
-        //    if (listBoxTags.SelectedIndex >= 0)
-        //    {
-        //        Session["tagId"] = listBoxTags.SelectedValue;
-
-        //        Response.Redirect("EditTag.aspx", false);
-        //    }
-        //}
+      
 
         protected void buttonCreateTag_Click(object sender, EventArgs e)
         {
             Response.Redirect("AddNewTag.aspx", false);
         }
 
+        protected void buttonSaveChanges_Click(object sender, EventArgs e)
+        {
+            MongoClient mclient = new MongoClient();
+            var db = mclient.GetDatabase("Timeline");
 
+            var user = db.GetCollection<UserData>("Users");
+            var filterUser = Builders<UserData>.Filter.Eq("email", Session["userId"].ToString());
+
+            string imageLink = textBoxProfileImage.Text;
+            var update = Builders<UserData>.Update
+               .Set(d => d.profileInfo, CKEditorProfileInfo.Text)
+                .Set(d => d.image, imageLink);
+
+            profileImage.Src = imageLink;
+            profileImageEdit.Src = imageLink;
+
+            user.UpdateOneAsync(filterUser, update).Wait();
+        }
+
+        protected void buttonCreateCategory_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AddNewCategory.aspx", false);
+        }
     }
 }

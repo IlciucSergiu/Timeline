@@ -10,21 +10,20 @@ using System.Web.Services;
 
 namespace MyTimelineASPTry
 {
-    public partial class AddNewTag : System.Web.UI.Page
+    public partial class AddNewCategory : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
 
-
-        protected void buttonCreateTag_Click(object sender, EventArgs e)
+        protected void buttonCreateCategory_Click(object sender, EventArgs e)
         {
             MongoClient mgClient = new MongoClient();
             var db = mgClient.GetDatabase("Timeline");
-            var collection = db.GetCollection<BsonDocument>("Tags");
+            var collection = db.GetCollection<BsonDocument>("Categories");
 
-            if (textBoxTagName.Text != "")
+            if (textBoxCategoryName.Text != "")
             {
 
                 // hiddenFieldParentTagId.Value = textBoxId.Text;
@@ -32,7 +31,7 @@ namespace MyTimelineASPTry
                 BsonDocument parentTag = new BsonDocument
                 {
                     { "parentName",textBoxParentName.Text},
-                    { "id", hiddenFieldParentTagId.Value },
+                    { "id", hiddenFieldParentCategoryId.Value },
                    // {"_id", objectId}
                    
                 };
@@ -46,75 +45,73 @@ namespace MyTimelineASPTry
                         tagSynonyms.Add(tagSynonym);
                 }
 
-                string id = textBoxTagName.Text.Replace(' ','_') + "_" + Session["userId"].ToString().Substring(0, 5);
+                string id = "Category_"+textBoxCategoryName.Text.Replace(' ', '_') + "_" + Session["userId"].ToString().Substring(0, 5);
                 string relativeImportance;
-
                 if (textBoxRelativeImportance.Value.ToString() != "")
                     relativeImportance = textBoxRelativeImportance.Value;
                 else
                     relativeImportance = "20";
                 BsonDocument document = new BsonDocument
             {
-                
-                 
-                { "tagName",textBoxTagName.Text},
+
+
+                { "categoryName",textBoxCategoryName.Text},
                 { "id",id },
                 { "owner", Session["userId"].ToString() },
-                { "parentTags", parentTags },
+                { "parentCategories", parentTags },
                 { "relativeImportance", relativeImportance},
-                { "description", textBoxTagShortDescription.Text },
-                { "tagInfo", CKEditorInformation.Text },
-                { "tagSynonyms", tagSynonyms},
+                { "description", textBoxCategoryShortDescription.Text },
+                { "categoryInfo", CKEditorCategoryInformation.Text },
+                { "categorySynonyms", tagSynonyms},
                 { "dateAdded", DateTime.UtcNow}
 
             };
                 collection.InsertOneAsync(document);
-                Response.Redirect("UserManaging.aspx?tab=tags", false);
+                Response.Redirect("UserManaging.aspx?tab=categories", false);
             }
         }
 
 
         [WebMethod]
-        public static string FindTagParentOptions(string inputValue)
+        public static string FindCategoryParentOptions(string inputValue)
         {
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
 
-            var collection = db.GetCollection<TagsCollection>("Tags");
-
-            
+            var collection = db.GetCollection<CategoriesCollection>("Categories");
 
 
-            var filter = Builders<TagsCollection>.Filter.Regex(u => u.tagName, new BsonRegularExpression("/" + inputValue + "/i"));
 
-            string tagOptions = "";
-            collection.Find(filter).ForEachAsync(d => tagOptions += d.tagName.ToString() + "{0}" + d.id + "{;}").Wait();
 
-            return tagOptions;
+            var filter = Builders<CategoriesCollection>.Filter.Regex(u => u.categoryName, new BsonRegularExpression("/" + inputValue + "/i"));
+
+            string categoryOptions = "";
+            collection.Find(filter).ForEachAsync(d => categoryOptions += d.categoryName.ToString() + "{0}" + d.id + "{;}").Wait();
+
+            return categoryOptions;
 
         }
 
 
         [WebMethod]
-        public static bool VerifyTagExistence(string inputValue)
+        public static bool VerifyCategoryExistence(string inputValue)
         {
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
 
-            var collection = db.GetCollection<TagsCollection>("Tags");
+            var collection = db.GetCollection<CategoriesCollection>("Categories");
 
 
 
 
-            var filter = Builders<TagsCollection>.Filter.Eq("tagName",inputValue);
+            var filter = Builders<CategoriesCollection>.Filter.Eq(d => d.categoryName, inputValue);
 
 
             bool exists = false;
-            collection.Find(filter).Limit(1).ForEachAsync(d => exists = true).Wait();
+            collection.Find(filter).ForEachAsync(d => exists = true).Wait();
 
             return exists;
 
         }
-
     }
 }

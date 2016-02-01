@@ -438,6 +438,58 @@ $(function () {
             }
     });
 
+    $(".textBoxAddParentCategory").on('keydown keypress focus', function () {
+        //alert("here");
+        if ($(".textBoxAddParentCategory").val() != "")
+            try {
+                var dataValue = { inputValue: $(".textBoxAddParentCategory").val() };
+
+                $.ajax({
+                    type: "POST",
+                    url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+
+                    error: function (err) {
+
+                        alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
+                        var arrayTagNames = [];
+                        var arrayTagId = [];
+                        var availableTags = result.d.split("{;}").forEach(function (item) {
+                            //array2.push(item);
+                            var array3 = item.split("{0}");
+                            // alert(array3[0]);
+                            arrayTagNames.push(array3[0]);
+                            arrayTagId.push(array3[1]);
+                        });
+                        // alert(array2);
+                        // $('#debug1').text(arrayTagNames);
+                        // $('#debug2').text(arrayTagId);
+
+                        $(".textBoxAddParentCategory").autocomplete({
+                            source: arrayTagNames,
+                            select: function (event, ui) {
+                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                                //$('#debug2').text(parentId);
+                                UpdHidId(parentId);
+                                //alert(ui.item.label);
+                                // $('hiddenFieldParentTagId').val(parentId);
+                                //  alert($('hiddenFieldParentTagId').val);
+                                // $(".textBoxAddParentTag").val(ui.item.label);
+
+                            }
+                        });
+                    }
+                });
+            }
+            catch (e) {
+                alert("Error" + e.message);
+            }
+    });
+
     $(".textBoxEditParentTag").on('keydown keypress focus', function () {
         //alert("here");
         if ($(".textBoxEditParentTag").val() != "")
@@ -524,6 +576,21 @@ $(function () {
         else {
             // $("#verifyTagName").css("display", "none");
             $("#verifyTagName").text("");
+        }
+    });
+
+    $(".textBoxCategoryName").focusout(function () {
+        
+        if (VerifyCategoryExistence($(".textBoxCategoryName").val())) {
+           
+            $("#verifyCategoryName").css("color", "red");
+            $("#verifyCategoryName").text("This category already exists.");
+        }
+        else {
+            
+            $("#verifyCategoryName").css("color", "green");
+            $("#verifyCategoryName").text("v");
+          
         }
     });
 
@@ -621,6 +688,9 @@ $(function () {
         ListBookSelected(this);
     });
 
+    
+   
+
     $('.documentBook').on("click", function () {
 
         BookImageClick(this);
@@ -648,6 +718,13 @@ $(function () {
     });
 
 });
+
+
+function ShowImageLink(e) {
+
+    $("#changeImageSource").css("display", "block");
+};
+
 
 function BookImageClick(e) {
 
@@ -1068,6 +1145,35 @@ function VerifyTagExistence(tagName) {
     $.ajax({
         type: "POST",
         url: "AddNewTag.aspx/VerifyTagExistence",
+        data: JSON.stringify(dataValue),
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+
+        error: function (err) {
+
+            console.log("A aparut o eroare: " + err.responseText);
+            // return false;
+        },
+        success: function (result) {
+
+            response = result.d;
+
+
+        }
+    });
+
+    return response;
+
+}
+
+function VerifyCategoryExistence(categoryName) {
+
+    var dataValue = { inputValue: categoryName };
+    var response;
+    $.ajax({
+        type: "POST",
+        url: "AddNewCategory.aspx/VerifyCategoryExistence",
         data: JSON.stringify(dataValue),
         async: false,
         contentType: 'application/json; charset=utf-8',

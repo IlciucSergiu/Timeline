@@ -215,7 +215,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AddNewCategory.aspx" />
     <Content Include="AddNewTag.aspx" />
+    <Content Include="CategoriesMap.aspx" />
+    <Content Include="EditCategory.aspx" />
     <Content Include="EditTag.aspx" />
     <Content Include="EmailVerification.aspx" />
     <Content Include="Error.aspx" />
@@ -1004,6 +1007,13 @@
     <Compile Include="AddData.aspx.designer.cs">
       <DependentUpon>AddData.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AddNewCategory.aspx.cs">
+      <DependentUpon>AddNewCategory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddNewCategory.aspx.designer.cs">
+      <DependentUpon>AddNewCategory.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AddNewTag.aspx.cs">
       <DependentUpon>AddNewTag.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1015,6 +1025,20 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="CategoriesMap.aspx.cs">
+      <DependentUpon>CategoriesMap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoriesMap.aspx.designer.cs">
+      <DependentUpon>CategoriesMap.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EditCategory.aspx.cs">
+      <DependentUpon>EditCategory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditCategory.aspx.designer.cs">
+      <DependentUpon>EditCategory.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EditTag.aspx.cs">
       <DependentUpon>EditTag.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

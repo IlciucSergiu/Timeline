@@ -72,10 +72,9 @@
 
     <script>
         function UpdHidId(inputValue) {
-           // alert(inputValue);
-           
+          
             $('#' + '<%=hiddenFieldParentTagId.ClientID %>').val(inputValue);
-            //alert($('#' + '<%=hiddenFieldParentTagId.ClientID %>').val());
+           
         }
 
     </script>

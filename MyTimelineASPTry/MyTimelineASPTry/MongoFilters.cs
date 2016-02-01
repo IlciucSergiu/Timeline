@@ -85,7 +85,7 @@ namespace MyTimelineASPTry
         public string gender { get; set; }
         public string salt { get; set; }
         public DateTime dateSigned { get; set; }
-
+        public string profileInfo { get; set; }
         public string emailVerification { get; set; }
         public bool emailVerified { get; set; }
 
@@ -113,6 +113,27 @@ namespace MyTimelineASPTry
         public BsonArray documentsBelonging { get; set; }
 
        
+    }
+
+    public class CategoriesCollection
+    {
+        [BsonId]
+        public ObjectId _id { get; set; }
+
+        public string categoryName { get; set; }
+        public string id { get; set; }
+        public string owner { get; set; }
+        public BsonArray parentCategories { get; set; }
+        public int relativeImportance { get; set; }
+        public string description { get; set; }
+        public string categoryInfo { get; set; }
+        public DateTime dateAdded { get; set; }
+        public BsonArray categorySynonyms { get; set; }
+
+        
+        public BsonArray documentsBelonging { get; set; }
+
+
     }
 
 }
