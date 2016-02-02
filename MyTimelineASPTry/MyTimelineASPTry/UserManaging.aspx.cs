@@ -155,7 +155,7 @@ namespace MyTimelineASPTry
 
         protected void buttonCreate_Click(object sender, EventArgs e)
         {
-            Response.Redirect("AddData.aspx?scope=create", false);
+            Response.Redirect("AddNewDocument.aspx", false);
         }
 
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)

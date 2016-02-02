@@ -25,7 +25,7 @@
         </div>
     <div id="pageBody">
     <br />
-        <p>To see all categories added until now click <a href="TagsMap.aspx">here</a></p>
+        <p>To see all categories added until now click <a href="CategoriesMap.aspx">here</a></p>
         <asp:TextBox ID="textBoxCategoryName" runat="server" placeholder="Category name" Height="24px" Width="178px"></asp:TextBox>
          <br />
          <p>Short description</p>

@@ -625,75 +625,13 @@ namespace MyTimelineASPTry
             return theReturn;
 
         }
-        //string jsonData;
-        //[WebMethod]
-        ////[ScriptMethod(UseHttpGet = true)]
-        //public static async Task<string> SearchByCriteria(string criteria)
-        //{
-        //    Stopwatch sw = new Stopwatch();
-        //    sw.Start();
 
-        //    MongoClient mclient = new MongoClient();
-        //    var db = mclient.GetDatabase("Timeline");
-        //    var collection = db.GetCollection<PersonInfo>("Persons");
-        //    var filter = Builders<PersonInfo>.Filter.Eq("name", "Mozart");
-
-
-
-        //    string jsString = "";
-        //    try
-        //    {
-        //        await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\""
-        //            + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
-        //            + "\",\"enddate\" : \"" + /*endDate(d.enddate)*/"" + "\",\"importance\" : \""
-        //            + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
-        //            + d.link + "\",\"image\" : \"" + d.image + "\"},");
-
-
-
-        //        //var result =  collection.Find(filter);
-
-        //    //    BsonDocument document = new BsonDocument
-        //    //{
-
-        //    //     //{ "owner", ViewState["userId"].ToString() },
-        //    //    { "id", "Fanica" },
-        //    //    { "owner", "Geo" }
-
-
-
-        //    //};
-        //    //   // await collection.InsertOneAsync(document);
-        //    //    // collection.InsertOneAsync(document);
-
-        //        return jsString;
-        //    }
-        //     catch (Exception e)
-        //    {
-        //        return e.ToString();
-        //    }
-
-        //    string jsonData1 = "[{" +
-        //    "\"id\": \"important_personalities\"," +
-        //    "\"title\": \"Important Personalities\"," +
-        //    "\"initial_zoom\": \"40\"," +
-        //        //"\"focus_date\": \"1998-03-11 12:00:00\","+
-        //    "\"image_lane_height\": 50," +
-        //    "\"events\":[" + jsString.TrimEnd(',') + "]" +
-        //"}]";
-
-
-        //    sw.Stop();
-        //    //jsonData = sw.Elapsed.ToString();
-        //    return jsonData1;
-
-        //}
 
 
 
         public string ReplaceToHTML(string text)
         {
-            string[] plainChar = new string[] { "\"", "'" };
+            string[] plainChar = new string[] {  "'" , "\"" };
             string[] HTMLChar = new string[] { "", "" };
 
             for (int i = 0; i < plainChar.Length; i++)

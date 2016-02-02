@@ -115,7 +115,7 @@
                 <div id="categoriesManaging" class="tabsContainer Categories hide">
 
                     <h2>All your categories &nbsp; &nbsp;<asp:Label ID="labelNumberOfCategories" runat="server" Text="()"></asp:Label>
-                        <asp:Button ID="buttonCreateCategory" runat="server" Text="Create category" CssClass="userManButton" OnClick="buttonCreateTag_Click" /></h2>
+                        <asp:Button ID="buttonCreateCategory" runat="server" Text="Create category" CssClass="userManButton" OnClick="buttonCreateCategory_Click" /></h2>
                     <div id="categoriesContainer" runat="server" class="elementsContainer">
                     </div>
 

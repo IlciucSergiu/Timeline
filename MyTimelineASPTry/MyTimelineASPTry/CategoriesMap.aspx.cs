@@ -20,23 +20,23 @@ namespace MyTimelineASPTry
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            LoadTags();
+            LoadCategories();
             SetHierarhicalPosition(Array.Find(categoryMap, p => p.categoryName == "Main"), 0);
             treeViewCategoriesMap.Nodes.Clear();
             TreeNode main = new TreeNode();
             main.Text = "Main";
             treeViewCategoriesMap.Nodes.Add(main);
             PopulateTreeView(Array.Find(categoryMap, p => p.categoryName == "Main"), 0, main);
-            // ShowTagsArray();
+            //ShowCategoriesArray();
 
         }
 
-        void LoadTags()
+        void LoadCategories()
         {
             MongoClient mclient = new MongoClient();
             var db = mclient.GetDatabase("Timeline");
 
-            var collection = db.GetCollection<TagsCollection>("Tags");
+            var collection = db.GetCollection<CategoriesCollection>("Categories");
 
             //inputValue = "ev";
             // var filter = Builders<IndividualData>.Filter.Eq("id", id);
@@ -48,8 +48,8 @@ namespace MyTimelineASPTry
             {
                 CategoryElements categoryElement = new CategoryElements();
 
-                categoryElement.categoryName = d.tagName;
-                categoryElement.parentName = d.parentTags[0]["parentName"].ToString();
+                categoryElement.categoryName = d.categoryName;
+                categoryElement.parentName = d.parentCategories[0]["parentName"].ToString();
                categoryMap[i] = categoryElement;
                 i++;
 
@@ -58,35 +58,36 @@ namespace MyTimelineASPTry
 
         }
 
-        void ShowTagsArray()
+        void ShowCategoriesArray()
         {
 
             int j = 0;
-            foreach (CategoryElements tag in categoryMap)
+            foreach (CategoryElements category in categoryMap)
             {
-                if (tag == null)
+                if (category == null)
                     break;
                 j++;
 
-                Response.Write(tag.categoryName + "   " + tag.parentName + "   " + tag.hierarchicalPosition.ToString() + "<br />");
+                Response.Write(category.categoryName + "   " + category.parentName + "   " + category.hierarchicalPosition.ToString() + "<br />");
             }
             Response.Write(j.ToString() + "<br />");
             Response.Write(categoryMap.Length + "<br />");
         }
 
-        int SetHierarhicalPosition(CategoryElements curentTag, int curentPosition)
+        int SetHierarhicalPosition(CategoryElements curentCategory, int curentPosition)
         {
-            curentTag.hierarchicalPosition = curentPosition;
+           
+            curentCategory.hierarchicalPosition = curentPosition;
 
 
             int j = 0;
-            foreach (CategoryElements tag in categoryMap)
+            foreach (CategoryElements category in categoryMap)
             {
-                if (tag == null) break;
+                if (category  == null) break;
 
-                if (tag.parentName == curentTag.categoryName)
+                if (category.parentName == curentCategory.categoryName)
                 {
-                    SetHierarhicalPosition(tag, curentPosition + 1);
+                    SetHierarhicalPosition(category, curentPosition + 1);
                 }
 
                 j++;
@@ -97,24 +98,24 @@ namespace MyTimelineASPTry
             return 0;
         }
 
-        int PopulateTreeView(CategoryElements parentTag, int curentPosition, TreeNode parentNode)
+        int PopulateTreeView(CategoryElements parentCategory, int curentPosition, TreeNode parentNode)
         {
             // parentTag.hierarchicalPosition = curentPosition;
 
 
             int j = 0;
-            foreach (CategoryElements tag in categoryMap)
+            foreach (CategoryElements category in categoryMap)
             {
-                if (tag == null) break;
+                if (category == null) break;
 
-                if (tag.parentName == parentTag.categoryName)
+                if (category.parentName == parentCategory.categoryName)
                 {
                     TreeNode curentNode = new TreeNode();
-                    curentNode.Text = tag.categoryName;
-                    curentNode.NavigateUrl = "TagInfo.aspx?tagName=" + tag.categoryName;
+                    curentNode.Text = category.categoryName;
+                    curentNode.NavigateUrl = "TagInfo.aspx?tagName=" + category.categoryName;
                     curentNode.Collapse();
                     parentNode.ChildNodes.Add(curentNode);
-                    PopulateTreeView(tag, curentPosition + 1, curentNode);
+                    PopulateTreeView(category, curentPosition + 1, curentNode);
                 }
 
                 j++;
@@ -127,7 +128,7 @@ namespace MyTimelineASPTry
         public class CategoryClass
         {
 
-            public IEnumerable<CategoryElements> Tag { get; set; }
+            public IEnumerable<CategoryElements> Category { get; set; }
         }
 
         public class CategoryElements

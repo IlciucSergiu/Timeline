@@ -216,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AddNewCategory.aspx" />
+    <Content Include="AddNewDocument.aspx" />
     <Content Include="AddNewTag.aspx" />
     <Content Include="CategoriesMap.aspx" />
     <Content Include="EditCategory.aspx" />
@@ -1013,6 +1014,13 @@
     </Compile>
     <Compile Include="AddNewCategory.aspx.designer.cs">
       <DependentUpon>AddNewCategory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddNewDocument.aspx.cs">
+      <DependentUpon>AddNewDocument.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddNewDocument.aspx.designer.cs">
+      <DependentUpon>AddNewDocument.aspx</DependentUpon>
     </Compile>
     <Compile Include="AddNewTag.aspx.cs">
       <DependentUpon>AddNewTag.aspx</DependentUpon>
