@@ -97,7 +97,7 @@ namespace MyTimelineASPTry
 
 
                 Session["itemId"] = saveId;
-                Response.Redirect("AddData.aspx?itemId=" + saveId + "&scope=modify");
+                Response.Redirect("EditDocument.aspx?itemId=" + saveId + "&scope=modify");
 
 
             }

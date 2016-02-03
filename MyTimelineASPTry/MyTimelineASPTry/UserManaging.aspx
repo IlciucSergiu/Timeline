@@ -64,7 +64,7 @@
         </script>
         <div id="header">
 
-            <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail" OnClick="ImageButton1_Click" CssClass="linkMain" />
+            <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail" OnClick="ImageButton1_Click" CssClass="linkMain" PostBackUrl="~/Home.aspx" />
         </div>
 
         <div id="pageBody">

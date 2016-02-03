@@ -233,7 +233,7 @@
     <Content Include="Account\Manage.aspx" />
     <Content Include="Account\ManageLogins.aspx" />
     <Content Include="Account\ManagePassword.aspx" />
-    <Content Include="AddData.aspx" />
+    <Content Include="EditDocument.aspx" />
     <Content Include="App_Data\TimelineData.mdf" />
     <Content Include="App_Data\TimelineData_log.ldf">
       <DependentUpon>TimelineData.mdf</DependentUpon>
@@ -817,7 +817,7 @@
     <Content Include="TagInfo.aspx" />
     <Content Include="TagsMap.aspx" />
     <Content Include="UserManaging.aspx" />
-    <Content Include="WebFormTimeline.aspx" />
+    <Content Include="Home.aspx" />
     <Content Include="MySecondTry1\css\.DS_Store" />
     <Content Include="MySecondTry1\json\idaho.json" />
     <Content Include="MySecondTry1\json\js_history.json" />
@@ -1001,12 +1001,12 @@
     <Compile Include="Account\VerifyPhoneNumber.aspx.designer.cs">
       <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AddData.aspx.cs">
-      <DependentUpon>AddData.aspx</DependentUpon>
+    <Compile Include="EditDocument.aspx.cs">
+      <DependentUpon>EditDocument.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AddData.aspx.designer.cs">
-      <DependentUpon>AddData.aspx</DependentUpon>
+    <Compile Include="EditDocument.aspx.designer.cs">
+      <DependentUpon>EditDocument.aspx</DependentUpon>
     </Compile>
     <Compile Include="AddNewCategory.aspx.cs">
       <DependentUpon>AddNewCategory.aspx</DependentUpon>
@@ -1117,12 +1117,12 @@
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
     </Compile>
-    <Compile Include="WebFormTimeline.aspx.cs">
-      <DependentUpon>WebFormTimeline.aspx</DependentUpon>
+    <Compile Include="Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebFormTimeline.aspx.designer.cs">
-      <DependentUpon>WebFormTimeline.aspx</DependentUpon>
+    <Compile Include="Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -61,7 +61,7 @@ namespace MyTimelineASPTry
             await collection.Find(filter).ForEachAsync(d =>
             {
                 numberOfDocuments++;
-                documentsContainer.Controls.Add(new LiteralControl { Text = "<hr><div class=\"documentsListElement\" > <a class=\"editDocumentLink\" href = \"AddData.aspx?itemId=" + d.id.ToString() + "&scope=modify\" >" + d.title.ToString() + "</a></div>" });
+                documentsContainer.Controls.Add(new LiteralControl { Text = "<hr><div class=\"documentsListElement\" > <a class=\"editDocumentLink\" href = \"EditDocument.aspx?itemId=" + d.id.ToString() + "&scope=modify\" >" + d.title.ToString() + "</a></div>" });
                 //documentsContainer.Controls.Add(new LiteralControl { Text = "<div class=\"documentsListElement\" value=\"" + d.id.ToString() + "\">" + d.title.ToString() + "</div>" });
                 //documentsContainer.InnerHtml +="<div class=\"documentElement\" value=\"" + d.id.ToString() + "\">" + d.title.ToString() + "</div>";
             });
@@ -160,7 +160,7 @@ namespace MyTimelineASPTry
 
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("WebFormTimeline.aspx", false);
+            Response.Redirect("Home.aspx", false);
         }
 
       
