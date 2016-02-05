@@ -40,7 +40,7 @@ namespace MyTimelineASPTry
                 if (!IsPostBack)
                 {
                     ViewState["itemId"] = Request.QueryString["itemId"];
-                    cancelRequest = "hide";
+                  
                 }
                 itemId = ViewState["itemId"].ToString();
                 userId = Session["userId"].ToString();
@@ -49,7 +49,7 @@ namespace MyTimelineASPTry
 
         string userId, itemId;
         public bool setDate = false;
-        string scope, cancelRequest;
+       // string scope, cancelRequest;
 
 
 
@@ -102,6 +102,19 @@ namespace MyTimelineASPTry
                     tagItem.Value = tag[0].ToString() + "-" + tag[1].ToString();
                     listBoxTags.Items.Add(tagItem);
                     hiddenFieldTags.Value += tagItem.Value.ToString() + ";";
+                }
+
+            listBoxCategories.Items.Clear();
+            if (documents.categories != null)
+                foreach (var category in documents.categories)
+                {
+                    ListItem categoryItem = new ListItem();
+                    categoryItem.Text = category[0].ToString() + " " + category[1].ToString();
+                    categoryItem.Value = category[0].ToString() + "-" + category[1].ToString();
+                    listBoxCategories.Items.Add(categoryItem);
+
+                    //nu cred ca e necesara
+                    hiddenFieldTags.Value += categoryItem.Value.ToString() + ";";
                 }
 
             if (documents.owner == initUserId)
@@ -284,88 +297,7 @@ namespace MyTimelineASPTry
             Response.Redirect("UserManaging.aspx", false);
         }
 
-        [WebMethod]
-        public static string FindTagOptions(string inputValue)
-        {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
-            var collection = db.GetCollection<TagsCollection>("Tags");
-
-
-
-
-            var filter = Builders<TagsCollection>.Filter.Regex("tagName", new BsonRegularExpression("/" + inputValue + "/i"));
-
-            string tagOptions = "";
-            collection.Find(filter).ForEachAsync(d => tagOptions += d.tagName.ToString() + "{;}").Wait();
-
-            return tagOptions;
-
-        }
-
-        [WebMethod]
-        public static string InsertInTagCollection(string tagName, string documentId, int relativeImportance)
-        {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
-
-            var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
-
-            var filter = Builders<DocumentInfo>.Filter.Regex("id", new BsonRegularExpression(documentId));
-
-            DocumentInfo documentInfo = new DocumentInfo();
-            collectionDocument.Find(filter).ForEachAsync(d =>
-            {
-                documentInfo._id = d._id;
-                documentInfo.name = d.name;
-                documentInfo.id = d.id;
-
-            }).Wait();
-
-            // introduc inregistrarea tagului in document
-            BsonDocument tagDocument = new BsonDocument {
-
-                        { "tagName", tagName },
-                        { "tagImportance", relativeImportance }
-                 };
-
-            var updateDocument = Builders<DocumentInfo>.Update
-                    .Push(p => p.tags, tagDocument);
-
-            collectionDocument.UpdateOneAsync(filter, updateDocument).Wait();
-
-
-
-            var collectionTags = db.GetCollection<TagsCollection>("Tags");
-
-            BsonDocument documentsBelonging = new BsonDocument()
-            {
-
-                { "_id", documentInfo._id },
-                { "id", documentInfo.id },
-                { "documentName", documentInfo.name },
-                { "relativeImportance", relativeImportance}
-
-            };
-
-
-
-
-
-            var filterTag = Builders<TagsCollection>.Filter.Regex("tagName", tagName);
-            var updateTag = Builders<TagsCollection>.Update
-                    // .Inc("votes", 1)
-                    .Push(p => p.documentsBelonging, documentsBelonging);
-
-            collectionTags.UpdateOneAsync(filterTag, updateTag).Wait();
-
-
-
-            return "True";
-
-        }
+      
 
         protected void buttonSearchBook_Click(object sender, EventArgs e)
         {
@@ -382,154 +314,11 @@ namespace MyTimelineASPTry
             }
         }
 
-        [WebMethod]
-        public static string RemoveInTagCollection(string tagName, string documentId)
-        {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
-
-            var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
-
-            var filter = Builders<DocumentInfo>.Filter.Regex("id", new BsonRegularExpression(documentId));
-
-            DocumentInfo documentInfo = new DocumentInfo();
-            collectionDocument.Find(filter).ForEachAsync(d =>
-            {
-                documentInfo._id = d._id;
-                documentInfo.name = d.name;
-                documentInfo.id = d.id;
-
-            }).Wait();
-
-
-            // sterg inregistrarea tagului din document
-            var updateDocument = Builders<DocumentInfo>.Update
-                       .Pull(p => p.tags, new BsonDocument(){
-    { "tagName", tagName } });
-
-            collectionDocument.UpdateOneAsync(filter, updateDocument).Wait();
-
-
-            // sterg inregistrarea din  tag
-            var collectionTags = db.GetCollection<TagsCollection>("Tags");
-
-
-            var filterTag = Builders<TagsCollection>.Filter.Regex("tagName", tagName);
-            var updateTag = Builders<TagsCollection>.Update
-
-                    .Pull(p => p.documentsBelonging, new BsonDocument(){
-    { "_id", documentInfo._id } });
-
-            collectionTags.UpdateOneAsync(filterTag, updateTag).Wait();
-
-
-
-            return "Deleted";
-
-        }
-
-        [WebMethod]
-        public static string AddSelectedBook(string title, string authors, string isbn, string imageUrl, string documentId)
-        {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
-            var collection = db.GetCollection<IndividualData>("IndividualData");
-
-            BsonDocument book = new BsonDocument()
-            {
-                { "title", title },
-                { "authors", authors },
-                { "isbn", isbn },
-                { "imageUrl", imageUrl },
-            };
-
-
-            var filter = Builders<IndividualData>.Filter.Regex("id", documentId);
-
-            var update = Builders<IndividualData>.Update
-                    // .Inc("votes", 1)
-                    .Push(p => p.additionalBooks, book);
-
-            collection.UpdateOneAsync(filter, update).Wait();
-
-            return "Inserted";
-
-        }
-
-
-        [WebMethod]
-        public static string RemoveSelectedBook(string title, string isbn, string documentId)
-        {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
-            var collection = db.GetCollection<IndividualData>("IndividualData");
-
-            var filter = Builders<IndividualData>.Filter.Regex("id", documentId);
-
-            var update = Builders<IndividualData>.Update
-                    .Pull(p => p.additionalBooks, new BsonDocument(){
-    { "isbn", isbn } });
-
-            collection.UpdateOneAsync(filter, update).Wait();
-
-            return "Deleted";
-
-        }
-
-
-        [WebMethod]
-        public static string AddAdditionalImage(string imageUrl, string documentId)
-        {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
-            var collection = db.GetCollection<IndividualData>("IndividualData");
-
-
-
-
-            var filter = Builders<IndividualData>.Filter.Regex("id", documentId);
-
-            var update = Builders<IndividualData>.Update
-                  .Push(p => p.imagesLinks, imageUrl);
-
-            collection.UpdateOneAsync(filter, update).Wait();
-
-            return "Inserted";
-
-        }
-
         protected void buttonAddLink_Click(object sender, EventArgs e)
         {
             listBoxLinks.Items.Add(textBoxAddLink.Text);
 
         }
-
-        [WebMethod]
-        public static string DeleteAdditionalImage(string imageUrl, string documentId)
-        {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
-            var collection = db.GetCollection<IndividualData>("IndividualData");
-
-
-
-
-            var filter = Builders<IndividualData>.Filter.Regex("id", documentId);
-
-            var update = Builders<IndividualData>.Update
-                  .Pull(p => p.imagesLinks, imageUrl);
-
-            collection.UpdateOneAsync(filter, update).Wait();
-
-            return "Deleted";
-
-        }
-
 
 
         public string ReplaceToHTML(string text)

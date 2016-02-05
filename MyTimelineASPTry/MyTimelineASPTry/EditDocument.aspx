@@ -7,7 +7,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>MyTimeline</title>
+    <title>TimeTrail</title>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" href="MySecondTry1/css/MyTimeline.css" type="text/css" />
@@ -209,24 +209,50 @@
             <hr />
             <h2>Add tags</h2>
             <div id="addTags">
-                <input id="hiddenId" type="hidden" runat="server" />
+                
                 <p>To see all tags check <a href="TagsMap.aspx">tag map</a></p>
                 <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" CssClass="textBoxAddTag"></asp:TextBox>
                 -
-                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;<asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick=" AddTagItem(); return false;" />
+                <input id="inputImportanceTag" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;
+                <asp:Button ID="buttonAddTag" runat="server" Text="Add" Width="49px" OnClientClick=" AddTagItem(); return false;" />
 
                 &nbsp;&nbsp;
                  <input id="buttonRemoveTags" type="button" value="Remove" />
                 <asp:Label ID="labelInfo" runat="server" Text="" CssClass="verifyTag" ForeColor="Red"></asp:Label>
                 <!-- <p id="verifyTag" ></p> -->
                 <br />
-                <asp:HiddenField ID="hiddenFieldTags" runat="server" />
+                <!-- <asp:HiddenField ID="hiddenFieldTags" runat="server" />-->
                 <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px" CssClass="listBoxTags"></asp:ListBox>
                 <br />
             </div>
 
             <br />
             <br />
+
+             <hr />
+            <h2>Add categories</h2>
+            <div id="addCategories">
+                <input id="hidden1" type="hidden" runat="server" />
+                <p>To see all categories check <a href="CategoriesMap.aspx">category map</a></p>
+                <asp:TextBox ID="textBoxCategoryName" runat="server" placeholder="Category name" CssClass="textBoxAddCategory"></asp:TextBox>
+               
+                <input id="inputImportanceCategory" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;
+                <asp:Button ID="buttonAddCategory" runat="server" Text="Add" Width="49px" OnClientClick=" AddCategoryItem(); return false;" />
+
+                &nbsp;&nbsp;
+                 <input id="buttonRemoveCategories" type="button" value="Remove" onclick=" RemoveCategoryItem(); return false;"/>
+                <asp:Label ID="labelCategoryInfo" runat="server" Text="" CssClass="verifyCategory" ForeColor="Red"></asp:Label>
+                <!-- <p id="verifyTag" ></p> -->
+                <br />
+               <!-- <asp:HiddenField ID="hiddenField1" runat="server" />-->
+                <asp:ListBox ID="listBoxCategories" runat="server" Height="67px" Width="161px" CssClass="listBoxCategories"></asp:ListBox>
+                <br />
+            </div>
+
+            <br />
+            <br />
+            <input id="hiddenId" type="hidden" runat="server" />
+
             <asp:Button ID="buttomSaveChanges" runat="server" Text="Save" OnClick="buttomSaveChanges_Click" Width="83px" />
             <asp:Button ID="buttonCancel" runat="server" Text="Cancel" OnClick="buttonCancel_Click" CssClass="essentialButtons" />
 

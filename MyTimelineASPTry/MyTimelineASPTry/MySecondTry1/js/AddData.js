@@ -55,7 +55,7 @@ function InsertInTagCollection(tagName, documentId, relativeImportance) {
         //alert(document.getElementById('hiddenId').value);
         $.ajax({
             type: "POST",
-            url: "AddData.aspx/InsertInTagCollection",
+            url: "WebMethods.aspx/InsertInTagCollection",
             data: JSON.stringify(dataValue),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -86,7 +86,7 @@ function RemoveInTagCollection(tagName, documentId) {
         //alert(document.getElementById('hiddenId').value);
         $.ajax({
             type: "POST",
-            url: "AddData.aspx/RemoveInTagCollection",
+            url: "WebMethods.aspx/RemoveInTagCollection",
             data: JSON.stringify(dataValue),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -106,6 +106,140 @@ function RemoveInTagCollection(tagName, documentId) {
     }
 }
 
+
+function AddCategoryItem() {
+
+    alert("here");
+
+    $(".verifyCategory").text("");
+    // VerifyIfInList();
+    if (VerifyCategoryItem() && VerifyCategoryInList()) {
+        if ($("#inputImportanceCategory").val() != "") {
+             alert($("#inputImportanceCategory").val());
+            var categoryName = $(".textBoxAddCategory").val().toString();
+            $(".textBoxAddCategory").val(null);
+            var categoryImportance = $("#inputImportanceCategory").val();
+
+        
+            var documentId = $("#hiddenId").val();
+            alert(documentId);
+
+            InsertInCategoryCollection(categoryName, documentId, categoryImportance);
+
+            $("#inputImportanceCategory").val(null);
+            try {
+                var categoryValue = categoryName + "-" + categoryImportance.toString();
+                $('.listBoxCategories').append("<option value=" + categoryValue.toString() + ">" + categoryName + " " + categoryImportance + "</option>");
+
+                // alert(tagName + " ---- " + tagImportance);
+
+                //var listString = "";
+                //$(".listBoxCategories option").each(function () {
+
+                //    listString += $(this).val() + ";";
+
+                //});
+
+                //UpdHidTag(listString);
+            }
+            catch (err) {
+                alert(err.message);
+            }
+            return false;
+        }
+        else {
+            $(".verifyCategory").text("Invalid information.");
+        }
+    }
+
+}
+
+function InsertInCategoryCollection(categoryName, documentId, relativeImportance) {
+
+    //alert(userId1);
+
+    try {
+        var dataValue = { documentId: documentId, categoryName: categoryName, relativeImportance: relativeImportance };
+        // alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "WebMethods.aspx/InsertInCategoryCollection",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                alert("We returned: " + result.d);
+
+
+            }
+        });
+    }
+    catch (e) {
+        alert("Error" + e.message);
+    }
+}
+
+function RemoveCategoryItem() {
+    if ($(".listBoxCategories option:selected").text() != "") {
+        var documentId = $("#hiddenId").val();
+        //alert(documentId);
+        var categoryName = $(".listBoxCategories option:selected").text().split(' ')[0];
+        alert(categoryName + "   " + documentId);
+
+        RemoveInCategoryCollection(categoryName, documentId);
+
+        $(".listBoxCategories option:selected").remove();
+        //var listString = "";
+        //$(".listBoxTags option").each(function () {
+        //    // alert($(this).val());
+        //    listString += $(this).val() + ";";
+        //    // Add $(this).val() to your list
+        //});
+        //// alert(listString);
+        //UpdHidTag(listString);
+    }
+    else {
+        $(".verifyCategory").text("No tag was selected.");
+    }
+}
+
+
+function RemoveInCategoryCollection(categoryName, documentId) {
+
+    //alert(userId1);
+
+    try {
+        var dataValue = { documentId: documentId, categoryName: categoryName };
+        // alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "WebMethods.aspx/RemoveInCategoryCollection",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                alert("We returned: " + result.d);
+
+
+            }
+        });
+    }
+    catch (e) {
+        alert("Error" + e.message);
+    }
+}
+
+
 function VerifyIfInList() {
 
     var response = true;
@@ -114,6 +248,22 @@ function VerifyIfInList() {
         var listString = $(this).val().split('-');
         if ($(".textBoxAddTag").val().toString().toLowerCase() == listString[0]) {
             $(".verifyTag").text("This tag already exists in list.");
+            response = false;
+        }
+
+
+    });
+    return response;
+}
+
+function VerifyCategoryInList() {
+
+    var response = true;
+    $(".listBoxCategories option").each(function () {
+
+        var listString = $(this).val().split('-');
+        if ($(".textBoxAddCategory").val().toString().toLowerCase() == listString[0].toLowerCase()) {
+            $(".verifyCategory").text("This tag already exists in list.");
             response = false;
         }
 
@@ -143,7 +293,7 @@ function VerifyTagItem() {
     var response;
     $.ajax({
         type: "POST",
-        url: "AddData.aspx/FindTagOptions",
+        url: "WebMethods.aspx/FindTagOptions",
         data: JSON.stringify(dataValue),
         async: false,
         contentType: 'application/json; charset=utf-8',
@@ -173,6 +323,54 @@ function VerifyTagItem() {
             }
             else {
                 $(".verifyTag").text("This tag does not exist!");
+                response = false;
+            }
+
+        }
+    });
+
+    return response;
+
+}
+
+
+function VerifyCategoryItem() {
+
+    alert($(".textBoxAddCategory").val());
+    var dataValue = { inputValue: $(".textBoxAddCategory").val() };
+    var response;
+    $.ajax({
+        type: "POST",
+        url: "WebMethods.aspx/FindCategoryOptions",
+        data: JSON.stringify(dataValue),
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+
+        error: function (err) {
+
+            console.log("A aparut o eroare: " + err.responseText);
+            // return false;
+        },
+        success: function (result) {
+
+            var availableCategories = result.d.split("{;}");
+            alert(availableCategories);
+
+            if (availableCategories != "") {
+                //alert("asdf");
+                if ($.inArray($(".textBoxAddCategory").val(), availableCategories) != -1) {
+                   // alert($.inArray($(".textBoxAddTag").val(), availableCategories));
+
+                    response = true;
+                }
+                else {
+                    $(".verifyCategory").text("This Category does not exist!");
+                }
+
+            }
+            else {
+                $(".verifyCategory").text("This category does not exist!");
                 response = false;
             }
 
@@ -302,7 +500,7 @@ $(function () {
 
             $.ajax({
                 type: "POST",
-                url: "AddData.aspx/FindTagOptions",
+                url: "WebMethods.aspx/FindTagOptions",
                 data: JSON.stringify(dataValue),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -360,7 +558,7 @@ $(function () {
 
             $.ajax({
                 type: "POST",
-                url: "AddData.aspx/FindTagOptions",
+                url: "WebMethods.aspx/FindTagOptions",
                 data: JSON.stringify(dataValue),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -884,7 +1082,7 @@ function AddThisBook() {
         //alert(document.getElementById('hiddenId').value);
         $.ajax({
             type: "POST",
-            url: "AddData.aspx/AddSelectedBook",
+            url: "WebMethods.aspx/AddSelectedBook",
             data: JSON.stringify(dataValue),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -944,7 +1142,7 @@ function AddAdditionalImage() {
     //alert(document.getElementById('hiddenId').value);
     $.ajax({
         type: "POST",
-        url: "AddData.aspx/AddAdditionalImage",
+        url: "WebMethods.aspx/AddAdditionalImage",
         data: JSON.stringify(dataValue),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
@@ -981,7 +1179,7 @@ function DeleteAdditionalImage() {
     //alert(document.getElementById('hiddenId').value);
     $.ajax({
         type: "POST",
-        url: "AddData.aspx/DeleteAdditionalImage",
+        url: "WebMethods.aspx/DeleteAdditionalImage",
         data: JSON.stringify(dataValue),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
@@ -1052,7 +1250,7 @@ function RemoveThisBook() {
     //alert(document.getElementById('hiddenId').value);
     $.ajax({
         type: "POST",
-        url: "AddData.aspx/RemoveSelectedBook",
+        url: "WebMethods.aspx/RemoveSelectedBook",
         data: JSON.stringify(dataValue),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',

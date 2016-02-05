@@ -32,7 +32,7 @@
         <div id="pageBody">
             <div id="divAddEssentials" runat="server">
 
-
+                <h2>Here you add the main informations about the subject. The rest you will add later. </h2>
                 <p>
                     Complete name:&nbsp;&nbsp;
             <asp:TextBox ID="textBoxCompleteName" runat="server" Width="244px" Height="21px"></asp:TextBox>
@@ -57,7 +57,7 @@
 
                 <br />
 
-                <div id="addTags">
+               <!-- <div id="addTags">
 
                     <br />
                     <input id="hiddenId" type="hidden" runat="server" />
@@ -69,19 +69,19 @@
                     &nbsp;&nbsp;
                  <input id="buttonRemoveTags" type="button" value="Remove" />
                     <asp:Label ID="labelInfo" runat="server" Text="" CssClass="verifyTag" ForeColor="Red"></asp:Label>
-                    <!-- <p id="verifyTag" ></p> -->
+                     <p id="verifyTag" ></p> 
                     <br />
                     <asp:HiddenField ID="hiddenFieldTags" runat="server" />
                     <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px" CssClass="listBoxTags"></asp:ListBox>
                     <br />
                 </div>
                 <br />
+                -->
 
 
 
 
-
-                <asp:Label ID="labelDescription" runat="server" Text="Description"></asp:Label><br />
+                <asp:Label ID="labelDescription" runat="server" Text="Short description"></asp:Label><br />
                 <asp:TextBox ID="textBoxDescription" TextMode="MultiLine" runat="server" Height="121px" Width="353px"></asp:TextBox><br />
 
                 <asp:Label ID="labelImage" runat="server" Text="Link to image"></asp:Label><br />

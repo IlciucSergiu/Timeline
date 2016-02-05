@@ -30,6 +30,7 @@ namespace MyTimelineASPTry
         public string image { get; set; }
         public string importance { get; set; }
         public BsonArray tags { get; set; }
+        public BsonArray categories { get; set; }
         public DateTime dateAdded { get; set; }
 
 

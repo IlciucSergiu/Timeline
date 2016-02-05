@@ -790,6 +790,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
     <Content Include="LoginUser.aspx" />
+    <Content Include="WebMethods.aspx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="image-slider.slider\deep-minified.html" />
     <Content Include="image-slider.slider\img\002.jpg" />
@@ -1124,6 +1125,14 @@
     <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebMethods.aspx.cs">
+      <DependentUpon>WebMethods.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebMethods.aspx.designer.cs">
+      <DependentUpon>WebMethods.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\jsImgSlider\" />

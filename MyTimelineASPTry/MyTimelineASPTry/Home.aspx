@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>MyTry</title>
+    <title>TimeTrail</title>
     <link rel="stylesheet" href="MySecondTry1/css/jquery-ui-1.10.3.custom.css" type="text/css" />
     <link rel="stylesheet" href="MySecondTry1/timeglider/Timeglider.css" type="text/css" />
     <link rel="stylesheet" href="MySecondTry1/timeglider/timeglider.datepicker.css" type="text/css" />
