@@ -110,7 +110,7 @@ namespace MyTimelineASPTry
 
         protected void buttonCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect("UserManaging.aspx", false);
+            Response.Redirect("UserManaging.aspx?tab=documents", false);
         }
 
 

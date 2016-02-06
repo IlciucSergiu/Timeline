@@ -67,6 +67,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Label labelReputation;
         
         /// <summary>
+        /// documentsManaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentsManaging;
+        
+        /// <summary>
         /// labelNumeberOfDocuments control.
         /// </summary>
         /// <remarks>
@@ -92,6 +101,15 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentsContainer;
+        
+        /// <summary>
+        /// tagsManaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tagsManaging;
         
         /// <summary>
         /// labelNumberOfTags control.
@@ -121,6 +139,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tagsContainer;
         
         /// <summary>
+        /// categoriesManaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl categoriesManaging;
+        
+        /// <summary>
         /// labelNumberOfCategories control.
         /// </summary>
         /// <remarks>
@@ -146,6 +173,15 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl categoriesContainer;
+        
+        /// <summary>
+        /// profileManaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl profileManaging;
         
         /// <summary>
         /// profileContent control.
@@ -191,5 +227,14 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button buttonSaveChanges;
+        
+        /// <summary>
+        /// buttonRunCommand control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonRunCommand;
     }
 }

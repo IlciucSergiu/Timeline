@@ -13,6 +13,16 @@ namespace MyTimelineASPTry
     {
         protected async void Page_Load(object sender, EventArgs e)
         {
+            
+          string  tabShow = Request.QueryString["tab"];
+
+            switch (tabShow)
+            {
+                case "documents": { documentsManaging.Style.Add("display", "block"); break; }
+                case "tags": { tagsManaging.Style.Add("display", "block"); break; }
+                case "categories": { categoriesManaging.Style.Add("display", "block"); break; }
+                case "profile": { profileManaging.Style.Add("display", "block"); break; }
+            }
 
             CKEditorProfileInfo.Toolbar = CKEditorProfileInfo.ToolbarBasic;
             CKEditorProfileInfo.Width = 700;
@@ -192,6 +202,52 @@ namespace MyTimelineASPTry
         protected void buttonCreateCategory_Click(object sender, EventArgs e)
         {
             Response.Redirect("AddNewCategory.aspx", false);
+        }
+
+        protected void buttonRunCommand_Click(object sender, EventArgs e)
+        {
+
+
+
+            MongoClient mgClient = new MongoClient();
+            var db = mgClient.GetDatabase("Timeline");
+
+
+            var collectionCategories = db.GetCollection<BsonDocument>("Categories");
+
+            var collectionTags = db.GetCollection<TagsCollection>("Tags");
+
+            collectionTags.Find(_ => true).ForEachAsync(d =>
+                {
+
+                    BsonArray parentCategories = new BsonArray();
+                    foreach (BsonValue parent in d.parentTags)
+                    {
+                        parent["id"] = "Category_" + parent["id"];
+                        parentCategories.Add(parent);
+                    }
+                    BsonDocument document = new BsonDocument
+            {
+
+
+                { "categoryName", d.tagName},
+                { "id","Category_"+ d.id },
+                { "owner", d.owner },
+                { "parentCategories", parentCategories },
+                { "relativeImportance", d.relativeImportance},
+                { "description", d.description },
+                { "categoryInfo", d.tagInfo },
+                { "categorySynonyms", d.tagSynonyms},
+                { "dateAdded", d.dateAdded}
+
+            };
+                    collectionCategories.InsertOneAsync(document);
+                }
+            ).Wait();
+
+           
+              
+            
         }
     }
 }

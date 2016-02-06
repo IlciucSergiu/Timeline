@@ -38,47 +38,65 @@ namespace MyTimelineASPTry
             //string  tagId = Session["tagId"].ToString();
             var filter = Builders<CategoriesCollection>.Filter.Eq("id", categoryId);
 
+            string id = "";
 
 
-            //ObjectId objectId = ObjectId.Parse(hiddenFieldParentTagId.Value.ToString());
-            BsonDocument parentCategory = new BsonDocument
+            var filterParent = Builders<CategoriesCollection>.Filter.Eq("categoryName", textBoxParentName.Text);
+
+
+
+            long exists = collection.Find(filterParent).CountAsync().Result;
+
+             Response.Write(" nr = " + exists);
+
+            if (exists > 0)
+            {
+
+                id = collection.Find(filterParent).FirstAsync().Result.id;
+                Response.Write("Am dat id = " + id);
+
+                //ObjectId objectId = ObjectId.Parse(hiddenFieldParentTagId.Value.ToString());
+                BsonDocument parentCategory = new BsonDocument
                 {
-                    { "parentName",textBoxParentName.Text.ToLower()},
+                    { "parentName",textBoxParentName.Text},
                     { "id", hiddenFieldParentCategoryId.Value },
                    // {"_id", objectId}
                    
                 };
-            BsonArray parentCategories = new BsonArray();
-            parentCategories.Add(parentCategory);
+                BsonArray parentCategories = new BsonArray();
+                parentCategories.Add(parentCategory);
 
-            BsonArray categorySynonyms = new BsonArray();
-            foreach (string categorySynonym in textBoxSynonyms.Text.Split(';'))
-            {
-                if (categorySynonym.Length > 2)
-                    categorySynonyms.Add(categorySynonym);
+                BsonArray categorySynonyms = new BsonArray();
+                foreach (string categorySynonym in textBoxSynonyms.Text.Split(';'))
+                {
+                    if (categorySynonym.Length > 2)
+                        categorySynonyms.Add(categorySynonym);
+                }
+
+                string categoryId = "Category_" + textBoxCategoryName.Text.Replace(' ', '_') + "_" + Session["userId"].ToString().Substring(0, 5);
+
+                try
+                {
+                    var update = Builders<CategoriesCollection>.Update
+                   .Set(d => d.categoryName, textBoxCategoryName.Text)
+                   .Set(d => d.id, categoryId)
+                   .Set(d => d.categoryName, textBoxCategoryName.Text)
+                   .Set(d => d.parentCategories, parentCategories)
+                   .Set("relativeImportance", textBoxRelativeImportance.Value.ToString())
+                   .Set(d => d.description, textBoxCategoryShortDescription.Text)
+                   .Set(d => d.categorySynonyms, categorySynonyms)
+                   .Set(d => d.categoryInfo, CKEditorCategoryInformation.Text);
+
+
+                    await collection.UpdateOneAsync(filter, update);
+                    Response.Redirect("UserManaging.aspx?tab=categories", false);
+
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                }
             }
-
-
-            try
-            {
-                var update = Builders<CategoriesCollection>.Update
-               .Set(d => d.categoryName, textBoxCategoryName.Text)
-               .Set(d => d.parentCategories, parentCategories)
-               .Set("relativeImportance", textBoxRelativeImportance.Value.ToString())
-               .Set(d => d.description, textBoxCategoryShortDescription.Text)
-               .Set(d => d.categorySynonyms, categorySynonyms)
-               .Set(d => d.categoryInfo, CKEditorCategoryInformation.Text);
-
-
-                await collection.UpdateOneAsync(filter, update);
-                Response.Redirect("UserManaging.aspx?tab=categories", false);
-
-            }
-            catch (Exception ex)
-            {
-                Response.Write(ex.Message);
-            }
-
         }
 
         async void InitializeCategoryData(string initCategoryId, string userId)

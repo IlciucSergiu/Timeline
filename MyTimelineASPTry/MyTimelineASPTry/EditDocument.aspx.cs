@@ -101,7 +101,7 @@ namespace MyTimelineASPTry
                     tagItem.Text = tag[0].ToString() + " " + tag[1].ToString();
                     tagItem.Value = tag[0].ToString() + "-" + tag[1].ToString();
                     listBoxTags.Items.Add(tagItem);
-                    hiddenFieldTags.Value += tagItem.Value.ToString() + ";";
+                    //hiddenFieldTags.Value += tagItem.Value.ToString() + ";";
                 }
 
             listBoxCategories.Items.Clear();
@@ -114,7 +114,7 @@ namespace MyTimelineASPTry
                     listBoxCategories.Items.Add(categoryItem);
 
                     //nu cred ca e necesara
-                    hiddenFieldTags.Value += categoryItem.Value.ToString() + ";";
+                    //hiddenFieldTags.Value += categoryItem.Value.ToString() + ";";
                 }
 
             if (documents.owner == initUserId)
@@ -289,30 +289,17 @@ namespace MyTimelineASPTry
 
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("WebFormTimeline.aspx", false);
+            Response.Redirect("Home.aspx", false);
         }
 
         protected void buttonCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect("UserManaging.aspx", false);
+            Response.Redirect("UserManaging.aspx?tab=documents", false);
         }
 
       
 
-        protected void buttonSearchBook_Click(object sender, EventArgs e)
-        {
-            GbookSearchClient client = new GbookSearchClient("www.timetrail.com");
-            IList<IBookResult> results = client.Search(textBoxAddBooks.Text, 2);
-            // IList<IBookResult> results = client.Search(TextBox1.Text, 30);
-
-            foreach (IBookResult book in results)
-            {
-                Response.Write(book.Title);
-                Response.Write(book.BookId);
-                Response.Write(book.Authors);
-                // imageBookCover.ImageUrl = book.TbImage.Url;
-            }
-        }
+       
 
         protected void buttonAddLink_Click(object sender, EventArgs e)
         {

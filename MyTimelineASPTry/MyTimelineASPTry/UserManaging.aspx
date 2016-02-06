@@ -92,7 +92,7 @@
                     <a class="userManagingTab">Other</a>
                 </div>
 
-                <div id="documentsManaging" class="tabsContainer Documents">
+                <div id="documentsManaging" class="tabsContainer Documents hide" runat="server">
                     <h2>All your documents &nbsp; &nbsp;<asp:Label ID="labelNumeberOfDocuments" runat="server" Text="()"></asp:Label>
                         <asp:Button ID="buttonCreate" runat="server" Text="Create new" CssClass="userManButton " OnClick="buttonCreate_Click" /></h2>
 
@@ -102,26 +102,26 @@
 
                 </div>
 
-                <div id="tagsManaging" class="tabsContainer Tags hide">
+                <div id="tagsManaging" class="tabsContainer Tags hide"  runat="server">
 
                     <h2>All your tags &nbsp; &nbsp;<asp:Label ID="labelNumberOfTags" runat="server" Text="()"></asp:Label>
                         <asp:Button ID="buttonCreateTag" runat="server" Text="Create tag" CssClass="userManButton" OnClick="buttonCreateTag_Click" /></h2>
                     <div id="tagsContainer" runat="server" class="elementsContainer">
                     </div>
-
+                    <p>To see all tags added until now click <a href="TagsMap.aspx">here</a></p>
                 </div>
 
 
-                <div id="categoriesManaging" class="tabsContainer Categories hide">
+                <div id="categoriesManaging" class="tabsContainer Categories hide"  runat="server">
 
                     <h2>All your categories &nbsp; &nbsp;<asp:Label ID="labelNumberOfCategories" runat="server" Text="()"></asp:Label>
                         <asp:Button ID="buttonCreateCategory" runat="server" Text="Create category" CssClass="userManButton" OnClick="buttonCreateCategory_Click" /></h2>
                     <div id="categoriesContainer" runat="server" class="elementsContainer">
                     </div>
-
+                    <p>To see all categories added until now click <a href="CategoriesMap.aspx?category=Main">here</a></p>
                 </div>
 
-                <div id="profileManaging" class="tabsContainer Profile hide">
+                <div id="profileManaging" class="tabsContainer Profile hide"  runat="server">
 
                     <h2>Edit your profile </h2>
 
@@ -153,6 +153,8 @@
         <br />
         <br />
         <br />
+        
+        <asp:Button ID="buttonRunCommand" runat="server" OnClick="buttonRunCommand_Click" Text="Run comand" Visible="False" />
         
     </form>
 </body>

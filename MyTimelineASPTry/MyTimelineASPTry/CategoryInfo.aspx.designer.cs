@@ -10,7 +10,7 @@
 namespace MyTimelineASPTry {
     
     
-    public partial class CategoriesMap {
+    public partial class CategoryInfo {
         
         /// <summary>
         /// form1 control.
@@ -31,57 +31,30 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
         
         /// <summary>
-        /// textBoxSearchCategory control.
+        /// labelCategory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textBoxSearchCategory;
+        protected global::System.Web.UI.WebControls.Label labelCategory;
         
         /// <summary>
-        /// buttonSearchCategory control.
+        /// containerCategoryDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonSearchCategory;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl containerCategoryDescription;
         
         /// <summary>
-        /// labelCategoryName control.
+        /// containerCategoryInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelCategoryName;
-        
-        /// <summary>
-        /// linkCategoryInfo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor linkCategoryInfo;
-        
-        /// <summary>
-        /// linkParentCategory control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor linkParentCategory;
-        
-        /// <summary>
-        /// treeViewCategoriesMap control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TreeView treeViewCategoriesMap;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl containerCategoryInfo;
     }
 }

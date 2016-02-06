@@ -310,15 +310,6 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Label labelInfo;
         
         /// <summary>
-        /// hiddenFieldTags control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hiddenFieldTags;
-        
-        /// <summary>
         /// listBoxTags control.
         /// </summary>
         /// <remarks>
@@ -371,15 +362,6 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label labelCategoryInfo;
-        
-        /// <summary>
-        /// hiddenField1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hiddenField1;
         
         /// <summary>
         /// listBoxCategories control.

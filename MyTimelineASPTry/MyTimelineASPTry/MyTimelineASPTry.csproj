@@ -219,6 +219,7 @@
     <Content Include="AddNewDocument.aspx" />
     <Content Include="AddNewTag.aspx" />
     <Content Include="CategoriesMap.aspx" />
+    <Content Include="CategoryInfo.aspx" />
     <Content Include="EditCategory.aspx" />
     <Content Include="EditTag.aspx" />
     <Content Include="EmailVerification.aspx" />
@@ -1001,6 +1002,13 @@
     </Compile>
     <Compile Include="Account\VerifyPhoneNumber.aspx.designer.cs">
       <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryInfo.aspx.cs">
+      <DependentUpon>CategoryInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CategoryInfo.aspx.designer.cs">
+      <DependentUpon>CategoryInfo.aspx</DependentUpon>
     </Compile>
     <Compile Include="EditDocument.aspx.cs">
       <DependentUpon>EditDocument.aspx</DependentUpon>

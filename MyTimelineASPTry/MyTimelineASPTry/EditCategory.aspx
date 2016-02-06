@@ -32,10 +32,18 @@
         <asp:TextBox ID="textBoxCategoryShortDescription" TextMode="MultiLine" runat="server" Height="86px" Width="279px"></asp:TextBox>
        
         <br />
-        <p>This category needs to be appended to a parent tag</p>
+        <p>This category needs to be appended to a parent category</p>
         <asp:TextBox ID="textBoxParentName" runat="server" Width="187px" placeholder="parent" CssClass="textBoxEditParentCategory"></asp:TextBox><p id="verifyTag" class="inline"> </p>
          <br />
          <asp:HiddenField ID="hiddenFieldParentCategoryId" runat="server" />
+        <script>
+        function UpdHidId(inputValue) {
+          
+            $('#' + '<%=hiddenFieldParentCategoryId.ClientID %>').val(inputValue);
+           
+        }
+
+    </script>
         <p>How significant is this category to the parent category </p>
         <p><small>On a scale from 1 to 100</small></p>
         <p>

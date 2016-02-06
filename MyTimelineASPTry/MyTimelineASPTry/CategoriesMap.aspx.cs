@@ -20,14 +20,34 @@ namespace MyTimelineASPTry
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            string firstCategory = "";
+
+            if (Request.QueryString["category"] != null)
+               firstCategory = Request.QueryString["category"].ToString();
+
+            if(firstCategory != "" && firstCategory != null)
+            { 
             LoadCategories();
-            SetHierarhicalPosition(Array.Find(categoryMap, p => p.categoryName == "Main"), 0);
+
+                CategoryElements root = Array.Find(categoryMap, p => p.categoryName.ToLower() == firstCategory.ToLower());
+
+            SetHierarhicalPosition(root, 0);
             treeViewCategoriesMap.Nodes.Clear();
-            TreeNode main = new TreeNode();
-            main.Text = "Main";
-            treeViewCategoriesMap.Nodes.Add(main);
-            PopulateTreeView(Array.Find(categoryMap, p => p.categoryName == "Main"), 0, main);
-            //ShowCategoriesArray();
+
+                linkParentCategory.HRef = "CategoriesMap.aspx?category=" + root.parentName;
+                linkParentCategory.InnerText = root.parentName + " ->";
+
+                labelCategoryName.Text = root.categoryName;
+                linkCategoryInfo.HRef = "CategoryInfo.aspx?categoryName=" + root.categoryName;
+                TreeNode main = new TreeNode();
+            main.Text = root.categoryName;
+            main.NavigateUrl = "CategoriesMap.aspx?category=" + root.categoryName;
+
+                treeViewCategoriesMap.Nodes.Add(main);
+            PopulateTreeView(root, 0, main);
+                //ShowCategoriesArray();
+            }
 
         }
 
@@ -112,7 +132,7 @@ namespace MyTimelineASPTry
                 {
                     TreeNode curentNode = new TreeNode();
                     curentNode.Text = category.categoryName;
-                    curentNode.NavigateUrl = "TagInfo.aspx?tagName=" + category.categoryName;
+                    curentNode.NavigateUrl = "CategoriesMap.aspx?category=" + category.categoryName;
                     curentNode.Collapse();
                     parentNode.ChildNodes.Add(curentNode);
                     PopulateTreeView(category, curentPosition + 1, curentNode);
@@ -141,18 +161,11 @@ namespace MyTimelineASPTry
         }
 
 
-        void PopulateTreeView()
-        {
-            TreeNode node = new TreeNode();
-
-            node.Text = "Geo";
-            node.NavigateUrl = "www.google.com";
-
-
-            treeViewCategoriesMap.Nodes.Add(node);
-        }
-
-
        
+
+        protected void buttonSearchCategory_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("CategoriesMap.aspx?category="+textBoxSearchCategory.Text);
+        }
     }
 }

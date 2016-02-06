@@ -85,25 +85,17 @@
                             //alert('<%=dateBirth.Value%>' + "" + '<%=dateDeath.Value%>');
                             //alert('<%=setDate%>');
                         }
-                   <%-- if ('<%=showEssential%>' == "True") {
-                        $("#divAddEssentials").css("display", "block");
-                        $("#divMainInfo").css("display", "none");
-                    }
-                    else {
-                        $("#divAddEssentials").css("display", "none");
-                        $("#divMainInfo").css("display", "block");
-
-                    }--%>
+                   
 
 
                     });
                     //try {
-                    function UpdHidTag(listString1) {
+                   <%-- function UpdHidTag(listString1) {
 
                         $('#' + '<%=hiddenFieldTags.ClientID %>').val(listString1);
 
                         return false;
-                    }
+                    }--%>
 
                     function UpdHidLink(listString1) {
                         //alert(listString1);
@@ -111,10 +103,7 @@
                         alert("In hidden: " + $('#' + '<%=hiddenFieldLinks.ClientID %>').val());
                         return false;
                     }
-                    // }
-                    //catch (err) {
-                    //    alert(err.message);
-                    // }
+                  
                 </script>
 
             </div>
@@ -219,9 +208,9 @@
                 &nbsp;&nbsp;
                  <input id="buttonRemoveTags" type="button" value="Remove" />
                 <asp:Label ID="labelInfo" runat="server" Text="" CssClass="verifyTag" ForeColor="Red"></asp:Label>
-                <!-- <p id="verifyTag" ></p> -->
+                
                 <br />
-                <!-- <asp:HiddenField ID="hiddenFieldTags" runat="server" />-->
+                
                 <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px" CssClass="listBoxTags"></asp:ListBox>
                 <br />
             </div>
@@ -242,9 +231,9 @@
                 &nbsp;&nbsp;
                  <input id="buttonRemoveCategories" type="button" value="Remove" onclick=" RemoveCategoryItem(); return false;"/>
                 <asp:Label ID="labelCategoryInfo" runat="server" Text="" CssClass="verifyCategory" ForeColor="Red"></asp:Label>
-                <!-- <p id="verifyTag" ></p> -->
+               
                 <br />
-               <!-- <asp:HiddenField ID="hiddenField1" runat="server" />-->
+               
                 <asp:ListBox ID="listBoxCategories" runat="server" Height="67px" Width="161px" CssClass="listBoxCategories"></asp:ListBox>
                 <br />
             </div>

@@ -194,14 +194,7 @@ function RemoveCategoryItem() {
         RemoveInCategoryCollection(categoryName, documentId);
 
         $(".listBoxCategories option:selected").remove();
-        //var listString = "";
-        //$(".listBoxTags option").each(function () {
-        //    // alert($(this).val());
-        //    listString += $(this).val() + ";";
-        //    // Add $(this).val() to your list
-        //});
-        //// alert(listString);
-        //UpdHidTag(listString);
+        
     }
     else {
         $(".verifyCategory").text("No tag was selected.");
@@ -668,6 +661,59 @@ $(function () {
                         // $('#debug2').text(arrayTagId);
 
                         $(".textBoxAddParentCategory").autocomplete({
+                            source: arrayTagNames,
+                            select: function (event, ui) {
+                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                                //$('#debug2').text(parentId);
+                                UpdHidId(parentId);
+                                //alert(ui.item.label);
+                                // $('hiddenFieldParentTagId').val(parentId);
+                                //  alert($('hiddenFieldParentTagId').val);
+                                // $(".textBoxAddParentTag").val(ui.item.label);
+
+                            }
+                        });
+                    }
+                });
+            }
+            catch (e) {
+                alert("Error" + e.message);
+            }
+    });
+
+    $(".textBoxEditParentCategory").on('keydown keypress focus', function () {
+        //alert("here");
+        if ($(".textBoxEditParentCategory").val() != "")
+            try {
+                var dataValue = { inputValue: $(".textBoxEditParentCategory").val() };
+
+                $.ajax({
+                    type: "POST",
+                    url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+
+                    error: function (err) {
+
+                        alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
+                       // alert("success");
+                        var arrayTagNames = [];
+                        var arrayTagId = [];
+                        var availableTags = result.d.split("{;}").forEach(function (item) {
+                            //array2.push(item);
+                            var array3 = item.split("{0}");
+                            // alert(array3[0]);
+                            arrayTagNames.push(array3[0]);
+                            arrayTagId.push(array3[1]);
+                        });
+                        // alert(arrayTagNames);
+                        // $('#debug1').text(arrayTagNames);
+                        // $('#debug2').text(arrayTagId);
+
+                        $(".textBoxEditParentCategory").autocomplete({
                             source: arrayTagNames,
                             select: function (event, ui) {
                                 var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
