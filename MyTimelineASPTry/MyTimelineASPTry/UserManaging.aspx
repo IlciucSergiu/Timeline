@@ -94,9 +94,9 @@
 
                 <div id="documentsManaging" class="tabsContainer Documents hide" runat="server">
                     <h2>All your documents &nbsp; &nbsp;<asp:Label ID="labelNumeberOfDocuments" runat="server" Text="()"></asp:Label>
-                        <asp:Button ID="buttonCreate" runat="server" Text="Create new" CssClass="userManButton " OnClick="buttonCreate_Click" /></h2>
+                        <asp:Button ID="buttonCreate" runat="server" Text="Create document" CssClass="userManButton " OnClick="buttonCreate_Click" /></h2>
 
-
+                     <input id="searchDocumentInContainer" type="text" onkeyup="return SearchDocumentInContainer(event);" placeholder="search in list"/>
                     <div id="documentsContainer" runat="server" class="elementsContainer">
                     </div>
 
@@ -106,7 +106,9 @@
 
                     <h2>All your tags &nbsp; &nbsp;<asp:Label ID="labelNumberOfTags" runat="server" Text="()"></asp:Label>
                         <asp:Button ID="buttonCreateTag" runat="server" Text="Create tag" CssClass="userManButton" OnClick="buttonCreateTag_Click" /></h2>
-                    <div id="tagsContainer" runat="server" class="elementsContainer">
+                   
+                    <input id="searchTagInContainer" type="text" onkeyup="return SearchTagInContainer(event);" placeholder="search in list"/>
+                     <div id="tagsContainer" runat="server" class="elementsContainer">
                     </div>
                     <p>To see all tags added until now click <a href="TagsMap.aspx">here</a></p>
                 </div>
@@ -116,6 +118,8 @@
 
                     <h2>All your categories &nbsp; &nbsp;<asp:Label ID="labelNumberOfCategories" runat="server" Text="()"></asp:Label>
                         <asp:Button ID="buttonCreateCategory" runat="server" Text="Create category" CssClass="userManButton" OnClick="buttonCreateCategory_Click" /></h2>
+                    
+                    <input id="searchCategoryInContainer" type="text" onkeyup="return SearchCategoryInContainer(event);" placeholder="search in list"/>
                     <div id="categoriesContainer" runat="server" class="elementsContainer">
                     </div>
                     <p>To see all categories added until now click <a href="CategoriesMap.aspx?category=Main">here</a></p>
@@ -154,7 +158,7 @@
         <br />
         <br />
         
-        <asp:Button ID="buttonRunCommand" runat="server" OnClick="buttonRunCommand_Click" Text="Run comand" Visible="False" />
+        <asp:Button ID="buttonRunCommand" runat="server" OnClick="buttonRunCommand_Click" Text="Run comand" Visible="True" />
         
     </form>
 </body>

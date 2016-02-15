@@ -24,8 +24,9 @@ namespace MyTimelineASPTry
 
             if (ItemExists(textBoxSearchId.Text))
             {
-                MongoClient mclient = new MongoClient();
-                var db = mclient.GetDatabase("Timeline"); 
+
+                MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+                var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
                 var collection = db.GetCollection<UserData>("Users");
                 //var documents = await collection.Find(new BsonDocument()).FirstAsync();
@@ -67,8 +68,9 @@ namespace MyTimelineASPTry
         }
         bool ItemExists(string insert)
         {
-            MongoClient mgClient = new MongoClient();
-            var db = mgClient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<UserData>("Users");
             var filter = Builders<UserData>.Filter.Eq("email", insert);
             var count = collection.Find(filter).CountAsync();

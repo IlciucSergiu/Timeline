@@ -29,8 +29,9 @@ namespace MyTimelineASPTry
 
             // Response.Write(textBoxTagName.Text);
             // Response.Write(textBoxTagShortDescription.Text);
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<TagsCollection>("Tags");
 
@@ -106,8 +107,9 @@ namespace MyTimelineASPTry
 
         async void InitializeTagData(string initTagId, string userId)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<TagsCollection>("Tags");
             //var documents = await collection.Find(new BsonDocument()).FirstAsync();
@@ -137,8 +139,9 @@ namespace MyTimelineASPTry
 
         protected async void buttonDeleteTag_Click(object sender, EventArgs e)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<TagsCollection>("Tags");
             var filter = Builders<TagsCollection>.Filter.Eq("id", tagId);

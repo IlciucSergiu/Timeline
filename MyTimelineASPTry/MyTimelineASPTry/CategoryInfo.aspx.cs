@@ -21,8 +21,9 @@ namespace MyTimelineASPTry
         void LoadTagData(string categoryName)
         {
 
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<CategoriesCollection>("Categories");
 

@@ -29,8 +29,9 @@ namespace MyTimelineASPTry
 
             Response.Write(textBoxCategoryName.Text);
             Response.Write(textBoxCategoryShortDescription.Text);
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<CategoriesCollection>("Categories");
 
@@ -101,8 +102,9 @@ namespace MyTimelineASPTry
 
         async void InitializeCategoryData(string initCategoryId, string userId)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<CategoriesCollection>("Categories");
             //var documents = await collection.Find(new BsonDocument()).FirstAsync();
@@ -132,8 +134,9 @@ namespace MyTimelineASPTry
 
         protected async void buttonDeleteCategory_Click(object sender, EventArgs e)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<CategoriesCollection>("Categories");
             var filter = Builders<CategoriesCollection>.Filter.Eq("id", categoryId);

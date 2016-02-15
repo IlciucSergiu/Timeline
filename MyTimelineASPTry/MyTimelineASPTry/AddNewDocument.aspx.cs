@@ -30,8 +30,9 @@ namespace MyTimelineASPTry
         protected void buttonSubmit_Click(object sender, EventArgs e)
         {
 
-            MongoClient mgClient = new MongoClient();
-            var db = mgClient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<BsonDocument>("DocumentsCollection");
             var individualData = db.GetCollection<BsonDocument>("IndividualData");
 
@@ -40,13 +41,8 @@ namespace MyTimelineASPTry
 
 
 
-                string endDate;
-                if (checkBoxContemporary.Checked == true)
-                {
-                    endDate = "contemporary";
-                }
-                else
-                    endDate = dateDeath.Value;
+                
+
                 saveId = textBoxCompleteName.Text.Replace(" ", "_");
                 //Response.Write(saveId);
                 ViewState["itemId"] = saveId;
@@ -59,7 +55,24 @@ namespace MyTimelineASPTry
                         separatedNames.Add(name);
                 }
 
+                string endDate;
+                if (checkBoxContemporary.Checked == true)
+                {
+                    endDate = "contemporary";
+                }
+                else
+                {
+                    endDate = endDatePicker.Value;
+                    if (endDateEra.Value == "BC" && endDate != "")
+                        endDate = "-" + endDate;
+                }
+                string startDate = startDatePicker.Value;
 
+                if (startDateEra.Value == "BC")
+                    startDate = "-" + startDate;
+
+                    
+               
 
                 BsonDocument document = new BsonDocument
             {
@@ -68,7 +81,7 @@ namespace MyTimelineASPTry
                 { "id", saveId },
                 { "name",separatedNames},
                 { "title", textBoxCompleteName.Text},
-                { "startdate", dateBirth.Value },
+                { "startdate", startDate},
                // { "enddate", endDate},
                 { "description", textBoxDescription.Text},
                 { "link", textBoxLink.Text },

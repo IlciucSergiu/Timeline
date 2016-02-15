@@ -1080,6 +1080,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GlobalVariables.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="MongoFilters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

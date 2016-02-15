@@ -67,8 +67,9 @@ namespace MyTimelineASPTry
         protected void LoadTimelineConcat()
         {
             // Response.Write("start    ");
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
@@ -78,10 +79,10 @@ namespace MyTimelineASPTry
             //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
             jsString = "";
             collection.Find(new BsonDocument()).ForEachAsync(d => jsString += "{\"id\":\""
-               + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+               + ReplaceToHTML(d.id) + "\",\"title\" : \"" + ReplaceToHTML(d.title) + "\",\"startdate\" : \"" + d.startdate
                + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
                + 50 + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
-               + d.link + "\",\"image\" : \"" + d.image + "\"},").Wait();
+               + ReplaceToHTML(d.link)  + "\",\"image\" : \"" + ReplaceToHTML(d.image)  + "\"},").Wait();
             //await collection.Find(filter).ForEachAsync(d => jsString += "{\"id\":\"" + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate + "\",\"enddate\" : \"" + d.enddate + "\",\"importance\" : \"" + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \"" + d.link + "\",\"image\" : \"" + d.image + "\"},");
 
 
@@ -167,8 +168,8 @@ namespace MyTimelineASPTry
 
             setDate = true;
             string itemId = hiddenId.Value;
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
             //var documents = await collection.Find(new BsonDocument()).FirstAsync();
@@ -315,8 +316,8 @@ namespace MyTimelineASPTry
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            MongoClient mgClient = new MongoClient();
-            var db = mgClient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<IndividualData>("IndividualData");
             var filter = Builders<IndividualData>.Filter.Eq("id", id);
             var count = collection.Find(filter).CountAsync();
@@ -397,6 +398,12 @@ namespace MyTimelineASPTry
                 List<DocumentInfo> responseList = SearchQueryByInfo(value);
                 ConcatenateList(responseList, value);
             }
+            else if (criteria == "category")
+            {
+                Response.Write("category");
+                List<DocumentInfo> responseList = SearchQueryByCategory(value);
+                ConcatenateList(responseList, value);
+            }
 
         }
 
@@ -424,6 +431,7 @@ namespace MyTimelineASPTry
              searchResponse.AddRange(SearchQueryByTag(searchQuery));
              searchResponse.AddRange(SearchQueryByDescription(searchQuery));
              searchResponse.AddRange(SearchQueryByInfo(searchQuery));
+            searchResponse.AddRange(SearchQueryByCategory(searchQuery));
             searchResponse = searchResponse.GroupBy(item => item.id)
                    .Select(g => g.OrderByDescending(i => i.importance)
                    .First()).ToList();
@@ -439,10 +447,10 @@ namespace MyTimelineASPTry
             if (theList.Count > 0)
             {
                 theList.ForEach(d => jsString += "{\"id\":\""
-            + d.id + "\",\"title\" : \"" + d.title + "\",\"startdate\" : \"" + d.startdate
+            + ReplaceToHTML(d.id) + "\",\"title\" : \"" + ReplaceToHTML(d.title) + "\",\"startdate\" : \"" + d.startdate
             + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
             + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
-            + d.link + "\",\"image\" : \"" + d.image + "\"},");
+            + ReplaceToHTML(d.link) + "\",\"image\" : \"" + ReplaceToHTML(d.image)  + "\"},");
 
                 if (title.Length > 20)
                     title = title.Substring(0, 20);
@@ -471,8 +479,8 @@ namespace MyTimelineASPTry
         List<DocumentInfo> SearchQueryByTag(string tagName)
         {
 
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
             var filter = Builders<DocumentInfo>.Filter.Eq("tags.tagName", tagName);
@@ -488,12 +496,32 @@ namespace MyTimelineASPTry
             return documentResponse.OrderByDescending(o => o.importance).Take(100).ToList();
         }
 
+        List<DocumentInfo> SearchQueryByCategory(string categoryName)
+        {
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+
+            var filter = Builders<DocumentInfo>.Filter.Regex("categories.categoryName", new BsonRegularExpression("/" + categoryName + "/i"));
+           // var filter = Builders<DocumentInfo>.Filter.Eq("categories.categoryName", categoryName);
+
+            List<DocumentInfo> documentResponse = collection.Find(filter).ToListAsync().Result;
+
+            documentResponse.ForEach(d =>
+            {
+                d.importance = GetImportanceCategory(d.categories, categoryName);
+
+            });
+
+            return documentResponse.OrderByDescending(o => o.importance).Take(100).ToList();
+        }
 
         List<DocumentInfo> SearchQueryByDescription(string keyWords)
         {
 
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
 
@@ -516,9 +544,8 @@ namespace MyTimelineASPTry
 
         List<DocumentInfo> SearchQueryByName(string name)
         {
-
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
             name = Regex.Replace(name, @"\s+", " ");
@@ -545,8 +572,8 @@ namespace MyTimelineASPTry
 
             infoText = Regex.Replace(infoText, @"\s+", " ");
 
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collectionIndividual = db.GetCollection<IndividualData>("IndividualData");
             var collectionInfo = db.GetCollection<DocumentInfo>("DocumentsCollection");
@@ -626,6 +653,23 @@ namespace MyTimelineASPTry
 
         }
 
+        static string GetImportanceCategory(BsonArray categories, string searchQuery)
+        {
+            string theReturn = "";
+            foreach (BsonDocument categoryDocument in categories)
+            {
+                var obj = JObject.Parse(categoryDocument.ToString());
+                //var url = (string)obj["data"]["img_url"];
+                if ((string)obj["categoryName"] == searchQuery)
+                {
+
+                    theReturn = (string)obj["categoryImportance"];
+                }
+
+            }
+            return theReturn;
+
+        }
 
 
 
@@ -652,8 +696,8 @@ namespace MyTimelineASPTry
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
             var filter = Builders<DocumentInfo>.Filter.Eq("name", "Mozart");
 
@@ -695,8 +739,8 @@ namespace MyTimelineASPTry
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
 
@@ -767,8 +811,8 @@ namespace MyTimelineASPTry
         public static string UpVoteDocument(string documentId, string userId)
         {
 
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<IndividualData>("IndividualData");
             var filter = Builders<IndividualData>.Filter.Eq("id", documentId);
 
@@ -818,8 +862,8 @@ namespace MyTimelineASPTry
 
         protected void buttonSendFeedback_Click(object sender, EventArgs e)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<IndividualData>("IndividualData");
 

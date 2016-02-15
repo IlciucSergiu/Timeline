@@ -14,9 +14,11 @@ namespace MyTimelineASPTry
     public partial class CategoriesMap : System.Web.UI.Page
     {
 
-        CategoryElements[] categoryMap = new CategoryElements[100];
+       
 
-        // IEnumerable<TagElements> tagMapEnum = new Enumerable();
+
+        List<CategoryElements> categoryMap = new List<CategoryElements>();
+        
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -25,18 +27,23 @@ namespace MyTimelineASPTry
 
             if (Request.QueryString["category"] != null)
                firstCategory = Request.QueryString["category"].ToString();
-
-            if(firstCategory != "" && firstCategory != null)
-            { 
+            if (firstCategory == "" | firstCategory == null)
+                firstCategory = "Main";
+          
+          
             LoadCategories();
 
-                CategoryElements root = Array.Find(categoryMap, p => p.categoryName.ToLower() == firstCategory.ToLower());
+            if (categoryMap.Exists(p => p.categoryName.ToLower() == firstCategory.ToLower()))
+            {
+                CategoryElements root = categoryMap.Find( p => p.categoryName.ToLower() == firstCategory.ToLower());
 
             SetHierarhicalPosition(root, 0);
             treeViewCategoriesMap.Nodes.Clear();
 
                 linkParentCategory.HRef = "CategoriesMap.aspx?category=" + root.parentName;
                 linkParentCategory.InnerText = root.parentName + " ->";
+                if (root.parentName == "none")
+                    linkParentCategory.Visible = false;
 
                 labelCategoryName.Text = root.categoryName;
                 linkCategoryInfo.HRef = "CategoryInfo.aspx?categoryName=" + root.categoryName;
@@ -53,8 +60,9 @@ namespace MyTimelineASPTry
 
         void LoadCategories()
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<CategoriesCollection>("Categories");
 
@@ -62,7 +70,7 @@ namespace MyTimelineASPTry
             // var filter = Builders<IndividualData>.Filter.Eq("id", id);
 
 
-            int i = 0;
+           
 
             collection.Find(_ => true).ForEachAsync(d =>
             {
@@ -70,8 +78,8 @@ namespace MyTimelineASPTry
 
                 categoryElement.categoryName = d.categoryName;
                 categoryElement.parentName = d.parentCategories[0]["parentName"].ToString();
-               categoryMap[i] = categoryElement;
-                i++;
+                categoryMap.Add(categoryElement);
+               
 
             }).Wait();
 
@@ -91,7 +99,7 @@ namespace MyTimelineASPTry
                 Response.Write(category.categoryName + "   " + category.parentName + "   " + category.hierarchicalPosition.ToString() + "<br />");
             }
             Response.Write(j.ToString() + "<br />");
-            Response.Write(categoryMap.Length + "<br />");
+            Response.Write(categoryMap.Count + "<br />");
         }
 
         int SetHierarhicalPosition(CategoryElements curentCategory, int curentPosition)
@@ -126,7 +134,7 @@ namespace MyTimelineASPTry
             int j = 0;
             foreach (CategoryElements category in categoryMap)
             {
-                if (category == null) break;
+                
 
                 if (category.parentName == parentCategory.categoryName)
                 {
@@ -165,7 +173,15 @@ namespace MyTimelineASPTry
 
         protected void buttonSearchCategory_Click(object sender, EventArgs e)
         {
-            Response.Redirect("CategoriesMap.aspx?category="+textBoxSearchCategory.Text);
+            string categoryName = textBoxSearchCategory.Text;
+
+            if (categoryMap.Count < 1)
+                LoadCategories();
+
+            if (categoryMap.Exists(p => p.categoryName.ToLower() == categoryName.ToLower()))
+                Response.Redirect("CategoriesMap.aspx?category=" + textBoxSearchCategory.Text);
+            else
+            { Response.Write("There is no category."); }
         }
     }
 }

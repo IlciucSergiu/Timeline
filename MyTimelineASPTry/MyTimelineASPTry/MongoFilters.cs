@@ -72,6 +72,8 @@ namespace MyTimelineASPTry
 
         public BsonArray imagesLinks { get; set; }
 
+        public DateTime dateAdded { get; set; }
+
     }
 
     public class UserData

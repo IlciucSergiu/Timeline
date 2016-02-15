@@ -19,8 +19,9 @@ namespace MyTimelineASPTry
 
         protected void buttonCreateCategory_Click(object sender, EventArgs e)
         {
-            MongoClient mgClient = new MongoClient();
-            var db = mgClient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<BsonDocument>("Categories");
 
             if (textBoxCategoryName.Text != "")
@@ -75,8 +76,9 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string FindCategoryParentOptions(string inputValue)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<CategoriesCollection>("Categories");
 
@@ -96,8 +98,9 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static bool VerifyCategoryExistence(string inputValue)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<CategoriesCollection>("Categories");
 

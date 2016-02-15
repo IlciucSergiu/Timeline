@@ -21,11 +21,11 @@ namespace MyTimelineASPTry
             CKEditorInformation.ResizeEnabled = true;
             CKEditorInformation.ResizeMaxHeight = 500;
 
-            if (setDate)
-            {
-                dateBirth.Value = ViewState["dateBirth"].ToString();
-                dateDeath.Value = ViewState["dateDeath"].ToString();
-            }
+            //if (setDate)
+            //{
+            //   startDatePicker.Value = ViewState["dateBirth"].ToString();
+            //   endDatePicker.Value = ViewState["dateDeath"].ToString();
+            //}
 
             
                 hiddenId.Value = itemId;
@@ -48,7 +48,7 @@ namespace MyTimelineASPTry
         }
 
         string userId, itemId;
-        public bool setDate = false;
+       // public bool setDate = false;
        // string scope, cancelRequest;
 
 
@@ -59,10 +59,11 @@ namespace MyTimelineASPTry
 
         protected async void InitializeItem(string initUserId, string initItemId)
         {
-            setDate = true;
+            // setDate = true;
 
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
@@ -76,16 +77,32 @@ namespace MyTimelineASPTry
             }
 
 
-            dateBirth.Value = documents.startdate;
-            ViewState["dateBirth"] = dateBirth.Value;
-            dateDeath.Value = documents.enddate;
-            ViewState["dateDeath"] = dateDeath.Value;
-            //Response.Write(dateBirth.Value);
+            if (!IsPostBack) {
 
+                 if (documents.startdate.IndexOf("-") == 0)
+            { startDateEra.Value = "BC";
+                startDatePicker.Value = documents.startdate.TrimStart('-');
+                ViewState["dateBirth"] = startDatePicker.Value;
+            }
+            else {
+                startDateEra.Value = "AD";
+                startDatePicker.Value = documents.startdate;
+            ViewState["dateBirth"] = startDatePicker.Value;
+            }
 
-            //inputImportance.Value = documents.importance;
-            if (!IsPostBack)
+            if (documents.startdate.IndexOf("-") == 0)
             {
+                endDateEra.Value = "BC";
+                endDatePicker.Value = documents.enddate.TrimStart('-');
+                ViewState["dateDeath"] = endDatePicker.Value;
+            }
+            else {
+                endDateEra.Value = "AD";
+                endDatePicker.Value = documents.enddate;
+                ViewState["dateDeath"] = endDatePicker.Value;
+            }
+            
+
                 textBoxCompleteName.Text = completeName;
                 textBoxLink.Text = documents.link;
                 textBoxImage.Text = documents.image;
@@ -205,8 +222,9 @@ namespace MyTimelineASPTry
         {
 
 
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collectionIndividual = db.GetCollection<IndividualData>("IndividualData");
 
@@ -236,13 +254,30 @@ namespace MyTimelineASPTry
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
 
+           
+
             string endDate;
+
+
+
             if (checkBoxContemporary.Checked == true)
             {
                 endDate = "contemporary";
             }
             else
-                endDate = dateDeath.Value;
+            {
+                endDate = endDatePicker.Value;
+                if (endDateEra.Value == "BC" && endDate != "")
+                    endDate = "-" + endDate;
+            }
+
+            string startDate = startDatePicker.Value;
+
+            if (startDateEra.Value == "BC")
+                startDate = "-" + startDate;
+
+            
+           
 
             BsonArray separatedNames = new BsonArray();
 
@@ -258,7 +293,7 @@ namespace MyTimelineASPTry
             var updateDocument = Builders<DocumentInfo>.Update
                 .Set("name", separatedNames)
                 .Set("title", textBoxCompleteName.Text)
-                .Set("startdate", dateBirth.Value)
+                .Set("startdate", startDate)
                 .Set("enddate", endDate)
                 .Set("description", textBoxDescription.Text)
                 .Set("link", textBoxLink.Text)
@@ -273,8 +308,9 @@ namespace MyTimelineASPTry
 
         bool ItemExists(string id)
         {
-            MongoClient mgClient = new MongoClient();
-            var db = mgClient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<IndividualData>("IndividualData");
             var filter = Builders<IndividualData>.Filter.Eq("id", id);
             var count = collection.Find(filter).CountAsync();

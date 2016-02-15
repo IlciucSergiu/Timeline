@@ -26,8 +26,8 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string FindTagOptions(string inputValue)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<TagsCollection>("Tags");
 
@@ -48,9 +48,8 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string InsertInTagCollection(string tagName, string documentId, int relativeImportance)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
@@ -113,8 +112,8 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string RemoveInTagCollection(string tagName, string documentId)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
 
             var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
@@ -165,9 +164,8 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string FindCategoryOptions(string inputValue)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
-
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<CategoriesCollection>("Categories");
 
 
@@ -185,8 +183,8 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string InsertInCategoryCollection(string categoryName, string documentId, int relativeImportance)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
 
             var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
@@ -249,8 +247,8 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string RemoveInCategoryCollection(string categoryName, string documentId)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
 
             var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
@@ -297,8 +295,8 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string AddSelectedBook(string title, string authors, string isbn, string imageUrl, string documentId)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<IndividualData>("IndividualData");
 
@@ -327,8 +325,8 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string RemoveSelectedBook(string title, string isbn, string documentId)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<IndividualData>("IndividualData");
 
@@ -350,8 +348,8 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string AddAdditionalImage(string imageUrl, string documentId)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<IndividualData>("IndividualData");
 
@@ -374,8 +372,8 @@ namespace MyTimelineASPTry
         [WebMethod]
         public static string DeleteAdditionalImage(string imageUrl, string documentId)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<IndividualData>("IndividualData");
 

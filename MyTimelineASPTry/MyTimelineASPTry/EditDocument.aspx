@@ -47,13 +47,21 @@
 
                 <div id="datesPosition">
                     <p>
-                        Start date :
-                <input type="text" class="datepicker" id="dateBirth" runat="server" placeholder="yyyy-mm-dd" />
+                        Start date : 
+                        <select id="startDateEra" runat="server">
+                            <option value="AD"></option>
+                            <option value="BC"></option>
+                        </select>
+                        <input type="text" id="startDatePicker" runat="server" placeholder="yyyy-mm-dd" />
                     </p>
                     &nbsp;&nbsp;&nbsp;
          <p>
              End date :
-             <input type="text" class="datepicker" id="dateDeath" runat="server" placeholder="yyyy-mm-dd" />
+             <select id="endDateEra" runat="server">
+                 <option value="AD"></option>
+                 <option value="BC"></option>
+             </select>
+             <input type="text" id="endDatePicker" runat="server" placeholder="yyyy-mm-dd" />
          </p>
                     &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" class="checkContemporary" /><br />
                     <br />
@@ -73,22 +81,25 @@
                 <br />
                 <br />
 
-                
+
 
                 <script>
 
-                    $(document).ready(function () {
+                    <%--  $(document).ready(function () {
                         //alert("is ready");
                         if ('<%=setDate%>' == "True") {
-                            $("#dateBirth").datepicker("setDate", '<%=dateBirth.Value.ToString()%>');
-                            $("#dateDeath").datepicker("setDate", '<%=dateDeath.Value.ToString()%>');
-                            //alert('<%=dateBirth.Value%>' + "" + '<%=dateDeath.Value%>');
-                            //alert('<%=setDate%>');
+                            $("#startDatePicker").datepicker("setDate", '<%=startDatePicker.Value.ToString()%>');
+                            $("#endDatePicker").datepicker("setDate", '<%=endDatePicker.Value.ToString()%>');
+                           
                         }
                    
 
 
-                    });
+                    });--%>
+
+
+
+
                     //try {
                    <%-- function UpdHidTag(listString1) {
 
@@ -103,7 +114,7 @@
                         alert("In hidden: " + $('#' + '<%=hiddenFieldLinks.ClientID %>').val());
                         return false;
                     }
-                  
+
                 </script>
 
             </div>
@@ -198,7 +209,7 @@
             <hr />
             <h2>Add tags</h2>
             <div id="addTags">
-                
+
                 <p>To see all tags check <a href="TagsMap.aspx">tag map</a></p>
                 <asp:TextBox ID="textBoxTagName" runat="server" placeholder="Tag name" CssClass="textBoxAddTag"></asp:TextBox>
                 -
@@ -208,9 +219,9 @@
                 &nbsp;&nbsp;
                  <input id="buttonRemoveTags" type="button" value="Remove" />
                 <asp:Label ID="labelInfo" runat="server" Text="" CssClass="verifyTag" ForeColor="Red"></asp:Label>
-                
+
                 <br />
-                
+
                 <asp:ListBox ID="listBoxTags" runat="server" Height="67px" Width="161px" CssClass="listBoxTags"></asp:ListBox>
                 <br />
             </div>
@@ -218,22 +229,22 @@
             <br />
             <br />
 
-             <hr />
+            <hr />
             <h2>Add categories</h2>
             <div id="addCategories">
                 <input id="hidden1" type="hidden" runat="server" />
                 <p>To see all categories check <a href="CategoriesMap.aspx">category map</a></p>
                 <asp:TextBox ID="textBoxCategoryName" runat="server" placeholder="Category name" CssClass="textBoxAddCategory"></asp:TextBox>
-               
+
                 <input id="inputImportanceCategory" runat="server" max="100" min="0" style="width: 52px" type="number" />&nbsp;
                 <asp:Button ID="buttonAddCategory" runat="server" Text="Add" Width="49px" OnClientClick=" AddCategoryItem(); return false;" />
 
                 &nbsp;&nbsp;
-                 <input id="buttonRemoveCategories" type="button" value="Remove" onclick=" RemoveCategoryItem(); return false;"/>
+                 <input id="buttonRemoveCategories" type="button" value="Remove" onclick=" RemoveCategoryItem(); return false;" />
                 <asp:Label ID="labelCategoryInfo" runat="server" Text="" CssClass="verifyCategory" ForeColor="Red"></asp:Label>
-               
+
                 <br />
-               
+
                 <asp:ListBox ID="listBoxCategories" runat="server" Height="67px" Width="161px" CssClass="listBoxCategories"></asp:ListBox>
                 <br />
             </div>
@@ -241,7 +252,7 @@
             <br />
             <br />
             <input id="hiddenId" type="hidden" runat="server" />
-
+            
             <asp:Button ID="buttomSaveChanges" runat="server" Text="Save" OnClick="buttomSaveChanges_Click" Width="83px" />
             <asp:Button ID="buttonCancel" runat="server" Text="Cancel" OnClick="buttonCancel_Click" CssClass="essentialButtons" />
 

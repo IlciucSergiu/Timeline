@@ -109,20 +109,20 @@ function RemoveInTagCollection(tagName, documentId) {
 
 function AddCategoryItem() {
 
-    alert("here");
+   // alert("here");
 
     $(".verifyCategory").text("");
     // VerifyIfInList();
     if (VerifyCategoryItem() && VerifyCategoryInList()) {
         if ($("#inputImportanceCategory").val() != "") {
-             alert($("#inputImportanceCategory").val());
+           //  alert($("#inputImportanceCategory").val());
             var categoryName = $(".textBoxAddCategory").val().toString();
             $(".textBoxAddCategory").val(null);
             var categoryImportance = $("#inputImportanceCategory").val();
 
         
             var documentId = $("#hiddenId").val();
-            alert(documentId);
+           // alert(documentId);
 
             InsertInCategoryCollection(categoryName, documentId, categoryImportance);
 
@@ -131,16 +131,7 @@ function AddCategoryItem() {
                 var categoryValue = categoryName + "-" + categoryImportance.toString();
                 $('.listBoxCategories').append("<option value=" + categoryValue.toString() + ">" + categoryName + " " + categoryImportance + "</option>");
 
-                // alert(tagName + " ---- " + tagImportance);
-
-                //var listString = "";
-                //$(".listBoxCategories option").each(function () {
-
-                //    listString += $(this).val() + ";";
-
-                //});
-
-                //UpdHidTag(listString);
+                
             }
             catch (err) {
                 alert(err.message);
@@ -414,16 +405,7 @@ function AddLinkItem() {
 
 $(function () {
 
-    //alert("sadtag");
 
-    //$(".textBoxSearchQuery").keydown(function (event) {
-    //    if (e.keyCode == 13) {
-    //        alert(e.keyCode);
-    //        $(".searchButton").click();
-
-    //    }
-
-    //});
 
 
     $(".checkContemporary").click(function () {
@@ -487,7 +469,7 @@ $(function () {
     });
     $(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
 
-    $(".textBoxAddTag").on('keydown keypress focus', function () {
+    $(".textBoxAddTag").on('keyup focus', function () {
         try {
             var dataValue = { inputValue: $(".textBoxAddTag").val() };
 
@@ -517,7 +499,7 @@ $(function () {
     });
 
     $(".textBoxImageLink").on('blur', function () {
-        alert($(".textBoxImageLink").val());
+       // alert($(".textBoxImageLink").val());
         $(".documentImage").attr("src", $(".textBoxImageLink").val())
     });
 
@@ -545,7 +527,7 @@ $(function () {
 
     });
 
-    $(".textBoxSearchQuery").on('keydown keypress focus', function () {
+    $(".textBoxSearchQuery").on('keyup focus', function () {
         try {
             var dataValue = { inputValue: $(".textBoxSearchQuery").val() };
 
@@ -575,9 +557,9 @@ $(function () {
     });
 
 
-    // $('#pageBody').click(function () { alert("sdasdg") });
+   
 
-    $(".textBoxAddParentTag").on('keydown keypress focus', function () {
+    $(".textBoxAddParentTag").on('keyup focus', function () {
         //alert("here");
         if ($(".textBoxAddParentTag").val() != "")
             try {
@@ -598,27 +580,20 @@ $(function () {
                         var arrayTagNames = [];
                         var arrayTagId = [];
                         var availableTags = result.d.split("{;}").forEach(function (item) {
-                            //array2.push(item);
+                            
                             var array3 = item.split("{0}");
-                            // alert(array3[0]);
+                            
                             arrayTagNames.push(array3[0]);
                             arrayTagId.push(array3[1]);
                         });
-                        // alert(array2);
-                        // $('#debug1').text(arrayTagNames);
-                        // $('#debug2').text(arrayTagId);
+                        
 
                         $(".textBoxAddParentTag").autocomplete({
                             source: arrayTagNames,
                             select: function (event, ui) {
                                 var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
-                                $('#debug2').text(parentId);
-                                UpdHidId(parentId);
-                                //alert(ui.item.label);
-                                // $('hiddenFieldParentTagId').val(parentId);
-                                //  alert($('hiddenFieldParentTagId').val);
-                                // $(".textBoxAddParentTag").val(ui.item.label);
-
+                               
+                               // UpdHidId(parentId);
                             }
                         });
                     }
@@ -629,8 +604,8 @@ $(function () {
             }
     });
 
-    $(".textBoxAddParentCategory").on('keydown keypress focus', function () {
-        //alert("here");
+    $(".textBoxAddParentCategory").on('keyup focus', function () {
+        
         if ($(".textBoxAddParentCategory").val() != "")
             try {
                 var dataValue = { inputValue: $(".textBoxAddParentCategory").val() };
@@ -650,28 +625,20 @@ $(function () {
                         var arrayTagNames = [];
                         var arrayTagId = [];
                         var availableTags = result.d.split("{;}").forEach(function (item) {
-                            //array2.push(item);
+                            
                             var array3 = item.split("{0}");
-                            // alert(array3[0]);
-                            arrayTagNames.push(array3[0]);
+                             arrayTagNames.push(array3[0]);
                             arrayTagId.push(array3[1]);
                         });
-                        // alert(array2);
-                        // $('#debug1').text(arrayTagNames);
-                        // $('#debug2').text(arrayTagId);
+                        
 
                         $(".textBoxAddParentCategory").autocomplete({
                             source: arrayTagNames,
                             select: function (event, ui) {
                                 var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
-                                //$('#debug2').text(parentId);
-                                UpdHidId(parentId);
-                                //alert(ui.item.label);
-                                // $('hiddenFieldParentTagId').val(parentId);
-                                //  alert($('hiddenFieldParentTagId').val);
-                                // $(".textBoxAddParentTag").val(ui.item.label);
-
-                            }
+                              
+                               // UpdHidId(parentId);
+                             }
                         });
                     }
                 });
@@ -681,7 +648,7 @@ $(function () {
             }
     });
 
-    $(".textBoxEditParentCategory").on('keydown keypress focus', function () {
+    $(".textBoxEditParentCategory").on('keyup focus', function () {
         //alert("here");
         if ($(".textBoxEditParentCategory").val() != "")
             try {
@@ -699,32 +666,69 @@ $(function () {
                         alert("Errort: " + err.responseText);
                     },
                     success: function (result) {
-                       // alert("success");
+                       
                         var arrayTagNames = [];
                         var arrayTagId = [];
                         var availableTags = result.d.split("{;}").forEach(function (item) {
-                            //array2.push(item);
+                            
                             var array3 = item.split("{0}");
-                            // alert(array3[0]);
+                           
                             arrayTagNames.push(array3[0]);
                             arrayTagId.push(array3[1]);
                         });
-                        // alert(arrayTagNames);
-                        // $('#debug1').text(arrayTagNames);
-                        // $('#debug2').text(arrayTagId);
+                     
 
                         $(".textBoxEditParentCategory").autocomplete({
                             source: arrayTagNames,
                             select: function (event, ui) {
                                 var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
-                                //$('#debug2').text(parentId);
-                                UpdHidId(parentId);
-                                //alert(ui.item.label);
-                                // $('hiddenFieldParentTagId').val(parentId);
-                                //  alert($('hiddenFieldParentTagId').val);
-                                // $(".textBoxAddParentTag").val(ui.item.label);
+                               
+                              //  UpdHidId(parentId);
+                              }
+                        });
+                    }
+                });
+            }
+            catch (e) {
+                alert("Error" + e.message);
+            }
+    });
 
-                            }
+    $(".textBoxAddCategory").on('keyup focus', function () {
+       
+        if ($(".textBoxAddCategory").val() != "")
+            try {
+                var dataValue = { inputValue: $(".textBoxAddCategory").val() };
+
+                $.ajax({
+                    type: "POST",
+                    url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+
+                    error: function (err) {
+
+                        alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
+                        
+                        var arrayTagNames = [];
+                        var arrayTagId = [];
+                        var availableTags = result.d.split("{;}").forEach(function (item) {
+                           
+                            var array3 = item.split("{0}");
+                            
+                            arrayTagNames.push(array3[0]);
+                            arrayTagId.push(array3[1]);
+                        });
+                        
+
+                        $(".textBoxAddCategory").autocomplete({
+                            source: arrayTagNames,
+                            select: function (event, ui) {
+                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                              }
                         });
                     }
                 });
@@ -755,26 +759,21 @@ $(function () {
                         var arrayTagNames = [];
                         var arrayTagId = [];
                         var availableTags = result.d.split("{;}").forEach(function (item) {
-                            //array2.push(item);
+                            
                             var array3 = item.split("{0}");
-                            // alert(array3[0]);
+                            
                             arrayTagNames.push(array3[0]);
                             arrayTagId.push(array3[1]);
                         });
-                        // alert(array2);
-                        // $('#debug1').text(arrayTagNames);
-                        // $('#debug2').text(arrayTagId);
+                       
 
                         $(".textBoxEditParentTag").autocomplete({
                             source: arrayTagNames,
                             select: function (event, ui) {
                                 var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
-                               // $('#debug2').text(parentId);
+                             
                               //  UpdHidId(parentId);
-                                //alert(ui.item.label);
-                                // $('hiddenFieldParentTagId').val(parentId);
-                                //  alert($('hiddenFieldParentTagId').val);
-                                // $(".textBoxAddParentTag").val(ui.item.label);
+                               
 
                             }
                         });
@@ -961,14 +960,151 @@ $(function () {
         }
     });
 
+    
+
 });
 
+ function SearchCategory(e) {
+    //alert("pressed");
+    if (e.keyCode == 13) {
+        // alert("pressed");
+        //document.getElementById().focus();
+        $(".buttonSearchCategory").click();
+
+        return false;
+    }
+
+    
+    if ($(".textBoxSearchCategory").val() != "")
+       // alert("here");
+        try {
+            var dataValue = { inputValue: $(".textBoxSearchCategory").val() };
+
+            $.ajax({
+                type: "POST",
+                url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                data: JSON.stringify(dataValue),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+
+                error: function (err) {
+
+                    alert("Errort: " + err.responseText);
+                },
+                success: function (result) {
+                    var arrayTagNames = [];
+                    var arrayTagId = [];
+                    var availableTags = result.d.split("{;}").forEach(function (item) {
+                        //array2.push(item);
+                        var array3 = item.split("{0}");
+                        // alert(array3[0]);
+                        arrayTagNames.push(array3[0]);
+                        arrayTagId.push(array3[1]);
+                    });
+                   // alert(arrayTagNames);
+                    // $('#debug1').text(arrayTagNames);
+                    // $('#debug2').text(arrayTagId);
+
+                    $(".textBoxSearchCategory").autocomplete({
+                        source: arrayTagNames,
+                        select: function (event, ui) {
+                            var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                            //$('#debug2').text(parentId);
+                            UpdHidId(parentId);
+                            //alert(ui.item.label);
+                            // $('hiddenFieldParentTagId').val(parentId);
+                            //  alert($('hiddenFieldParentTagId').val);
+                            // $(".textBoxAddParentTag").val(ui.item.label);
+
+                        }
+                    });
+                }
+            });
+        }
+        catch (e) {
+            alert("Error" + e.message);
+        }
+}
 
 function ShowImageLink(e) {
 
     $("#changeImageSource").css("display", "block");
 };
 
+
+function SearchCategoryInContainer(e) {
+
+    var unicode = e.charCode;
+   // typing = document.getElementById('textbox').value + String.fromCharCode(unicode);
+
+    var input = $("#searchCategoryInContainer").val();// + String.fromCharCode(unicode);;
+    if (input == "")
+        $("#categoriesContainer div.categoriesContainerElement").each(function (e) {
+
+            $(this).css("display", "block");
+            // return false;
+        });
+    else
+        $("#categoriesContainer div.categoriesContainerElement").each(function (e) {
+           
+            if ($(this).attr("class").toLowerCase().indexOf(input.toLowerCase()) > -1) {
+            $(this).css("display", "block");
+           
+        }
+        else {
+            $(this).css("display", "none");
+        }
+    });
+
+}
+
+function SearchTagInContainer(e) {
+
+   
+    var input = $("#searchTagInContainer").val();
+    if (input == "")
+        $("#tagsContainer div.tagsContainerElement").each(function (e) {
+
+            $(this).css("display", "block");
+            // return false;
+        });
+    else
+        $("#tagsContainer div.tagsContainerElement").each(function (e) {
+
+            if ($(this).attr("class").toLowerCase().indexOf(input.toLowerCase()) > -1) {
+                $(this).css("display", "block");
+
+            }
+            else {
+                $(this).css("display", "none");
+            }
+        });
+
+}
+
+function SearchDocumentInContainer(e) {
+
+
+    var input = $("#searchDocumentInContainer").val();
+    if (input == "")
+        $("#documentsContainer div.documentsContainerElement").each(function (e) {
+
+            $(this).css("display", "block");
+            // return false;
+        });
+    else
+        $("#documentsContainer div.documentsContainerElement").each(function (e) {
+
+            if ($(this).attr("class").toLowerCase().indexOf(input.toLowerCase()) > -1) {
+                $(this).css("display", "block");
+
+            }
+            else {
+                $(this).css("display", "none");
+            }
+        });
+
+}
 
 function BookImageClick(e) {
 

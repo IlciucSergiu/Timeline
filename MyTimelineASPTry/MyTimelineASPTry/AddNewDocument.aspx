@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddNewDocument.aspx.cs" Inherits="MyTimelineASPTry.AddNewDocument" %>
+
 <%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>
 
 <!DOCTYPE html>
@@ -6,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" href="MySecondTry1/css/MyTimeline.css" type="text/css" />
     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="MySecondTry1/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
@@ -15,7 +16,7 @@
 </head>
 <body>
 
-    
+
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManagerMain"
             runat="server"
@@ -42,13 +43,21 @@
 
                 <div id="datesPosition">
                     <p>
-                        Start date :
-                <input type="text" class="datepicker" id="dateBirth" runat="server" placeholder="yyyy-mm-dd" />
+                        Start date : 
+                        <select id="startDateEra" runat="server">
+                            <option value="AD"></option>
+                            <option value="BC"></option>
+                        </select>
+                        <input type="text" class="datepicker" id="startDatePicker" runat="server" placeholder="yyyy-mm-dd" />
                     </p>
                     &nbsp;&nbsp;&nbsp;
          <p>
              End date :
-             <input type="text" class="datepicker" id="dateDeath" runat="server" placeholder="yyyy-mm-dd" />
+             <select id="endDateEra" runat="server">
+                            <option value="AD"></option>
+                            <option value="BC"></option>
+                        </select>
+             <input type="text" class="datepicker" id="endDatePicker" runat="server" placeholder="yyyy-mm-dd" />
          </p>
                     &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" class="checkContemporary" /><br />
                     <br />
@@ -57,7 +66,7 @@
 
                 <br />
 
-               <!-- <div id="addTags">
+                <!-- <div id="addTags">
 
                     <br />
                     <input id="hiddenId" type="hidden" runat="server" />
@@ -95,10 +104,10 @@
                 <br />
                 <br />
 
+                 <asp:Button ID="buttonSubmit" runat="server" Text="Save" OnClick="buttonSubmit_Click" Width="82px" CssClass="essentialButtons" />
 
                 <asp:Button ID="buttonCancel" runat="server" Text="Cancel" OnClick="buttonCancel_Click" CssClass="essentialButtons" />
-                <asp:Button ID="buttonSubmit" runat="server" Text="Save" OnClick="buttonSubmit_Click" Width="82px" CssClass="essentialButtons" />
-
+               
             </div>
         </div>
     </form>

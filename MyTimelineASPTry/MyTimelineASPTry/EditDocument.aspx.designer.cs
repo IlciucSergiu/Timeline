@@ -58,22 +58,40 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.TextBox textBoxCompleteName;
         
         /// <summary>
-        /// dateBirth control.
+        /// startDateEra control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText dateBirth;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect startDateEra;
         
         /// <summary>
-        /// dateDeath control.
+        /// startDatePicker control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText dateDeath;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText startDatePicker;
+        
+        /// <summary>
+        /// endDateEra control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect endDateEra;
+        
+        /// <summary>
+        /// endDatePicker control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText endDatePicker;
         
         /// <summary>
         /// checkBoxContemporary control.
