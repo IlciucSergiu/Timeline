@@ -13,12 +13,12 @@ namespace MyTimelineASPTry
     {
         protected async void Page_Load(object sender, EventArgs e)
         {
-            
-          string  tabShow = Request.QueryString["tab"];
+
+            string tabShow = Request.QueryString["tab"];
 
             if (tabShow == null)
             { documentsManaging.Style.Add("display", "block"); }
-            else { 
+            else {
                 switch (tabShow)
                 {
 
@@ -50,22 +50,22 @@ namespace MyTimelineASPTry
                     textBoxProfileImage.Text = d.image;
                 }
 
-                    if (d.image != null)
+                if (d.image != null)
                 {
-                  
+
                     profileImage.Src = d.image;
                     profileImageEdit.Src = d.image;
                 }
                 else
                 {
                     profileImage.Src = "https://cdn4.iconfinder.com/data/icons/linecon/512/photo-256.png";
-                  
+
                     profileImageEdit.Src = "https://cdn4.iconfinder.com/data/icons/linecon/512/photo-256.png";
                 }
             });
 
             GetUserReputation(Session["userId"].ToString());
-            
+
 
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
@@ -99,10 +99,10 @@ namespace MyTimelineASPTry
 
             var collectionTags = db.GetCollection<TagsCollection>("Tags");
 
-            
+
             var filterTags = Builders<TagsCollection>.Filter.Eq("owner", Session["userId"].ToString());
-           
-             List<TagsCollection> documentResponseTags = collectionTags.Find(filterTags).ToListAsync().Result;
+
+            List<TagsCollection> documentResponseTags = collectionTags.Find(filterTags).ToListAsync().Result;
 
             documentResponseTags.OrderBy(p => p.tagName).ToList().ForEach(d =>
             {
@@ -116,25 +116,25 @@ namespace MyTimelineASPTry
 
             var collectionCategories = db.GetCollection<CategoriesCollection>("Categories");
 
-            
+
             var filterCategories = Builders<CategoriesCollection>.Filter.Eq("owner", Session["userId"].ToString());
 
-           
+
 
             List<CategoriesCollection> documentResponse = collectionCategories.Find(filterCategories).ToListAsync().Result;
 
             documentResponse.OrderBy(p => p.categoryName).ToList().ForEach(d =>
             {
-                 categoriesContainer.Controls.Add(new LiteralControl { Text = "<div class=\""+d.categoryName.ToString() +" categoriesContainerElement\"><hr><div class=\"tagsListElement\" > <a class=\"editTagLink\" href=\"EditCategory.aspx?itemId=" + d.id.ToString() + " \">" + d.categoryName + "</a></div></div>" });
+                categoriesContainer.Controls.Add(new LiteralControl { Text = "<div class=\"" + d.categoryName.ToString() + " categoriesContainerElement\"><hr><div class=\"tagsListElement\" > <a class=\"editTagLink\" href=\"EditCategory.aspx?itemId=" + d.id.ToString() + " \">" + d.categoryName + "</a></div></div>" });
 
             });
 
             labelNumberOfCategories.Text = "(" + documentResponse.Count + ")";
 
- }
+        }
 
 
-       async void GetUserReputation(string userId)
+        async void GetUserReputation(string userId)
         {
             MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
             var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
@@ -147,15 +147,15 @@ namespace MyTimelineASPTry
             await document.Find(filterDocument).ForEachAsync(d =>
             {
                 //if(d.timesViewed != null)
-               // Response.Write(d.timesViewed.ToString());
+                // Response.Write(d.timesViewed.ToString());
                 totalNumberOfViews += d.timesViewed;
                 totalNumberOfVotes += d.votes;
             });
 
 
             int reputation = (totalNumberOfViews / 10) + (totalNumberOfVotes * 2);
-           
-           labelReputation.Text = "Reputation " + reputation.ToString();
+
+            labelReputation.Text = "Reputation " + reputation.ToString();
 
             var userCollection = db.GetCollection<UserData>("Users");
             var filterUser = Builders<UserData>.Filter.Eq("email", userId);
@@ -186,7 +186,7 @@ namespace MyTimelineASPTry
             Response.Redirect("Home.aspx", false);
         }
 
-      
+
 
         protected void buttonCreateTag_Click(object sender, EventArgs e)
         {
@@ -265,24 +265,51 @@ namespace MyTimelineASPTry
             MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
             var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
-            var collectionDocuments = db.GetCollection<BsonDocument>("DocumentsCollection");
-
-            var collectionCategories = db.GetCollection<BsonDocument>("Categories");
 
 
 
+            var collection = db.GetCollection<CategoriesCollection>("Categories");
 
-            var collection = db.GetCollection<BsonDocument>("Users");
-
-            MongoClient onlineClient = new MongoClient(GlobalVariables.mongolabConection);
-            var onlineDb = onlineClient.GetDatabase(GlobalVariables.mongoDatabase);
-            var onlineCollection = onlineDb.GetCollection<BsonDocument>("Users");
+            //MongoClient onlineClient = new MongoClient(GlobalVariables.mongolabConection);
+            //var onlineDb = onlineClient.GetDatabase(GlobalVariables.mongoDatabase);
+            //var onlineCollection = onlineDb.GetCollection<BsonDocument>("Users");
 
             collection.Find(_ => true).ForEachAsync(d =>
             {
-                 onlineCollection.InsertOneAsync(d);
+
+                Response.Write(d.parentCategories[0]["parentName"] + "  --  " + d.categoryName + "<p>");
+                string parentName = d.parentCategories[0]["parentName"].ToString();
+                var filter1 = Builders<CategoriesCollection>.Filter.Eq("categoryName", parentName);
+
+                var parent = d;
+
+                if (parentName != "none")
+                {
+                    parent = collection.Find(filter1).FirstAsync().Result;
+
+
+
+                   
+                    Response.Write(parent.categoryName + "<p>");
+
+                    BsonDocument parentCategory = new BsonDocument
+                            {
+                                { "parentName",parent.categoryName},
+                                { "id", parent.id },
+                                {"_id", parent._id}
+
+                            };
+
+                    var update = Builders<CategoriesCollection>.Update
+                    .Set(bd => bd.parentCategories[1], d.parentCategories[0])
+                      .Set(bd => bd.parentCategories[0], parentCategory);
+
+
+                    var filter = Builders<CategoriesCollection>.Filter.Eq("categoryName", d.categoryName);
+                    collection.UpdateOneAsync(filter, update).Wait();
+                }
             }
-            ).Wait();
+                ).Wait();
 
 
         }

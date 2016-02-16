@@ -75,6 +75,15 @@ namespace MyTimelineASPTry
             collection.Find(_ => true).ForEachAsync(d =>
             {
                 CategoryElements categoryElement = new CategoryElements();
+                //Response.Write(d._id.ToString() + "<p> --");
+                categoryElement._id = d._id.ToString();
+                categoryElement.parentId = d.parentCategories[0]["id"].ToString();
+
+                if(d.parentCategories != null)
+                        categoryElement.parent_id = d.parentCategories[0]["_id"].ToString();
+
+
+               // Response.Write(categoryElement.parent_id + "<p> --");
 
                 categoryElement.categoryName = d.categoryName;
                 categoryElement.parentName = d.parentCategories[0]["parentName"].ToString();
@@ -161,10 +170,12 @@ namespace MyTimelineASPTry
 
         public class CategoryElements
         {
-
+            public string _id { get; set; }
+            public string parentId { get; set; }
             public string id { get; set; }
             public string categoryName { get; set; }
             public string parentName { get; set; }
+            public string parent_id { get; set; }
             public int hierarchicalPosition { get; set; }
         }
 

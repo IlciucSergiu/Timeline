@@ -57,12 +57,19 @@ namespace MyTimelineASPTry
                 Response.Write("Am dat id = " + id);
 
                 //ObjectId objectId = ObjectId.Parse(hiddenFieldParentTagId.Value.ToString());
+
+                var filter1 = Builders<CategoriesCollection>.Filter.Eq(d => d.categoryName, textBoxParentName.Text);
+
+                CategoriesCollection parent = collection.Find(filter1).FirstAsync().Result;
+
+
+
                 BsonDocument parentCategory = new BsonDocument
                 {
-                    { "parentName",textBoxParentName.Text},
-                    { "id", hiddenFieldParentCategoryId.Value },
-                   // {"_id", objectId}
-                   
+                    { "parentName",parent.categoryName},
+                    { "id", parent.id },
+                    {"_id", parent._id}
+
                 };
                 BsonArray parentCategories = new BsonArray();
                 parentCategories.Add(parentCategory);

@@ -23,20 +23,28 @@ namespace MyTimelineASPTry
 
             MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
             var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
-            var collection = db.GetCollection<BsonDocument>("Tags");
+            var collection = db.GetCollection<TagsCollection>("Tags");
 
-            if (textBoxTagName.Text != "")
+            if (textBoxTagName.Text != "" && textBoxParentName.Text != "")
             {
 
                 // hiddenFieldParentTagId.Value = textBoxId.Text;
                 //ObjectId objectId = ObjectId.Parse(hiddenFieldParentTagId.Value.ToString());
+
+                var filter1 = Builders<TagsCollection>.Filter.Eq(d => d.tagName, textBoxParentName.Text);
+
+                TagsCollection parent = collection.Find(filter1).FirstAsync().Result;
+
+
+
                 BsonDocument parentTag = new BsonDocument
                 {
-                    { "parentName",textBoxParentName.Text},
-                    { "id", hiddenFieldParentTagId.Value },
-                   // {"_id", objectId}
-                   
+                    { "parentName",parent.tagName},
+                    { "id", parent.id },
+                    {"_id", parent._id}
+
                 };
+
                 BsonArray parentTags = new BsonArray();
                 parentTags.Add(parentTag);
 
@@ -47,31 +55,49 @@ namespace MyTimelineASPTry
                         tagSynonyms.Add(tagSynonym);
                 }
 
-                string id = textBoxTagName.Text.Replace(' ','_') + "_" + Session["userId"].ToString().Substring(0, 5);
+                string id = textBoxTagName.Text.Replace(' ', '_') + "_" + Session["userId"].ToString().Substring(0, 5);
                 string relativeImportance;
 
                 if (textBoxRelativeImportance.Value.ToString() != "")
                     relativeImportance = textBoxRelativeImportance.Value;
                 else
                     relativeImportance = "20";
-                BsonDocument document = new BsonDocument
-            {
-                
-                 
-                { "tagName",textBoxTagName.Text},
-                { "id",id },
-                { "owner", Session["userId"].ToString() },
-                { "parentTags", parentTags },
-                { "relativeImportance", relativeImportance},
-                { "description", textBoxTagShortDescription.Text },
-                { "tagInfo", CKEditorInformation.Text },
-                { "tagSynonyms", tagSynonyms},
-                { "dateAdded", DateTime.UtcNow}
 
-            };
+
+
+                //{
+
+
+                //    { "tagName",textBoxTagName.Text},
+                //    { "id",id },
+                //    { "owner", Session["userId"].ToString() },
+                //    { "parentTags", parentTags },
+                //    { "relativeImportance", relativeImportance},
+                //    { "description", textBoxTagShortDescription.Text },
+                //    { "tagInfo", CKEditorInformation.Text },
+                //    { "tagSynonyms", tagSynonyms},
+                //    { "dateAdded", DateTime.UtcNow}
+
+                //};
+
+                TagsCollection document = new TagsCollection();
+
+                document.tagName = textBoxTagName.Text;
+                document.id = id;
+                document.owner = Session["userId"].ToString();
+                document.parentTags = parentTags;
+                document.relativeImportance = Convert.ToInt32(relativeImportance);
+                document.description = textBoxTagShortDescription.Text;
+                document.tagInfo = CKEditorInformation.Text;
+                document.tagSynonyms = tagSynonyms;
+                document.dateAdded = DateTime.UtcNow;
+                document.parentTags = parentTags;
+
+
                 collection.InsertOneAsync(document);
                 Response.Redirect("UserManaging.aspx?tab=tags", false);
             }
+            else Response.Write("Fields incomplete");
         }
 
 

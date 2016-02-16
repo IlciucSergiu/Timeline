@@ -17,33 +17,44 @@ namespace MyTimelineASPTry
 
         }
 
-        protected void buttonCreateCategory_Click(object sender, EventArgs e)
+        protected  void buttonCreateCategory_Click(object sender, EventArgs e)
         {
 
             MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
             var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
-            var collection = db.GetCollection<BsonDocument>("Categories");
+            var collection = db.GetCollection<CategoriesCollection>("Categories");
+
+           
+
 
             if (textBoxCategoryName.Text != "")
             {
 
                 // hiddenFieldParentTagId.Value = textBoxId.Text;
                 //ObjectId objectId = ObjectId.Parse(hiddenFieldParentTagId.Value.ToString());
-                BsonDocument parentTag = new BsonDocument
+
+
+                var filter = Builders<CategoriesCollection>.Filter.Eq(d => d.categoryName, textBoxParentName.Text);
+
+               CategoriesCollection parent = collection.Find(filter).FirstAsync().Result;
+
+
+
+                BsonDocument parentCategory = new BsonDocument
                 {
-                    { "parentName",textBoxParentName.Text},
-                    { "id", hiddenFieldParentCategoryId.Value },
-                   // {"_id", objectId}
+                    { "parentName",parent.categoryName},
+                    { "id", parent.id },
+                    {"_id", parent._id}
                    
                 };
-                BsonArray parentTags = new BsonArray();
-                parentTags.Add(parentTag);
+                BsonArray parentCategories = new BsonArray();
+                parentCategories.Add(parentCategory);
 
-                BsonArray tagSynonyms = new BsonArray();
-                foreach (string tagSynonym in textBoxSynonyms.Text.Split(';'))
+                BsonArray categorySynonyms = new BsonArray();
+                foreach (string categorySynonym in textBoxSynonyms.Text.Split(';'))
                 {
-                    if (tagSynonym.Length > 2)
-                        tagSynonyms.Add(tagSynonym);
+                    if (categorySynonym.Length > 2)
+                        categorySynonyms.Add(categorySynonym);
                 }
 
                 string id = "Category_"+textBoxCategoryName.Text.Replace(' ', '_') + "_" + Session["userId"].ToString().Substring(0, 5);
@@ -52,21 +63,39 @@ namespace MyTimelineASPTry
                     relativeImportance = textBoxRelativeImportance.Value;
                 else
                     relativeImportance = "20";
-                BsonDocument document = new BsonDocument
-            {
 
 
-                { "categoryName",textBoxCategoryName.Text},
-                { "id",id },
-                { "owner", Session["userId"].ToString() },
-                { "parentCategories", parentTags },
-                { "relativeImportance", relativeImportance},
-                { "description", textBoxCategoryShortDescription.Text },
-                { "categoryInfo", CKEditorCategoryInformation.Text },
-                { "categorySynonyms", tagSynonyms},
-                { "dateAdded", DateTime.UtcNow}
+                CategoriesCollection document = new CategoriesCollection();
 
-            };
+                document.categoryName = textBoxCategoryName.Text;
+                document.id = id;
+                document.owner = Session["userId"].ToString();
+                document.parentCategories = parentCategories;
+                document.relativeImportance = Convert.ToInt32(relativeImportance);
+                document.description = textBoxCategoryShortDescription.Text;
+                document.categoryInfo = CKEditorCategoryInformation.Text;
+                document.categorySynonyms = categorySynonyms;
+                document.dateAdded = DateTime.UtcNow;
+
+                if(textBoxParentName.Text != "")
+                {
+                    document.parentCategories = parentCategories;
+                }
+
+            //    {
+
+
+            //    //{ "categoryName",textBoxCategoryName.Text},
+            //    //{ "id",id },
+            //    //{ "owner", Session["userId"].ToString() },
+            //    //{ "parentCategories", parentCategories },
+            //    //{ "relativeImportance", relativeImportance},
+            //    //{ "description", textBoxCategoryShortDescription.Text },
+            //    //{ "categoryInfo", CKEditorCategoryInformation.Text },
+            //    //{ "categorySynonyms", categorySynonyms},
+            //    //{ "dateAdded", DateTime.UtcNow}
+
+            //};
                 collection.InsertOneAsync(document);
                 Response.Redirect("UserManaging.aspx?tab=categories", false);
             }

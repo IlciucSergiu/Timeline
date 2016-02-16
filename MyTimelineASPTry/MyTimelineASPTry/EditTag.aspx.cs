@@ -49,26 +49,35 @@ namespace MyTimelineASPTry
 
             long exists = collection.Find(filterParent).CountAsync().Result;
 
-           // Response.Write(" nr = " + exists);
+            // Response.Write(" nr = " + exists);
 
             if (exists > 0)
             {
 
-                id = collection.Find(filterParent).FirstAsync().Result.id;
-                Response.Write("Am dat id = " + id);
+                //id = collection.Find(filterParent).FirstAsync().Result.id;
+                //Response.Write("Am dat id = " + id);
 
                 var filter = Builders<TagsCollection>.Filter.Eq("id", tagId);
 
 
 
                 //ObjectId objectId = ObjectId.Parse(hiddenFieldParentTagId.Value.ToString());
+
+                var filter1 = Builders<TagsCollection>.Filter.Eq(d => d.tagName, textBoxParentName.Text);
+
+                TagsCollection parent = collection.Find(filter1).FirstAsync().Result;
+
+
+
                 BsonDocument parentTag = new BsonDocument
                 {
-                    { "parentName",textBoxParentName.Text},
-                    { "id", id },
-                   // {"_id", objectId}
-                   
+                    { "parentName",parent.tagName},
+                    { "id", parent.id },
+                    {"_id", parent._id}
+
                 };
+
+
                 BsonArray parentTags = new BsonArray();
                 parentTags.Add(parentTag);
 
@@ -92,7 +101,7 @@ namespace MyTimelineASPTry
 
 
                     await collection.UpdateOneAsync(filter, update);
-                    // Response.Redirect("UserManaging.aspx?tab=tags", false);
+                    Response.Redirect("UserManaging.aspx?tab=tags", false);
 
 
 
@@ -103,6 +112,8 @@ namespace MyTimelineASPTry
                     Response.Write(ex.Message);
                 }
             }
+            else
+                Response.Write("Parent does not exist!");
         }
 
         async void InitializeTagData(string initTagId, string userId)
