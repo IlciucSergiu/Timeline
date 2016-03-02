@@ -407,7 +407,7 @@ namespace MyTimelineASPTry
 
         }
 
-        void SearchPlainTextQuery(string searchQuery)
+         void  SearchPlainTextQuery(string searchQuery)
         {
             searchQuery = searchQuery.Trim();
             //if (!searchQuery.Contains(' '))
@@ -427,15 +427,35 @@ namespace MyTimelineASPTry
             //searchResponse = searchResponse.Union(SearchQueryByDescription(searchQuery).Where(d => Convert.ToInt32(d.importance) > Convert.ToInt32(searchResponse.Find(f => f.id == d.id).importance))).ToList();
             //searchResponse = searchResponse.Union(SearchQueryByInfo(searchQuery).Where(d => Convert.ToInt32(d.importance) > Convert.ToInt32(searchResponse.Find(f => f.id == d.id).importance))).ToList();
 
-             searchResponse.AddRange(SearchQueryByName(searchQuery));
-             searchResponse.AddRange(SearchQueryByTag(searchQuery));
-             searchResponse.AddRange(SearchQueryByDescription(searchQuery));
-             searchResponse.AddRange(SearchQueryByInfo(searchQuery));
-            searchResponse.AddRange(SearchQueryByCategory(searchQuery));
+            Stopwatch taskWatch = new Stopwatch();
+            taskWatch.Start();
+
+            Task taskName = Task.Run(() => searchResponse.AddRange(SearchQueryByName(searchQuery)));
+            Task taskTag = Task.Run(() => searchResponse.AddRange(SearchQueryByTag(searchQuery)));
+            Task taskDescription = Task.Run(() => searchResponse.AddRange(SearchQueryByDescription(searchQuery)));
+            Task taskInfo = Task.Run(() => searchResponse.AddRange(SearchQueryByInfo(searchQuery)));
+            Task taskCategory = Task.Run(() => searchResponse.AddRange(SearchQueryByCategory(searchQuery)));
+
+          
+            Response.Write( "   <p> tasks sent in   " + taskWatch.Elapsed.TotalMilliseconds +"<p>");
+
+            taskName.Wait();
+            Response.Write("   <p> tasks name   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+            taskTag.Wait();
+            Response.Write("   <p> tasks tag   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+            taskDescription.Wait();
+            Response.Write("   <p> tasks description   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+            taskInfo.Wait();
+            Response.Write("   <p> tasks info   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+            taskCategory.Wait();
+            Response.Write("   <p> tasks category  " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+
             searchResponse = searchResponse.GroupBy(item => item.id)
                    .Select(g => g.OrderByDescending(i => i.importance)
                    .First()).ToList();
+            Response.Write("   <p> Selected  " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
 
+            taskWatch.Stop();
             sw.Stop();
             Response.Write(searchResponse.Count + "   and took   "+ sw.Elapsed.TotalMilliseconds);
 
