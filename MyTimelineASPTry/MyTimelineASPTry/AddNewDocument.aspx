@@ -36,8 +36,9 @@
                 <h2>Here you add the main informations about the subject. The rest you will add later. </h2>
                 <p>
                     Complete name:&nbsp;&nbsp;
-            <asp:TextBox ID="textBoxCompleteName" runat="server" Width="244px" Height="21px"></asp:TextBox>
+            <asp:TextBox ID="textBoxCompleteName" runat="server" Width="244px" Height="21px" CssClass="textBoxCompleteName"></asp:TextBox>
                 </p>
+                <p id="uniqueIdCheck">a</p>
 
 
 

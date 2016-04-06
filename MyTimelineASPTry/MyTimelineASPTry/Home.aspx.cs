@@ -74,7 +74,7 @@ namespace MyTimelineASPTry
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
 
-            var filter = Builders<DocumentInfo>.Filter.Eq("name", "Ilciuc"); ;
+            var filter = Builders<DocumentInfo>.Filter.Eq("name", "Ilciuc"); 
 
             //await collection.Find(new BsonDocument()).ForEachAsync(d => jsString += d+",");
             jsString = "";

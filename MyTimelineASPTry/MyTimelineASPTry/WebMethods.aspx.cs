@@ -391,5 +391,21 @@ namespace MyTimelineASPTry
 
         }
 
+        [WebMethod]
+        public static string UniqueId(string documentId)
+        {
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+            // var individualData = db.GetCollection<IndividualData>("IndividualData");
+            var filter = Builders<DocumentInfo>.Filter.Eq(u => u.id, documentId);
+
+            bool valid = true;
+            collection.Find(filter).ForEachAsync(d => valid = false).Wait();
+
+           return valid.ToString();
+            
+
+        }
     }
 }

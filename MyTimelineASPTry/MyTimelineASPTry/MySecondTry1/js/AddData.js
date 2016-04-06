@@ -320,7 +320,7 @@ function VerifyTagItem() {
 
 function VerifyCategoryItem() {
 
-    alert($(".textBoxAddCategory").val());
+   // alert($(".textBoxAddCategory").val());
     var dataValue = { inputValue: $(".textBoxAddCategory").val() };
     var response;
     $.ajax({
@@ -339,7 +339,7 @@ function VerifyCategoryItem() {
         success: function (result) {
 
             var availableCategories = result.d.split("{;}");
-            alert(availableCategories);
+            //alert(availableCategories);
 
             if (availableCategories != "") {
                 //alert("asdf");
@@ -960,6 +960,39 @@ $(function () {
         }
     });
 
+    $(".textBoxCompleteName").on('keyup focus', function () {
+        try {
+            var dataValue = { documentId: $(".textBoxCompleteName").val() };
+
+            $.ajax({
+                type: "POST",
+                url: "WebMethods.aspx/UniqueId",
+                data: JSON.stringify(dataValue),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+               // async:false,
+                error: function (err) {
+
+                    alert("Errort: " + err.responseText);
+                },
+                success: function (result) {
+                   // alert(result.d);
+                    $("#uniqueIdCheck").text($(".textBoxCompleteName").val()+"  "+result.d);
+                    if (result.d) {
+                       // $("#uniqueIdCheck").text("");
+                    }
+                    else
+                    {
+                        $("#uniqueIdCheck").text("This name already exists. Make shure you don't refer to the same document.");
+                        $("#uniqueIdCheck").css("color","red");
+                    }
+                }
+            });
+        }
+        catch (e) {
+            alert("Error" + e.message);
+        }
+    });
     
 
 });
