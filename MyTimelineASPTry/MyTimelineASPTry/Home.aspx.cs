@@ -176,7 +176,7 @@ namespace MyTimelineASPTry
 
             var filter = Builders<DocumentInfo>.Filter.Eq("id", itemId); ;
             var documents = await collection.Find(filter).FirstAsync();
-            labelName.Text = documents.name.ToString().Replace(',', ' ').Replace('[', ' ').Replace(']', ' '); ;
+            labelName.Text = documents.name.ToString().Replace(',', ' ').Replace('[', ' ').Replace(']', ' '); 
             labelDates.Text = documents.startdate + " - " + documents.enddate;
             // labelProfession.Text = documents.profession;
             // labelNationality.Text = documents.nationality;
@@ -821,7 +821,7 @@ namespace MyTimelineASPTry
         [System.Web.Services.WebMethod]
         public static string LoadTimelineQuery(string query)
         {
-            return "sergiu e amecher";
+            return "sergiu e samecher";
 
         }
 

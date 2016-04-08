@@ -169,8 +169,12 @@
                         document.getElementById('hiddenFieldStartDate').value = startDate;
 
 
-                        document.getElementById("buttonSearchId").click();
+                        // document.getElementById("buttonSearchId").click();
+                       
+                        
                         $("#individualInfo").css("display", "block");
+                        var source = GetIndividualInfo(theId);
+                        
 
                     }
 
@@ -234,8 +238,8 @@
                 <asp:Image ID="imageProfile" runat="server" CssClass="profileImage" />
                 <div class="imageInline" id="labelsInfo">
 
-                    <asp:Label ID="labelName" runat="server" CssClass="essentialLabels" Width="300px" Font-Size="X-Large"></asp:Label><br />
-                    <asp:Label ID="labelDates" runat="server" Text="" CssClass="essentialLabels" Width="300px"></asp:Label><br />
+                    <asp:Label ID="labelName" runat="server" CssClass="labelName essentialLabels" Width="300px" Font-Size="X-Large"></asp:Label><br />
+                    <asp:Label ID="labelDates" runat="server" Text="" CssClass="labelDates essentialLabels" Width="300px"></asp:Label><br />
                     <br />
                     <asp:Label ID="labelNumberOfViews" runat="server" Text="Views" CssClass="labelViews"></asp:Label>
                     <br />

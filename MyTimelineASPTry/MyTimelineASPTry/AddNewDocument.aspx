@@ -38,7 +38,7 @@
                     Complete name:&nbsp;&nbsp;
             <asp:TextBox ID="textBoxCompleteName" runat="server" Width="244px" Height="21px" CssClass="textBoxCompleteName"></asp:TextBox>
                 </p>
-                <p id="uniqueIdCheck">a</p>
+                <p id="uniqueIdCheck"></p>
 
 
 

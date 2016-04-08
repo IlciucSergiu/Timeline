@@ -392,20 +392,58 @@ namespace MyTimelineASPTry
         }
 
         [WebMethod]
-        public static string UniqueId(string documentId)
+        public static bool UniqueId(string documentId)
         {
             MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
             var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
             // var individualData = db.GetCollection<IndividualData>("IndividualData");
+            documentId = documentId.Replace(" ","_");
             var filter = Builders<DocumentInfo>.Filter.Eq(u => u.id, documentId);
 
             bool valid = true;
-            collection.Find(filter).ForEachAsync(d => valid = false).Wait();
+          collection.Find(filter).ForEachAsync(d => valid = false).Wait();
 
-           return valid.ToString();
+           return valid;
             
 
+        }
+
+        [WebMethod]
+        public static string GetIndividualInfo(string documentId)
+        {
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+            // var individualData = db.GetCollection<IndividualData>("IndividualData");
+    
+            var filter = Builders<DocumentInfo>.Filter.Eq(u => u.id, documentId);
+
+            string data = "";
+            collection.Find(filter).ForEachAsync(d => data = "{ \"name\":\""+d.name+"\","+
+                                                              " \"image\":\""+ d.image+"\","+
+                                                             // " \"name\":\"" + d.name + "\", "+
+                                                           
+                                                             " \"tags\":" + d.tags + "," +
+                                                               "\"dates\":\"" +d.startdate+"-"+d.enddate+ "\"}").Wait();
+
+            return data;
+
+
+        }
+
+        public static string GetTags(BsonArray tags)
+        {
+            string tagsString = "[";
+            if (tags != null)
+                foreach (BsonDocument tag in tags)
+                {
+                    tagsString +=  tag[0]+"," ;
+
+                }
+            tagsString.TrimEnd(',');
+            tagsString += "]";
+            return tagsString;
         }
     }
 }

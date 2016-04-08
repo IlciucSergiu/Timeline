@@ -978,8 +978,8 @@ $(function () {
                 success: function (result) {
                    // alert(result.d);
                     $("#uniqueIdCheck").text($(".textBoxCompleteName").val()+"  "+result.d);
-                    if (result.d) {
-                       // $("#uniqueIdCheck").text("");
+                    if (result.d.toString() == "true") {
+                        $("#uniqueIdCheck").text("");
                     }
                     else
                     {
@@ -1608,6 +1608,50 @@ function VerifyCategoryExistence(categoryName) {
     return response;
 
 }
+
+function GetIndividualInfo(documentId) {
+    
+    var dataValue = { documentId: documentId };
+    var response;
+    $.ajax({
+        type: "POST",
+        url: "WebMethods.aspx/GetIndividualInfo",
+        data: JSON.stringify(dataValue),
+        //async: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+
+        error: function (err) {
+            alert(err.responseText);
+            console.log("A aparut o eroare: " + err.responseText);
+            // return false;
+        },
+        success: function (result) {
+
+            alert(result.d);
+            response = result.d;
+           // $(".profileImage").attr("src", response.toString());
+
+            SetIndividualInfo(result.d);
+
+        }
+    });
+
+    //return response.toString();
+
+}
+
+
+function SetIndividualInfo(data) {
+
+    data = JSON.parse(data);
+   
+    $(".labelName").text(data["name"].replace(',', ' ').replace('[', ' ').replace(']', ' ') );
+    $(".profileImage").attr("src", data["image"]);
+    $(".labelDates").text(data["dates"]);
+
+}
+
 
 
 
