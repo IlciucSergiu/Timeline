@@ -8,6 +8,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Web.Services;
 
+
 namespace MyTimelineASPTry
 {
     public partial class WebMethods : System.Web.UI.Page
@@ -235,7 +236,7 @@ namespace MyTimelineASPTry
             var updateCategory = Builders<CategoriesCollection>.Update
                     .Push(p => p.documentsBelonging, documentsBelonging);
 
-           collectionCategories.UpdateOneAsync(filterCategory, updateCategory).Wait();
+            collectionCategories.UpdateOneAsync(filterCategory, updateCategory).Wait();
 
 
 
@@ -367,7 +368,7 @@ namespace MyTimelineASPTry
 
         }
 
-        
+
 
         [WebMethod]
         public static string DeleteAdditionalImage(string imageUrl, string documentId)
@@ -398,14 +399,14 @@ namespace MyTimelineASPTry
             var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
             // var individualData = db.GetCollection<IndividualData>("IndividualData");
-            documentId = documentId.Replace(" ","_");
+            documentId = documentId.Replace(" ", "_");
             var filter = Builders<DocumentInfo>.Filter.Eq(u => u.id, documentId);
 
             bool valid = true;
-          collection.Find(filter).ForEachAsync(d => valid = false).Wait();
+            collection.Find(filter).ForEachAsync(d => valid = false).Wait();
 
-           return valid;
-            
+            return valid;
+
 
         }
 
@@ -415,17 +416,57 @@ namespace MyTimelineASPTry
             MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
             var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
-            // var individualData = db.GetCollection<IndividualData>("IndividualData");
-    
+            var individualData = db.GetCollection<IndividualData>("IndividualData");
+
             var filter = Builders<DocumentInfo>.Filter.Eq(u => u.id, documentId);
 
             string data = "";
-            collection.Find(filter).ForEachAsync(d => data = "{ \"name\":\""+d.name+"\","+
-                                                              " \"image\":\""+ d.image+"\","+
-                                                             // " \"name\":\"" + d.name + "\", "+
-                                                           
-                                                             " \"tags\":" + d.tags + "," +
-                                                               "\"dates\":\"" +d.startdate+"-"+d.enddate+ "\"}").Wait();
+            // var dataD =new  DocumentInfo();
+
+            DocumentInfo docInfo = new DocumentInfo();
+            collection.Find(filter).ForEachAsync(d =>
+            {
+
+                data = "{ \"name\":\"" + d.name + "\"," +
+                  " \"image\":\"" + d.image + "\"," +
+
+                  GetTags(d.tags) +
+                  GetCategories(d.categories) +
+                // " \"tags\":" + d.tags + "," +
+                   "\"dates\":\"" + d.startdate + "-" + d.enddate + "\",";
+            }).Wait();
+
+
+            var collection1 = db.GetCollection<IndividualData>("IndividualData");
+            var filter1 = Builders<IndividualData>.Filter.Eq("id", documentId);
+
+            bool beenHere = false;
+            collection1.Find(filter1).ForEachAsync(d =>
+            {
+
+                if (!beenHere)
+                {
+
+                    data += " \"timesViewed\":\"" + d.timesViewed + "\"," +
+                         " \"htmlInformation\":" +GetInfo(d.htmlInformation) + "," +
+
+                         GetImages(d.imagesLinks) +
+                        // GetResources(d.additionalResources) +
+                         GetBooks(d.additionalBooks) +
+                         GetVideo(d.videoLinks) +
+                         GetLinks(d.additionalLinks) +
+
+                          "\"end\":\"end1\"}";
+
+                    beenHere = true;
+                }
+            }).Wait();
+
+            // Aici incrementez numarul vizualizarilor
+            var update = Builders<IndividualData>.Update
+               .Inc("timesViewed", 1);
+            collection1.UpdateOneAsync(filter1, update).Wait();
+
 
             return data;
 
@@ -434,16 +475,90 @@ namespace MyTimelineASPTry
 
         public static string GetTags(BsonArray tags)
         {
-            string tagsString = "[";
             if (tags != null)
-                foreach (BsonDocument tag in tags)
-                {
-                    tagsString +=  tag[0]+"," ;
-
-                }
-            tagsString.TrimEnd(',');
-            tagsString += "]";
-            return tagsString;
+                return " \"tags\":" + tags + ",";
+            else
+                return "";
         }
+
+        public static string GetCategories(BsonArray categories)
+        {
+            if (categories != null)
+                return " \"categories\":" + categories + ",";
+            else
+                return "";
+        }
+
+
+        public static string GetInfo(string info)
+        {
+            //return info.Replace("\"", "%22");
+            return info.ToJson();
+        }
+        public static string GetImages(BsonArray images)
+        {
+            if (images != null)
+            {
+                string imagesString = " \" images\":[";
+                foreach (string image in images)
+                {
+                    imagesString += "\"" + image + "\",";
+                }
+                return imagesString.TrimEnd(',') + "],";
+            }
+            else
+                return "";
+        }
+        public static string GetVideo(BsonArray video)
+        {
+            if (video != null)
+            {
+                string videos = " \"videos\":[";
+                foreach (string vid in video)
+                {
+                    videos += "\"" + vid + "\",";
+                }
+                return videos.TrimEnd(',') + "],";
+            }
+            else
+                return "";
+        }
+        public static string GetBooks(BsonArray books)
+        {
+            if (books != null)
+                return " \"books\":" + books + ",";
+            else
+                return "";
+        }
+        public static string GetLinks(BsonArray links)
+        {
+            if (links != null)
+            {
+                string linksString = " \"links\":[";
+                foreach (string link in links)
+                {
+                    linksString += "\"" + link + "\",";
+                }
+                return linksString.TrimEnd(',') + "],";
+            }
+            else
+                return "";
+ }
+        public static string GetResources(BsonArray resources)
+        {
+            if (resources != null)
+            {
+                string resourcesString = " \"resources\":[";
+                foreach (string resource in resources)
+                {
+                    resourcesString += "\"" + resource + "\",";
+                }
+                return resourcesString.TrimEnd(',') + "],";
+            }
+            else
+                return "";
+        }
+
+
     }
 }
