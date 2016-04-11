@@ -696,7 +696,7 @@ $(function () {
 
     $(".textBoxAddCategory").on('keyup focus', function () {
        
-        if ($(".textBoxAddCategory").val() != "")
+        if ($(".textBoxAddCategory").val() != "") 
             try {
                 var dataValue = { inputValue: $(".textBoxAddCategory").val() };
 
