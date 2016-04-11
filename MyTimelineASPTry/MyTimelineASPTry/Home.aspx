@@ -249,7 +249,9 @@
                     <asp:Label ID="labelVote" runat="server" Text="voting status" CssClass="hide labelVote"></asp:Label>
                     <br />
 
-                    <div id="divTags" runat="server" class="essentialLabels"></div>
+                    <div id="divTags" runat="server" class="divTags essentialLabels"></div>
+                    <div id="divCategories" runat="server" class="divCategories essentialLabels"></div>
+
 
                 </div>
 

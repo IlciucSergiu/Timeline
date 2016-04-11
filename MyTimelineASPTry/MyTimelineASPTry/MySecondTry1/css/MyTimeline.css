@@ -284,6 +284,22 @@ h3 {
         color: #ffffff;
     }
 
+    .categoryLinks {
+    background: #A9DC5C;
+    margin: 2px 2px 2px 0;
+    padding: 0px 4px 1px 3px;
+    border: 1px solid #e1ecf4;
+}
+
+    .categoryLinks:hover {
+        /*font-size:15px;
+    font-weight:bold;
+    font-family:sans-serif;*/
+        background: #201E1B;
+        cursor: pointer;
+        color: #ffffff;
+    }
+
 #footer {
     position: absolute;
     margin-bottom: 0;
