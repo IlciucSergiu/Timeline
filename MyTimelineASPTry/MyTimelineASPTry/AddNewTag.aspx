@@ -19,7 +19,7 @@
     <form id="form1" runat="server">
         <div id="header">
 
-            <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail"  CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+            <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail"  CssClass="linkMain" PostBackUrl="~/Home.aspx" />
         </div>
         
     <div id="pageBody">
@@ -44,7 +44,7 @@
        
         <p>
         
-            <input id="textBoxRelativeImportance" type="number" runat="server" max="99" min="1" style="width: 72px" /><br />
+            <input id="textBoxRelativeImportance" type="number" runat="server" max="100" min="1" style="width: 72px" /><br />
         </p>
         
 
@@ -72,10 +72,9 @@
 
     <script>
         function UpdHidId(inputValue) {
-           // alert(inputValue);
-           
+          
             $('#' + '<%=hiddenFieldParentTagId.ClientID %>').val(inputValue);
-            //alert($('#' + '<%=hiddenFieldParentTagId.ClientID %>').val());
+           
         }
 
     </script>

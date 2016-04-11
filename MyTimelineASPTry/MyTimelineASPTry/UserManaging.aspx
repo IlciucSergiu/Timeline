@@ -1,12 +1,14 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UserManaging.aspx.cs" Inherits="MyTimelineASPTry.UserManaging" Async="true" %>
 
+<%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
     <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
-    
+
 
 </head>
 <body>
@@ -17,7 +19,7 @@
         <script>
             $(function () {
                 $('.userManagingTab').click(function (e) {
-                   
+
                     var tabName = $(this).text();
                     //alert($(this).text());
                     $('.tabsContainer').each(function (i, obj) {
@@ -28,12 +30,11 @@
                             $(this).css("display", "none");
                     });
 
-                   
+
                 });
 
 
-                if (getParameterByName('tab') == "tags")
-                {
+                if (getParameterByName('tab') == "tags") {
                     $('.tabsContainer').each(function (i, obj) {
                         // alert($(this).attr('class'));
                         if ($(this).hasClass("Tags"))
@@ -44,26 +45,26 @@
                 }
 
 
-                    function getParameterByName(name) {
-                        var regexS = "[\\?&]" + name + "=([^&#]*)",
-                      regex = new RegExp(regexS),
-                      results = regex.exec(window.location.search);
-                        if (results == null) {
-                            return "";
-                        } else {
-                            return decodeURIComponent(results[1].replace(/\+/g, " "));
-                        }
+                function getParameterByName(name) {
+                    var regexS = "[\\?&]" + name + "=([^&#]*)",
+                  regex = new RegExp(regexS),
+                  results = regex.exec(window.location.search);
+                    if (results == null) {
+                        return "";
+                    } else {
+                        return decodeURIComponent(results[1].replace(/\+/g, " "));
                     }
+                }
 
-                    
-               
 
-                
+
+
+
             });
         </script>
         <div id="header">
 
-            <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail" OnClick="ImageButton1_Click" CssClass="linkMain" />
+            <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail" OnClick="ImageButton1_Click" CssClass="linkMain" PostBackUrl="~/Home.aspx" />
         </div>
 
         <div id="pageBody">
@@ -75,9 +76,10 @@
             <div id="profile" class="inlineProfile">
                 <asp:Label ID="LabelUsername" runat="server" Text="Username" Font-Size="X-Large" CssClass="usernameLabel"></asp:Label><br />
                 <br />
-                <asp:Image ID="imageProfile" runat="server" Height="151px" Width="141px" CssClass="userManagingTab" />
 
-                <br />&nbsp;&nbsp;&nbsp;<asp:Label ID="labelReputation" runat="server" Text="Reputation"></asp:Label>
+                <img id="profileImage" class="profileImage userManagingTab" runat="server" src="#" />
+                <br />
+                &nbsp;&nbsp;&nbsp;<asp:Label ID="labelReputation" runat="server" Text="Reputation"></asp:Label>
 
             </div>
 
@@ -86,37 +88,78 @@
                     <a class="userManagingTab">Profile</a>
                     <a class="userManagingTab">Documents</a>
                     <a class="userManagingTab">Tags</a>
+                    <a class="userManagingTab">Categories</a>
                     <a class="userManagingTab">Other</a>
                 </div>
-                <div id="documentsManaging" class="tabsContainer Documents">
+
+                <div id="documentsManaging" class="tabsContainer Documents hide" runat="server">
                     <h2>All your documents &nbsp; &nbsp;<asp:Label ID="labelNumeberOfDocuments" runat="server" Text="()"></asp:Label>
-                        <asp:Button ID="buttonCreate" runat="server" Text="Create new" CssClass="userManButton " OnClick="buttonCreate_Click" /></h2>
+                        <asp:Button ID="buttonCreate" runat="server" Text="Create document" CssClass="userManButton " OnClick="buttonCreate_Click" /></h2>
 
-
-                    <div id="documentsContainer" runat="server">
+                     <input id="searchDocumentInContainer" type="text" onkeyup="return SearchDocumentInContainer(event);" placeholder="search in list"/>
+                    <div id="documentsContainer" runat="server" class="elementsContainer">
                     </div>
 
                 </div>
 
-                <div id="tagsManaging" class="tabsContainer Tags hide" >
+                <div id="tagsManaging" class="tabsContainer Tags hide"  runat="server">
 
                     <h2>All your tags &nbsp; &nbsp;<asp:Label ID="labelNumberOfTags" runat="server" Text="()"></asp:Label>
                         <asp:Button ID="buttonCreateTag" runat="server" Text="Create tag" CssClass="userManButton" OnClick="buttonCreateTag_Click" /></h2>
-                    <div id="tagsContainer" runat="server">
+                   
+                    <input id="searchTagInContainer" type="text" onkeyup="return SearchTagInContainer(event);" placeholder="search in list"/>
+                     <div id="tagsContainer" runat="server" class="elementsContainer">
                     </div>
-
+                    <p>To see all tags added until now click <a href="TagsMap.aspx">here</a></p>
                 </div>
 
-                <div id="profileManaging" class="tabsContainer Profile hide" >
+
+                <div id="categoriesManaging" class="tabsContainer Categories hide"  runat="server">
+
+                    <h2>All your categories &nbsp; &nbsp;<asp:Label ID="labelNumberOfCategories" runat="server" Text="()"></asp:Label>
+                        <asp:Button ID="buttonCreateCategory" runat="server" Text="Create category" CssClass="userManButton" OnClick="buttonCreateCategory_Click" /></h2>
+                    
+                    <input id="searchCategoryInContainer" type="text" onkeyup="return SearchCategoryInContainer(event);" placeholder="search in list"/>
+                    <div id="categoriesContainer" runat="server" class="elementsContainer">
+                    </div>
+                    <p>To see all categories added until now click <a href="CategoriesMap.aspx?category=Main">here</a></p>
+                </div>
+
+                <div id="profileManaging" class="tabsContainer Profile hide"  runat="server">
 
                     <h2>Edit your profile </h2>
-                       
+
                     <div id="profileContent" runat="server">
+                        <img id="profileImageEdit" class="profileImageEdit" runat="server" src="#" /><br />
+                        <a id="changeProfileImage" onclick="ShowImageLink();">Change image</a>
+
+                        <div id="changeImageSource" class="hide">
+                            <p>Change the image source </p>
+                            <asp:TextBox ID="textBoxProfileImage" runat="server" Width="220px"></asp:TextBox>
+                        </div>
+
+
+                        <br />
+                        <h2>About me</h2>
+                        <div id="ckEditor">
+                            <CKEditor:CKEditorControl ID="CKEditorProfileInfo" BasePath="/ckeditor/" runat="server" Height="350" Width="1000"></CKEditor:CKEditorControl>
+                        </div>
+                        <br />
+                        <asp:Button ID="buttonSaveChanges" runat="server" Text="Save changes" OnClick="buttonSaveChanges_Click" />
                     </div>
 
                 </div>
+
             </div>
+
         </div>
+
+        <br />
+        <br />
+        <br />
+        
+        <asp:Button ID="buttonRunCommand" runat="server" OnClick="buttonRunCommand_Click" Text="Run comand" Visible="True" />
+        
     </form>
 </body>
 </html>

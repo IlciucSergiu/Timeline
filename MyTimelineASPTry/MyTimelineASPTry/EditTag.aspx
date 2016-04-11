@@ -5,14 +5,22 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
+    
     <title></title>
+
+    <link href="MySecondTry1/css/MyTimeline.css" rel="stylesheet" />
+     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+   <script src="MySecondTry1/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
+   
 </head>
 <body>
+    <script src="MySecondTry1/js/AddData.js"></script>
     <form id="form1" runat="server">
+         
         <div id="header">
 
-            <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail" CssClass="linkMain" PostBackUrl="~/WebFormTimeline.aspx" />
+            <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail" CssClass="linkMain" PostBackUrl="~/Home.aspx" />
         </div>
     <div id="pageBody">
     <br />
@@ -24,7 +32,7 @@
        
         <br />
         <p>This tag needs to be appended to a parent tag</p>
-        <asp:TextBox ID="textBoxParentName" runat="server" Width="187px" placeholder="parent"></asp:TextBox>
+        <asp:TextBox ID="textBoxParentName" runat="server" Width="187px" placeholder="parent" CssClass="textBoxEditParentTag"></asp:TextBox><p id="verifyTag" class="inline"> </p>
          <br />
          <asp:HiddenField ID="hiddenFieldParentTagId" runat="server" />
         <p>How significant is this tag to the parent tag </p>

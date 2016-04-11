@@ -20,8 +20,9 @@ namespace MyTimelineASPTry
 
                 if(key.Length > 10)
                 {
-                    MongoClient mclient = new MongoClient();
-                    var db = mclient.GetDatabase("Timeline");
+
+                    MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+                    var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
                     var user = db.GetCollection<UserData>("Users");
                     var filterUser = Builders<UserData>.Filter.Eq("email", email);
@@ -56,8 +57,9 @@ namespace MyTimelineASPTry
 
         protected void buttonCheckKey_Click(object sender, EventArgs e)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var user = db.GetCollection<UserData>("Users");
             var filterUser = Builders<UserData>.Filter.Eq("email", email);

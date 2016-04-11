@@ -20,20 +20,21 @@ namespace MyTimelineASPTry
         protected void Page_Load(object sender, EventArgs e)
         {
             LoadTags();
-            SetHierarhicalPosition(Array.Find(tagMap, p => p.tagName == "main"), 0);
+            SetHierarhicalPosition(Array.Find(tagMap, p => p.tagName == "Main"), 0);
             treeViewTagsMap.Nodes.Clear();
             TreeNode main = new TreeNode();
-            main.Text = "main";
+            main.Text = "Main";
            treeViewTagsMap.Nodes.Add(main);
-            PopulateTreeView(Array.Find(tagMap, p => p.tagName == "main"), 0, main);
+            PopulateTreeView(Array.Find(tagMap, p => p.tagName == "Main"), 0, main);
            // ShowTagsArray();
            
         }
 
         void LoadTags()
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<TagsCollection>("Tags");
 

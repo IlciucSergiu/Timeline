@@ -3,7 +3,7 @@
 function AddTagItem() {
 
     $(".verifyTag").text("");
-   // VerifyIfInList();
+    // VerifyIfInList();
     if (VerifyTagItem() && VerifyIfInList()) {
         if ($("#inputImportanceTag").val() != "") {
             // alert($("#inputImportanceTag").val());
@@ -15,12 +15,12 @@ function AddTagItem() {
             var documentId = $("#hiddenId").val();
             //alert(documentId);
 
-            InsertInTagCollection(tagName,documentId,tagImportance);
+            InsertInTagCollection(tagName, documentId, tagImportance);
 
             $("#inputImportanceTag").val(null);
             try {
                 var tagValue = tagName + "-" + tagImportance.toString();
-                $('.listBoxTags').append("<option value=" + tagValue.toString() + ">" + tagName + " " + tagImportance + "</option>"); 
+                $('.listBoxTags').append("<option value=" + tagValue.toString() + ">" + tagName + " " + tagImportance + "</option>");
 
                 // alert(tagName + " ---- " + tagImportance);
 
@@ -42,20 +42,20 @@ function AddTagItem() {
             $(".verifyTag").text("Invalid information.");
         }
     }
-    
+
 }
 
-function InsertInTagCollection(tagName,documentId,relativeImportance) {
+function InsertInTagCollection(tagName, documentId, relativeImportance) {
 
     //alert(userId1);
 
     try {
         var dataValue = { documentId: documentId, tagName: tagName, relativeImportance: relativeImportance };
-      // alert(JSON.stringify(dataValue));
+        // alert(JSON.stringify(dataValue));
         //alert(document.getElementById('hiddenId').value);
         $.ajax({
             type: "POST",
-            url: "AddData.aspx/InsertInTagCollection",
+            url: "WebMethods.aspx/InsertInTagCollection",
             data: JSON.stringify(dataValue),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -64,9 +64,9 @@ function InsertInTagCollection(tagName,documentId,relativeImportance) {
                 alert("Errort: " + err.responseText);
             },
             success: function (result) {
-               alert("We returned: " + result.d);
-                
-               
+                alert("We returned: " + result.d);
+
+
             }
         });
     }
@@ -81,12 +81,12 @@ function RemoveInTagCollection(tagName, documentId) {
     //alert(userId1);
 
     try {
-        var dataValue = { documentId: documentId, tagName: tagName};
-       // alert(JSON.stringify(dataValue));
+        var dataValue = { documentId: documentId, tagName: tagName };
+        // alert(JSON.stringify(dataValue));
         //alert(document.getElementById('hiddenId').value);
         $.ajax({
             type: "POST",
-            url: "AddData.aspx/RemoveInTagCollection",
+            url: "WebMethods.aspx/RemoveInTagCollection",
             data: JSON.stringify(dataValue),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -96,7 +96,7 @@ function RemoveInTagCollection(tagName, documentId) {
             },
             success: function (result) {
                 alert("We returned: " + result.d);
-                
+
 
             }
         });
@@ -105,6 +105,124 @@ function RemoveInTagCollection(tagName, documentId) {
         alert("Error" + e.message);
     }
 }
+
+
+function AddCategoryItem() {
+
+   // alert("here");
+
+    $(".verifyCategory").text("");
+    // VerifyIfInList();
+    if (VerifyCategoryItem() && VerifyCategoryInList()) {
+        if ($("#inputImportanceCategory").val() != "") {
+           //  alert($("#inputImportanceCategory").val());
+            var categoryName = $(".textBoxAddCategory").val().toString();
+            $(".textBoxAddCategory").val(null);
+            var categoryImportance = $("#inputImportanceCategory").val();
+
+        
+            var documentId = $("#hiddenId").val();
+           // alert(documentId);
+
+            InsertInCategoryCollection(categoryName, documentId, categoryImportance);
+
+            $("#inputImportanceCategory").val(null);
+            try {
+                var categoryValue = categoryName + "-" + categoryImportance.toString();
+                $('.listBoxCategories').append("<option value=" + categoryValue.toString() + ">" + categoryName + " " + categoryImportance + "</option>");
+
+                
+            }
+            catch (err) {
+                alert(err.message);
+            }
+            return false;
+        }
+        else {
+            $(".verifyCategory").text("Invalid information.");
+        }
+    }
+
+}
+
+function InsertInCategoryCollection(categoryName, documentId, relativeImportance) {
+
+    //alert(userId1);
+
+    try {
+        var dataValue = { documentId: documentId, categoryName: categoryName, relativeImportance: relativeImportance };
+        // alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "WebMethods.aspx/InsertInCategoryCollection",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                alert("We returned: " + result.d);
+
+
+            }
+        });
+    }
+    catch (e) {
+        alert("Error" + e.message);
+    }
+}
+
+function RemoveCategoryItem() {
+    if ($(".listBoxCategories option:selected").text() != "") {
+        var documentId = $("#hiddenId").val();
+        //alert(documentId);
+        var categoryName = $(".listBoxCategories option:selected").text().split(' ')[0];
+        alert(categoryName + "   " + documentId);
+
+        RemoveInCategoryCollection(categoryName, documentId);
+
+        $(".listBoxCategories option:selected").remove();
+        
+    }
+    else {
+        $(".verifyCategory").text("No tag was selected.");
+    }
+}
+
+
+function RemoveInCategoryCollection(categoryName, documentId) {
+
+    //alert(userId1);
+
+    try {
+        var dataValue = { documentId: documentId, categoryName: categoryName };
+        // alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "WebMethods.aspx/RemoveInCategoryCollection",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                alert("We returned: " + result.d);
+
+
+            }
+        });
+    }
+    catch (e) {
+        alert("Error" + e.message);
+    }
+}
+
 
 function VerifyIfInList() {
 
@@ -122,13 +240,44 @@ function VerifyIfInList() {
     return response;
 }
 
+function VerifyCategoryInList() {
+
+    var response = true;
+    $(".listBoxCategories option").each(function () {
+
+        var listString = $(this).val().split('-');
+        if ($(".textBoxAddCategory").val().toString().toLowerCase() == listString[0].toLowerCase()) {
+            $(".verifyCategory").text("This tag already exists in list.");
+            response = false;
+        }
+
+
+    });
+    return response;
+}
+
+function CheckInListBox(value, listBox) {
+
+    var response = true;
+    $(listBox + " option").each(function () {
+
+        // alert();
+
+        if (value.toLowerCase() == $(this).val().toLowerCase())
+            response = false;
+
+    });
+
+    return response;
+}
+
 function VerifyTagItem() {
 
     var dataValue = { inputValue: $(".textBoxAddTag").val() };
     var response;
     $.ajax({
         type: "POST",
-        url: "AddData.aspx/FindTagOptions",
+        url: "WebMethods.aspx/FindTagOptions",
         data: JSON.stringify(dataValue),
         async: false,
         contentType: 'application/json; charset=utf-8',
@@ -160,7 +309,55 @@ function VerifyTagItem() {
                 $(".verifyTag").text("This tag does not exist!");
                 response = false;
             }
-          
+
+        }
+    });
+
+    return response;
+
+}
+
+
+function VerifyCategoryItem() {
+
+   // alert($(".textBoxAddCategory").val());
+    var dataValue = { inputValue: $(".textBoxAddCategory").val() };
+    var response;
+    $.ajax({
+        type: "POST",
+        url: "WebMethods.aspx/FindCategoryOptions",
+        data: JSON.stringify(dataValue),
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+
+        error: function (err) {
+
+            console.log("A aparut o eroare: " + err.responseText);
+            // return false;
+        },
+        success: function (result) {
+
+            var availableCategories = result.d.split("{;}");
+            //alert(availableCategories);
+
+            if (availableCategories != "") {
+                //alert("asdf");
+                if ($.inArray($(".textBoxAddCategory").val(), availableCategories) != -1) {
+                   // alert($.inArray($(".textBoxAddTag").val(), availableCategories));
+
+                    response = true;
+                }
+                else {
+                    $(".verifyCategory").text("This Category does not exist!");
+                }
+
+            }
+            else {
+                $(".verifyCategory").text("This category does not exist!");
+                response = false;
+            }
+
         }
     });
 
@@ -208,16 +405,7 @@ function AddLinkItem() {
 
 $(function () {
 
-   //alert("sadtag");
 
-    $(".textBoxSearchQuery").keydown(function (event) {
-        if (e.keyCode == 13) {
-            alert(e.keyCode);
-            $(".searchButton").click();
-
-        }
-
-    });
 
 
     $(".checkContemporary").click(function () {
@@ -235,22 +423,22 @@ $(function () {
 
     $('#buttonRemoveTags').click(function () {
         if ($(".listBoxTags option:selected").text() != "") {
-        var documentId = $("#hiddenId").val();
-        //alert(documentId);
-        var tagName = $(".listBoxTags option:selected").text().split(' ')[0];
-        //alert(tagName + "   " + documentId);
+            var documentId = $("#hiddenId").val();
+            //alert(documentId);
+            var tagName = $(".listBoxTags option:selected").text().split(' ')[0];
+            //alert(tagName + "   " + documentId);
 
-        RemoveInTagCollection(tagName, documentId);
+            RemoveInTagCollection(tagName, documentId);
 
-        $(".listBoxTags option:selected").remove();
-        var listString = "";
-        $(".listBoxTags option").each(function () {
-            // alert($(this).val());
-            listString += $(this).val() + ";";
-            // Add $(this).val() to your list
-        });
-        // alert(listString);
-        UpdHidTag(listString);
+            $(".listBoxTags option:selected").remove();
+            var listString = "";
+            $(".listBoxTags option").each(function () {
+                // alert($(this).val());
+                listString += $(this).val() + ";";
+                // Add $(this).val() to your list
+            });
+            // alert(listString);
+            UpdHidTag(listString);
         }
         else {
             $(".verifyTag").text("No tag was selected.");
@@ -281,13 +469,13 @@ $(function () {
     });
     $(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
 
-    $(".textBoxAddTag").on('keydown keypress focus', function () {
+    $(".textBoxAddTag").on('keyup focus', function () {
         try {
             var dataValue = { inputValue: $(".textBoxAddTag").val() };
 
             $.ajax({
                 type: "POST",
-                url: "AddData.aspx/FindTagOptions",
+                url: "WebMethods.aspx/FindTagOptions",
                 data: JSON.stringify(dataValue),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -311,24 +499,23 @@ $(function () {
     });
 
     $(".textBoxImageLink").on('blur', function () {
-        alert($(".textBoxImageLink").val());
+       // alert($(".textBoxImageLink").val());
         $(".documentImage").attr("src", $(".textBoxImageLink").val())
     });
 
     $("#feedbackShow").click(function () {
-       
+
         if ($("#feedbackContent").css("display") == "none")
             $("#feedbackContent").css("display", "block");
         else
             $("#feedbackContent").css("display", "none");
-       
+
     });
 
-    $("#improvePage").click(function () {
+    $(".improvePage").click(function () {
 
-       // 
-        if ($("#feedbackMessage").css("display") == "none")
-        {
+        // 
+        if ($("#feedbackMessage").css("display") == "none") {
             //alert("adgadsg");
             $("#feedbackMessage").css("display", "block");
         }
@@ -336,24 +523,24 @@ $(function () {
             $("#feedbackMessage").css("display", "none");
         }
 
-        return false;
+        //return false;
 
     });
 
-    $(".textBoxSearchQuery").on('keydown keypress focus', function () {
+    $(".textBoxSearchQuery").on('keyup focus', function () {
         try {
             var dataValue = { inputValue: $(".textBoxSearchQuery").val() };
 
             $.ajax({
                 type: "POST",
-                url: "AddData.aspx/FindTagOptions",
+                url: "WebMethods.aspx/FindTagOptions",
                 data: JSON.stringify(dataValue),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
 
                 error: function (err) {
 
-                    alert("Errort: " + err.responseText);
+                   // alert("Errort: " + err.responseText);
                 },
                 success: function (result) {
 
@@ -370,64 +557,250 @@ $(function () {
     });
 
 
-   // $('#pageBody').click(function () { alert("sdasdg") });
+   
 
-    $(".textBoxAddParentTag").on('keydown keypress focus', function () {
+    $(".textBoxAddParentTag").on('keyup focus', function () {
         //alert("here");
         if ($(".textBoxAddParentTag").val() != "")
-        try {
-            var dataValue = { inputValue: $(".textBoxAddParentTag").val() };
+            try {
+                var dataValue = { inputValue: $(".textBoxAddParentTag").val() };
 
-            $.ajax({
-                type: "POST",
-                url: "AddNewTag.aspx/FindTagParentOptions",
-                data: JSON.stringify(dataValue),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
+                $.ajax({
+                    type: "POST",
+                    url: "AddNewTag.aspx/FindTagParentOptions",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
 
-                error: function (err) {
+                    error: function (err) {
 
-                    alert("Errort: " + err.responseText);
-                },
-                success: function (result) {
-                    var arrayTagNames = [];
-                    var arrayTagId = [];
-                    var availableTags = result.d.split("{;}").forEach(function (item) {
-                        //array2.push(item);
-                        var array3 = item.split("{0}");
-                       // alert(array3[0]);
-                        arrayTagNames.push(array3[0]);
-                        arrayTagId.push(array3[1]);
-                    });
-                    // alert(array2);
-                   // $('#debug1').text(arrayTagNames);
-                   // $('#debug2').text(arrayTagId);
+                        alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
+                        var arrayTagNames = [];
+                        var arrayTagId = [];
+                        var availableTags = result.d.split("{;}").forEach(function (item) {
+                            
+                            var array3 = item.split("{0}");
+                            
+                            arrayTagNames.push(array3[0]);
+                            arrayTagId.push(array3[1]);
+                        });
+                        
 
-                    $(".textBoxAddParentTag").autocomplete({
-                        source: arrayTagNames,
-                        select: function (event, ui) {
-                            var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
-                            $('#debug2').text(parentId);
-                            UpdHidId(parentId);
-                            //alert(ui.item.label);
-                           // $('hiddenFieldParentTagId').val(parentId);
-                          //  alert($('hiddenFieldParentTagId').val);
-                           // $(".textBoxAddParentTag").val(ui.item.label);
+                        $(".textBoxAddParentTag").autocomplete({
+                            source: arrayTagNames,
+                            select: function (event, ui) {
+                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                               
+                               // UpdHidId(parentId);
+                            }
+                        });
+                    }
+                });
+            }
+            catch (e) {
+                alert("Error" + e.message);
+            }
+    });
+
+    $(".textBoxAddParentCategory").on('keyup focus', function () {
+        
+        if ($(".textBoxAddParentCategory").val() != "")
+            try {
+                var dataValue = { inputValue: $(".textBoxAddParentCategory").val() };
+
+                $.ajax({
+                    type: "POST",
+                    url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+
+                    error: function (err) {
+
+                        alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
+                        var arrayTagNames = [];
+                        var arrayTagId = [];
+                        var availableTags = result.d.split("{;}").forEach(function (item) {
+                            
+                            var array3 = item.split("{0}");
+                             arrayTagNames.push(array3[0]);
+                            arrayTagId.push(array3[1]);
+                        });
+                        
+
+                        $(".textBoxAddParentCategory").autocomplete({
+                            source: arrayTagNames,
+                            select: function (event, ui) {
+                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                              
+                               // UpdHidId(parentId);
+                             }
+                        });
+                    }
+                });
+            }
+            catch (e) {
+                alert("Error" + e.message);
+            }
+    });
+
+    $(".textBoxEditParentCategory").on('keyup focus', function () {
+        //alert("here");
+        if ($(".textBoxEditParentCategory").val() != "")
+            try {
+                var dataValue = { inputValue: $(".textBoxEditParentCategory").val() };
+
+                $.ajax({
+                    type: "POST",
+                    url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+
+                    error: function (err) {
+
+                        alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
+                       
+                        var arrayTagNames = [];
+                        var arrayTagId = [];
+                        var availableTags = result.d.split("{;}").forEach(function (item) {
+                            
+                            var array3 = item.split("{0}");
                            
-                        }
-                    });
-                }
-            });
-        }
-        catch (e) {
-            alert("Error" + e.message);
-        }
+                            arrayTagNames.push(array3[0]);
+                            arrayTagId.push(array3[1]);
+                        });
+                     
+
+                        $(".textBoxEditParentCategory").autocomplete({
+                            source: arrayTagNames,
+                            select: function (event, ui) {
+                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                               
+                              //  UpdHidId(parentId);
+                              }
+                        });
+                    }
+                });
+            }
+            catch (e) {
+                alert("Error" + e.message);
+            }
+    });
+
+    $(".textBoxAddCategory").on('keyup focus', function () {
+       
+        if ($(".textBoxAddCategory").val() != "")
+            try {
+                var dataValue = { inputValue: $(".textBoxAddCategory").val() };
+
+                $.ajax({
+                    type: "POST",
+                    url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+
+                    error: function (err) {
+
+                        alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
+                        
+                        var arrayTagNames = [];
+                        var arrayTagId = [];
+                        var availableTags = result.d.split("{;}").forEach(function (item) {
+                           
+                            var array3 = item.split("{0}");
+                            
+                            arrayTagNames.push(array3[0]);
+                            arrayTagId.push(array3[1]);
+                        });
+                        
+
+                        $(".textBoxAddCategory").autocomplete({
+                            source: arrayTagNames,
+                            select: function (event, ui) {
+                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                              }
+                        });
+                    }
+                });
+            }
+            catch (e) {
+                alert("Error" + e.message);
+            }
+    });
+
+    $(".textBoxEditParentTag").on('keydown keypress focus', function () {
+        //alert("here");
+        if ($(".textBoxEditParentTag").val() != "")
+            try {
+                var dataValue = { inputValue: $(".textBoxEditParentTag").val() };
+
+                $.ajax({
+                    type: "POST",
+                    url: "AddNewTag.aspx/FindTagParentOptions",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+
+                    error: function (err) {
+
+                        alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
+                        var arrayTagNames = [];
+                        var arrayTagId = [];
+                        var availableTags = result.d.split("{;}").forEach(function (item) {
+                            
+                            var array3 = item.split("{0}");
+                            
+                            arrayTagNames.push(array3[0]);
+                            arrayTagId.push(array3[1]);
+                        });
+                       
+
+                        $(".textBoxEditParentTag").autocomplete({
+                            source: arrayTagNames,
+                            select: function (event, ui) {
+                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                             
+                              //  UpdHidId(parentId);
+                               
+
+                            }
+                        });
+                    }
+                });
+            }
+            catch (e) {
+                alert("Error" + e.message);
+            }
     });
 
     $(".textBoxAddParentTag").focusout(function () {
-       // alert($(".textBoxAddParentTag").val());
+        // alert($(".textBoxAddParentTag").val());
         if (!VerifyTagExistence($(".textBoxAddParentTag").val())) {
-           // $("#verifyTag").css("display", "block");
+            // $("#verifyTag").css("display", "block");
+            $("#verifyTag").css("color", "red");
+            $("#verifyTag").text("This tag does not exist.");
+        }
+        else {
+            $("#verifyTag").text("");
+        }
+    });
+
+    $(".textBoxEditParentTag").focusout(function () {
+        // alert($(".textBoxAddParentTag").val());
+        if (!VerifyTagExistence($(".textBoxEditParentTag").val())) {
+            // $("#verifyTag").css("display", "block");
             $("#verifyTag").css("color", "red");
             $("#verifyTag").text("This tag does not exist.");
         }
@@ -439,7 +812,7 @@ $(function () {
     $(".textBoxTagName").focusout(function () {
         // alert($(".textBoxAddParentTag").val());
         if (VerifyTagExistence($(".textBoxTagName").val())) {
-           // $("#verifyTagName").css("display", "block");
+            // $("#verifyTagName").css("display", "block");
             $("#verifyTagName").css("color", "red");
             $("#verifyTagName").text("This tag already exists.");
         }
@@ -449,8 +822,23 @@ $(function () {
         }
     });
 
-    $("#additionalResources a").click(function (e) {
-       // alert($(this).text());
+    $(".textBoxCategoryName").focusout(function () {
+        
+        if (VerifyCategoryExistence($(".textBoxCategoryName").val())) {
+           
+            $("#verifyCategoryName").css("color", "red");
+            $("#verifyCategoryName").text("This category already exists.");
+        }
+        else {
+            
+            $("#verifyCategoryName").css("color", "green");
+            $("#verifyCategoryName").text("v");
+          
+        }
+    });
+
+    $("#additionalResources a.tab").click(function (e) {
+        // alert($(this).text());
         tabName = $(this).text();
         $('#additionalResources div.tab').each(function (i, obj) {
             // alert($(this).attr('class'));
@@ -461,7 +849,7 @@ $(function () {
         });
         return false;
     });
-    
+
     changeImage(1);
 
     countTimes = 1;
@@ -480,7 +868,629 @@ $(function () {
         changeImage(countTimes);
     });
 
+    $('#imagesCollection img').click(function () {
+
+        imageUrl = $(this).attr("src");
+        imagesLengt = 0;
+
+        $('#imagesCollection img').each(function (e) {
+            imagesLengt++;
+
+            if ($(this).attr("src") == imageUrl)
+                countTimes = imagesLengt;
+        });
+
+        changeImage(countTimes);
+    });
+
+    $("#buttonSearchBook").click(function () {
+
+        var query = $(".textBoxBook").val();
+        // alert(query);
+        $("#booksOptions").html("");
+
+        $("#buttonRemoveBook").css("display", "none");
+        $("#buttonAddThisBook").css("display", "block");
+        $("#bookSelectedBook").css("display", "none");
+
+
+        $.get("https://www.googleapis.com/books/v1/volumes?q=" + query, function (data) {
+
+
+            var book = data.items[0];
+
+            var title = (book["volumeInfo"]["title"]);
+
+            //alert(title);
+            // alert(JSON.stringify(data) + "asdgasd");
+
+            //$("#bookInfo").text(JSON.stringify(data.items));
+
+            $.each(data.items, function () {
+                book = this;
+                //alert(book["volumeInfo"]["title"]);
+
+                $("#booksOptions").append('<div id="' + book["volumeInfo"]["industryIdentifiers"][0]["identifier"] + '" class="divBookOption"><img class="bookOption" src="' + book["volumeInfo"]["imageLinks"]["smallThumbnail"] + '" class="divBookOption"  /></div>');
+
+            });
+
+            $('.divBookOption').on("click", function () {
+
+                BookImageClick(this);
+            });
+            $("#booksOptions").css("display", "flex");
+
+        });
+
+       
+
+    });
+
+
+    $("#listBoxBooks").click(function (e) {
+        ListBookSelected(this);
+    });
+
+    
+   
+
+    $('.documentBook').on("click", function () {
+
+        BookImageClick(this);
+    });
+
+    $('#selectedBookSelfLink').on("click", function () {
+
+        var url = $("#selectedBookSelfLink").attr("href");
+        window.open(url);
+        return false;
+    });
+
+
+    $('.imageCollection').on("click", function () {
+        ImageLinkClick(this);
+    });
+
+    $("#textBoxSearchQuery").on('keydown keypress', function (e) {
+        if (e.keyCode == 13) {
+           // alert("pressed");
+            //document.getElementById().focus();
+            $(".searchButton").click();
+            return false;
+        }
+    });
+
+    $(".textBoxCompleteName").on('keyup focus', function () {
+        try {
+            var dataValue = { documentId: $(".textBoxCompleteName").val() };
+
+            $.ajax({
+                type: "POST",
+                url: "WebMethods.aspx/UniqueId",
+                data: JSON.stringify(dataValue),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+               // async:false,
+                error: function (err) {
+
+                    alert("Errort: " + err.responseText);
+                },
+                success: function (result) {
+                   // alert(result.d);
+                    $("#uniqueIdCheck").text($(".textBoxCompleteName").val()+"  "+result.d);
+                    if (result.d.toString() == "true") {
+                        $("#uniqueIdCheck").text("");
+                    }
+                    else
+                    {
+                        $("#uniqueIdCheck").text("This name already exists. Make shure you don't refer to the same document.");
+                        $("#uniqueIdCheck").css("color","red");
+                    }
+                }
+            });
+        }
+        catch (e) {
+            alert("Error" + e.message);
+        }
+    });
+    
+
 });
+
+ function SearchCategory(e) {
+    //alert("pressed");
+    if (e.keyCode == 13) {
+        // alert("pressed");
+        //document.getElementById().focus();
+        $(".buttonSearchCategory").click();
+
+        return false;
+    }
+
+    
+    if ($(".textBoxSearchCategory").val() != "")
+       // alert("here");
+        try {
+            var dataValue = { inputValue: $(".textBoxSearchCategory").val() };
+
+            $.ajax({
+                type: "POST",
+                url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                data: JSON.stringify(dataValue),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+
+                error: function (err) {
+
+                    alert("Errort: " + err.responseText);
+                },
+                success: function (result) {
+                    var arrayTagNames = [];
+                    var arrayTagId = [];
+                    var availableTags = result.d.split("{;}").forEach(function (item) {
+                        //array2.push(item);
+                        var array3 = item.split("{0}");
+                        // alert(array3[0]);
+                        arrayTagNames.push(array3[0]);
+                        arrayTagId.push(array3[1]);
+                    });
+                   // alert(arrayTagNames);
+                    // $('#debug1').text(arrayTagNames);
+                    // $('#debug2').text(arrayTagId);
+
+                    $(".textBoxSearchCategory").autocomplete({
+                        source: arrayTagNames,
+                        select: function (event, ui) {
+                            var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                            //$('#debug2').text(parentId);
+                            UpdHidId(parentId);
+                            //alert(ui.item.label);
+                            // $('hiddenFieldParentTagId').val(parentId);
+                            //  alert($('hiddenFieldParentTagId').val);
+                            // $(".textBoxAddParentTag").val(ui.item.label);
+
+                        }
+                    });
+                }
+            });
+        }
+        catch (e) {
+            alert("Error" + e.message);
+        }
+}
+
+function ShowImageLink(e) {
+
+    $("#changeImageSource").css("display", "block");
+};
+
+
+function SearchCategoryInContainer(e) {
+
+    var unicode = e.charCode;
+   // typing = document.getElementById('textbox').value + String.fromCharCode(unicode);
+
+    var input = $("#searchCategoryInContainer").val();// + String.fromCharCode(unicode);;
+    if (input == "")
+        $("#categoriesContainer div.categoriesContainerElement").each(function (e) {
+
+            $(this).css("display", "block");
+            // return false;
+        });
+    else
+        $("#categoriesContainer div.categoriesContainerElement").each(function (e) {
+           
+            if ($(this).attr("class").toLowerCase().indexOf(input.toLowerCase()) > -1) {
+            $(this).css("display", "block");
+           
+        }
+        else {
+            $(this).css("display", "none");
+        }
+    });
+
+}
+
+function SearchTagInContainer(e) {
+
+   
+    var input = $("#searchTagInContainer").val();
+    if (input == "")
+        $("#tagsContainer div.tagsContainerElement").each(function (e) {
+
+            $(this).css("display", "block");
+            // return false;
+        });
+    else
+        $("#tagsContainer div.tagsContainerElement").each(function (e) {
+
+            if ($(this).attr("class").toLowerCase().indexOf(input.toLowerCase()) > -1) {
+                $(this).css("display", "block");
+
+            }
+            else {
+                $(this).css("display", "none");
+            }
+        });
+
+}
+
+function SearchDocumentInContainer(e) {
+
+
+    var input = $("#searchDocumentInContainer").val();
+    if (input == "")
+        $("#documentsContainer div.documentsContainerElement").each(function (e) {
+
+            $(this).css("display", "block");
+            // return false;
+        });
+    else
+        $("#documentsContainer div.documentsContainerElement").each(function (e) {
+
+            if ($(this).attr("class").toLowerCase().indexOf(input.toLowerCase()) > -1) {
+                $(this).css("display", "block");
+
+            }
+            else {
+                $(this).css("display", "none");
+            }
+        });
+
+}
+
+function BookImageClick(e) {
+
+
+
+    var isbn = $(e).attr('id');
+    //alert(isbn);
+    $("#hiddenIsbn").val(isbn);
+
+    $.ajax({
+        url: "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn.toString(),
+        type: 'GET',
+        // async: false,
+        success: function (data) {
+
+            // alert("ajax");
+            //alert(JSON.stringify(data));
+            if (data["totalItems"] != "0") {
+                // $("#bookInfo").html(JSON.stringify(data));
+
+                var book = data.items[0];
+
+                //var title = (book["volumeInfo"]["title"]);
+
+                // alert(title);
+
+                $("#selectedBookImage").attr("src", book["volumeInfo"]["imageLinks"]["smallThumbnail"]);
+
+                $("#selectedBookTitle").text(book["volumeInfo"]["title"]);
+                $("#selectedBookAuthors").text(book["volumeInfo"]["authors"]);
+                $("#selectedBookDescription").text(book["volumeInfo"]["description"]);
+                $("#selectedBookPages").text("Pages: " + book["volumeInfo"]["pageCount"]);
+                $("#selectedBookSelfLink").attr("href", book["accessInfo"]["webReaderLink"]);
+                $("#bookSelectedBook").css("display", "block");
+            }
+            else {
+                alert("this book is not availible");
+            }
+        },
+        error: function (data) {
+            alert("woops"); //or whatever
+        }
+
+    });
+
+    //return false;
+
+
+    //$.get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn, function (data) {
+
+    //    alert("get");
+
+    //    $("#booksOptions").html("");
+
+    //    var book = data.items[0];
+
+    //    //var title = (book["volumeInfo"]["title"]);
+
+    //    // alert(title);
+
+    //    $("#selectedBookImage").attr("src", book["volumeInfo"]["imageLinks"]["smallThumbnail"]);
+
+    //    $("#selectedBookTitle").text(book["volumeInfo"]["title"]);
+    //    $("#selectedBookAuthors").text(book["volumeInfo"]["authors"]);
+    //    $("#selectedBookDescription").text(book["volumeInfo"]["description"]);
+    //    $("#selectedBookPages").text("Pages: " + book["volumeInfo"]["pageCount"]);
+    //    $("#bookSelectedBook").css("display", "block");
+    //});
+
+
+
+}
+
+
+function ImageLinkClick(e) {
+    $('.imageCollection').each(function () {
+        $(this).css({
+
+            "border-width": "0px",
+
+        });
+    });
+    $(e).css({
+        "border-color": "#789",
+        "border-left-width": "5px",
+        "border-right-width": "5px",
+        "border-bottom-width": "1px",
+        "border-top-width": "1px",
+        //"border-width": "5px",
+        "border-style": "solid"
+    });
+
+    //src dupa care il sterg
+    $("#hiddenSrcDelete").val($(e).attr("src"));
+
+}
+
+
+
+
+
+function ListBookSelected(e) {
+
+
+
+
+    var title = $(e).find(':selected').text();
+    var isbn = $(e).find(':selected').val();
+    // alert(isbn);
+    $("#hiddenIsbn").val(isbn);
+
+
+
+    $.get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn, function (data) {
+
+
+
+
+        $("#booksOptions").html("");
+        $("#booksOptions").css("display", "none");
+
+        var book = data.items[0];
+
+
+
+        $("#selectedBookImage").attr("src", book["volumeInfo"]["imageLinks"]["smallThumbnail"]);
+
+        $("#selectedBookTitle").text(book["volumeInfo"]["title"]);
+        $("#selectedBookAuthors").text(book["volumeInfo"]["authors"]);
+        $("#selectedBookDescription").text(book["volumeInfo"]["description"]);
+        $("#selectedBookPages").text("Pages: " + book["volumeInfo"]["pageCount"]);
+
+        $("#buttonRemoveBook").css("display", "block");
+        $("#buttonAddThisBook").css("display", "none");
+        $("#bookSelectedBook").css("display", "block");
+    });
+
+
+
+}
+
+function AddThisBook() {
+
+    var documentId = $("#hiddenId").val();
+    var isbn = $("#hiddenIsbn").val();
+    var imageUrl = $("#selectedBookImage").attr("src");
+    var title = $("#selectedBookTitle").text();
+    var authors = $("#selectedBookAuthors").text();
+
+
+    // $("#bookSelectedBook").css("display", "block");
+    if (CheckInListBox(isbn, ".listBoxBooks")) {
+        // alert("good");
+
+        var dataValue = { title: title, authors: authors, isbn: isbn, imageUrl: imageUrl, documentId: documentId };
+        // alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "WebMethods.aspx/AddSelectedBook",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                // alert("We returned: " + result.d);
+                if (result.d == "Inserted") {
+
+                    $('.listBoxBooks').append("<option value=" + isbn + ">" + $("#selectedBookTitle").text() + " - " + authors + "</option>");
+
+                }
+
+            }
+        });
+
+    }
+    else {
+        alert("already here");
+    }
+}
+
+function AddAdditionalImage() {
+
+    var documentId = $("#hiddenId").val();
+    var imageUrl = $("#textBoxLinksImages").val();
+
+    //if (!IsValidImageUrl2(imageUrl)) {
+    //    $("#imageValidator").text("This url is not valid!");
+    //    return false;
+    //}
+
+    $("#textBoxLinksImages").val("");
+    //alert(imageUrl);
+    var valid = true;
+    $('#addedImages img').each(function (e) {
+        if ($(this).attr("src") == imageUrl) {
+            valid = false;
+            //alert("already");
+            return false;
+        }
+    });
+
+    if (!valid) {
+        $("#imageValidator").text("This image is already in collection!");
+        return false;
+    }
+
+
+
+
+
+    var dataValue = { imageUrl: imageUrl, documentId: documentId };
+    //alert(JSON.stringify(dataValue));
+    //alert(document.getElementById('hiddenId').value);
+    $.ajax({
+        type: "POST",
+        url: "WebMethods.aspx/AddAdditionalImage",
+        data: JSON.stringify(dataValue),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        // async: false,
+        error: function (err) {
+            alert("Error: " + err.responseText);
+        },
+        success: function (result) {
+            // alert("We returned: " + result.d);
+            if (result.d == "Inserted") {
+
+                $('#addedImages').append('<img class="imageCollection" src="' + imageUrl + '" />');
+
+                $('.imageCollection').on("click", function () {
+                    ImageLinkClick(this);
+                });
+
+            }
+
+        }
+    });
+
+
+}
+
+
+function DeleteAdditionalImage() {
+
+    var documentId = $("#hiddenId").val();
+    var imageUrl = $("#hiddenSrcDelete").val();
+
+    var dataValue = { imageUrl: imageUrl, documentId: documentId };
+    // alert(JSON.stringify(dataValue));
+    //alert(document.getElementById('hiddenId').value);
+    $.ajax({
+        type: "POST",
+        url: "WebMethods.aspx/DeleteAdditionalImage",
+        data: JSON.stringify(dataValue),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        // async: false,
+        error: function (err) {
+            alert("Error: " + err.responseText);
+        },
+        success: function (result) {
+            alert("We returned: " + result.d);
+            if (result.d == "Deleted") {
+
+                $('#addedImages img').each(function () {
+
+                    if ($(this).attr("src") == imageUrl)
+                        $(this).remove();
+                });
+
+
+
+
+            }
+
+        }
+    });
+
+
+}
+
+function myCallback(url, answer) {
+    alert(url + ': ' + answer);
+}
+
+function IsValidImageUrl(url, callback) {
+    $("<img>", {
+        src: url,
+        error: function () { callback(url, false); },
+        load: function () { callback(url, true); }
+    });
+}
+
+function IsValidImageUrl2(url) {
+    var image = new Image();
+    image.src = url;
+    if (image.width == 0) {
+        alert("no image");
+        return false;
+    }
+    else return true;
+}
+
+function RemoveThisBook() {
+
+    var documentId = $("#hiddenId").val();
+    var isbn = $("#hiddenIsbn").val();
+    var selectedIsbn = $('#listBoxBooks :selected').val();
+    var title = $('#listBoxBooks :selected').text();
+
+    //alert(selectedIsbn + "----" + isbn);
+    //var imageUrl = $("#selectedBookImage").attr("src");
+    // var title = $("#selectedBookTitle").text();
+
+
+    // $("#bookSelectedBook").css("display", "block");
+
+
+    var dataValue = { title: title, isbn: isbn, documentId: documentId };
+    // alert(JSON.stringify(dataValue));
+    //alert(document.getElementById('hiddenId').value);
+    $.ajax({
+        type: "POST",
+        url: "WebMethods.aspx/RemoveSelectedBook",
+        data: JSON.stringify(dataValue),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        // async: false,
+        error: function (err) {
+            alert("Errort: " + err.responseText);
+        },
+        success: function (result) {
+            alert("We returned: " + result.d);
+            if (result.d == "Deleted") {
+
+                $('#listBoxBooks :selected').remove();
+            }
+
+        }
+    });
+
+    $("#selectedBookImage").attr("src", "#");
+
+    $("#selectedBookTitle").text("");
+    $("#selectedBookAuthors").text("");
+    $("#selectedBookDescription").text("");
+    $("#selectedBookPages").text("");
+    $("#bookSelectedBook").css("display", "none");
+}
 
 
 
@@ -490,7 +1500,7 @@ function VoteUp(userId1) {
 
     try {
         var dataValue = { documentId: document.getElementById('hiddenId').value, userId: userId1  /*this.innerHTML*/ };
-       // alert("asdg");
+        // alert("asdg");
         //alert(document.getElementById('hiddenId').value);
         $.ajax({
             type: "POST",
@@ -500,7 +1510,7 @@ function VoteUp(userId1) {
             dataType: 'json',
             // async: false,
             error: function (err) {
-                alert("Errort: " + err.responseText); 
+                alert("Errort: " + err.responseText);
             },
             success: function (result) {
                 //alert("We returned: " + result.d);
@@ -524,26 +1534,26 @@ function VoteUp(userId1) {
 }
 
 function changeImage(numberDisplay) {
-    
-    
+
+
     var count = 0;
     $('.documentSlideshow img').each(function (e) {
         count++;
         if (count == numberDisplay) {
             $(this).css("display", "block");
-           // return false;
+            // return false;
         }
         else {
             $(this).css("display", "none");
-            
+
         }
-           
-        });
+
+    });
 }
 
-function VerifyTagExistence( tagName) {
+function VerifyTagExistence(tagName) {
 
-    var dataValue = { inputValue:tagName };
+    var dataValue = { inputValue: tagName };
     var response;
     $.ajax({
         type: "POST",
@@ -561,7 +1571,7 @@ function VerifyTagExistence( tagName) {
         success: function (result) {
 
             response = result.d;
-           
+
 
         }
     });
@@ -569,6 +1579,79 @@ function VerifyTagExistence( tagName) {
     return response;
 
 }
+
+function VerifyCategoryExistence(categoryName) {
+
+    var dataValue = { inputValue: categoryName };
+    var response;
+    $.ajax({
+        type: "POST",
+        url: "AddNewCategory.aspx/VerifyCategoryExistence",
+        data: JSON.stringify(dataValue),
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+
+        error: function (err) {
+
+            console.log("A aparut o eroare: " + err.responseText);
+            // return false;
+        },
+        success: function (result) {
+
+            response = result.d;
+
+
+        }
+    });
+
+    return response;
+
+}
+
+function GetIndividualInfo(documentId) {
+    
+    var dataValue = { documentId: documentId };
+    var response;
+    $.ajax({
+        type: "POST",
+        url: "WebMethods.aspx/GetIndividualInfo",
+        data: JSON.stringify(dataValue),
+        //async: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+
+        error: function (err) {
+            alert(err.responseText);
+            console.log("A aparut o eroare: " + err.responseText);
+            // return false;
+        },
+        success: function (result) {
+
+            alert(result.d);
+            response = result.d;
+           // $(".profileImage").attr("src", response.toString());
+
+            SetIndividualInfo(result.d);
+
+        }
+    });
+
+    //return response.toString();
+
+}
+
+
+function SetIndividualInfo(data) {
+
+    data = JSON.parse(data);
+   
+    $(".labelName").text(data["name"].replace(',', ' ').replace('[', ' ').replace(']', ' ') );
+    $(".profileImage").attr("src", data["image"]);
+    $(".labelDates").text(data["dates"]);
+
+}
+
 
 
 
@@ -581,12 +1664,12 @@ $(function () {
     });
     $(".linkContact").click(function (e) {
 
-        alert(this.innerHTML);
+       // alert(this.innerHTML);
 
 
 
         try {
-            var dataValue = { criteria: "clasicism" };
+            var dataValue = { criteria: "persons" };
 
             $.ajax({
                 type: "POST",

@@ -66,8 +66,9 @@ form {
 
 
 .imageInline {
-    display: inline;
-    float: left;
+    display: inline-block;
+    /*float: left;*/
+    vertical-align:top;
 }
 
 #ckEditor {
@@ -135,12 +136,11 @@ h3 {
 
 .essentialButtons {
     margin-left: 30px;
+    height: 26px;
 }
 
 .userManButton {
-    border-style: solid;
-    border-color: #767d84;
-    border-width: thin;
+    border: thin solid #767d84;
     margin-left: 20px;
     background-color: transparent;
     color: #222426;
@@ -153,7 +153,7 @@ h3 {
     position: absolute;
     top: 0px;
     left: 221px;
-    width: 93px;
+    width: 141px;
 }
 
     .userManButton:hover {
@@ -364,14 +364,14 @@ ul.ui-autocomplete {
 #pageBody {
     overflow: auto;
     margin-left: 8%;
-
 }
 
 #pageBodyTagInfo {
-        overflow: auto;
+    overflow: auto;
     margin-left: 6%;
-    margin-right:15%;
+    margin-right: 15%;
 }
+
 .inlineProfile {
     float: left;
 }
@@ -516,95 +516,232 @@ a {
 }
 
 .inline {
-    display:inline;
+    display: inline;
 }
 
 
 
-#containerTagInfo{
-    font-family:sans-serif;
+#containerTagInfo {
+    font-family: sans-serif;
 }
 
-#containerTagDescription{
-    font-family:sans-serif;
+#containerTagDescription {
+    font-family: sans-serif;
 }
 
 h2 {
-    font-family:sans-serif;
-    font-weight:500;
+    font-family: sans-serif;
+    font-weight: 500;
     color: #444;
-    font-size:large;
+    font-size: large;
 }
 
-#h2TagInfo{
-    font-family:sans-serif;
-    font-weight:500;
+#h2TagInfo {
+    font-family: sans-serif;
+    font-weight: 500;
     color: #444;
-    font-size:x-large;
+    font-size: x-large;
 }
 
 #labelTag {
-    color:gray;
-    text-decoration:underline;
+    color: gray;
+    text-decoration: underline;
 }
+
 .profileImage {
     max-width: 190px;
-    height: auto;
     max-height: 250px;
 }
 
 
 .imageProfile {
-     max-width: 190px;
+    max-width: 190px;
     height: auto;
     max-height: 250px;
+    
 }
 
 #improvePage {
     margin-left: 70%;
-
 }
+
 #feedbackMessage {
-    display:none;
+    display: none;
     margin-left: 20px;
 }
 
 .buttonSendFeedback {
-
     margin-left: 725px;
     margin-top: 3px;
 }
 
 #divDocumentFeedback {
-    float:left;
-    clear:left;
-    margin-left:3%;
-    
+    float: left;
+    clear: left;
+    margin-left: 3%;
 }
 
 a:hover {
-    cursor:pointer;
+    cursor: pointer;
 }
 
 #feedbackShow {
-    cursor:pointer;
+    cursor: pointer;
 }
-.divDocumentFeedback {
-    font-family:sans-serif;
-    /*border:0.5px solid black;*/
 
-    
+.divDocumentFeedback {
+    font-family: sans-serif;
+    /*border:0.5px solid black;*/
 }
 
 .slideImage {
-
     
-    width:60%;
+    max-width: 60%;
+    max-height: 500px;
     /*max-height: 500px;
     min-height:500px;*/
 }
 
 .documentSlideshow {
-    margin-left:5%;
-    margin-top:3%;
+    margin-left: 5%;
+    margin-top: 3%;
+}
+
+
+
+    .divBookOption .bookOption {
+        max-height: 170px;
+        padding-left: 4px;
+         padding-right: 4px;
+        margin-top: 4px;
+    }
+
+        .divBookOption .bookOption:hover {
+            max-height:174px;
+           height:174px;
+           padding-left: 0px;
+           padding-right: 0px;
+            /*border: solid;
+            border-width:thin;
+            border-color:red;*/
+        }
+
+.selectedBookInfo {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#selectedBookInfo {
+    width: 500px;
+}
+
+#bookSelectedBook {
+    margin-left: 3%;
+    width: 700px;
+}
+
+
+#selectedBookDescription {
+    max-width: 500px;
+    max-height: 100px;
+    overflow: hidden;
+}
+
+#buttonAddThisBook {
+    float: right;
+}
+
+.addBook {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#buttonRemoveBook {
+    float: right;
+}
+
+#booksOptions {
+    border: solid;
+    border-width:thin;
+    border-color: lightslategrey;
+    display: none;
+    width: 82%;
+    height: 175px;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+#buttonSearchBook {
+    width: 83px;
+}
+
+
+.documentBook {
+    max-height:170px;
+    padding-left:4px;
+    padding-right:4px;
+    padding-top:4px;
+}
+
+.documentBook:hover {
+            max-height:174px;
+           height:174px;
+           padding-left: 0px;
+           padding-right: 0px;
+             padding-top:0px;
+        }
+
+.flexImages {
+    
+    border: solid;
+    border-width:thin;
+    border-color: lightslategrey;
+    display: flex;
+    width: 82%;
+    height: 175px;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+ .imageCollection {
+        max-height: 100px;
+        padding-left: 4px;
+         padding-right: 4px;
+        margin-top: 4px;
+       
+    }
+
+        .imageCollection:hover {
+            max-height:104px;
+           height:104px;
+           padding-left: 2px;
+           padding-right: 2px;
+            
+        }
+
+        .elementsContainer {
+            max-height:600px;
+            overflow:auto;
+        }
+
+        #profileImageEdit {
+            max-height:150px;
+            max-width:150px;
+        }
+        
+
+        #profileImage {
+            max-height:150px;
+            max-width:150px;
+        }
+        
+        #categoriesManaging {
+    width: 334px;
+    position: relative;
+    top: 0px;
+    left: 0px;
 }

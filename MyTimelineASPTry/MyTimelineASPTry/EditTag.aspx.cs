@@ -11,79 +11,116 @@ namespace MyTimelineASPTry
 {
     public partial class EditTag : System.Web.UI.Page
     {
-        protected  void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
-            
-                //ViewState["itemId"] = Request.QueryString["itemId"];
+
+            //ViewState["itemId"] = Request.QueryString["itemId"];
             if (!IsPostBack)
             {
                 tagId = Request.QueryString["itemId"];
                 InitializeTagData(tagId, Session["userId"].ToString());
             }
-            
+
         }
 
         public static string tagId;
         protected async void buttonSaveTagChanges_Click(object sender, EventArgs e)
         {
 
-            Response.Write(textBoxTagName.Text);
-            Response.Write(textBoxTagShortDescription.Text);
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+            // Response.Write(textBoxTagName.Text);
+            // Response.Write(textBoxTagShortDescription.Text);
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<TagsCollection>("Tags");
 
             //string tagId = Request.QueryString["itemId"];
-           //string  tagId = Session["tagId"].ToString();
-             var filter = Builders<TagsCollection>.Filter.Eq("id",tagId);
+            //string  tagId = Session["tagId"].ToString();
 
-
-            
-             //ObjectId objectId = ObjectId.Parse(hiddenFieldParentTagId.Value.ToString());
-             BsonDocument parentTag = new BsonDocument
-                {
-                    { "parentName",textBoxParentName.Text.ToLower()},
-                    { "id", hiddenFieldParentTagId.Value },
-                   // {"_id", objectId}
-                   
-                };
-             BsonArray parentTags = new BsonArray();
-             parentTags.Add(parentTag);
-
-            BsonArray tagSynonyms = new BsonArray();
-            foreach (string tagSynonym in textBoxSynonyms.Text.Split(';'))
-            {
-                if (tagSynonym.Length > 2)
-                    tagSynonyms.Add(tagSynonym);
-            }
-
-
-            try {
-                 var update = Builders<TagsCollection>.Update
-                .Set("tagName", textBoxTagName.Text.ToLower())
-                .Set("parentTags", parentTags)
-                .Set("relativeImportance", textBoxRelativeImportance.Value.ToString())
-                .Set("description", textBoxTagShortDescription.Text)
-                .Set("tagSynonyms", tagSynonyms)
-                .Set("tagInfo", CKEditorInformation.Text);
-
-
-            await collection.UpdateOneAsync(filter, update);
-            Response.Redirect("UserManaging.aspx?tab=tags", false);
            
-                 }
-            catch(Exception ex)
-             {
-                 Response.Write(ex.Message);
-             }
 
+            string id = "";
+
+
+            var filterParent = Builders<TagsCollection>.Filter.Eq("tagName", textBoxParentName.Text);
+
+
+
+            long exists = collection.Find(filterParent).CountAsync().Result;
+
+            // Response.Write(" nr = " + exists);
+
+            if (exists > 0)
+            {
+
+                //id = collection.Find(filterParent).FirstAsync().Result.id;
+                //Response.Write("Am dat id = " + id);
+
+                var filter = Builders<TagsCollection>.Filter.Eq("id", tagId);
+
+
+
+                //ObjectId objectId = ObjectId.Parse(hiddenFieldParentTagId.Value.ToString());
+
+                var filter1 = Builders<TagsCollection>.Filter.Eq(d => d.tagName, textBoxParentName.Text);
+
+                TagsCollection parent = collection.Find(filter1).FirstAsync().Result;
+
+
+
+                BsonDocument parentTag = new BsonDocument
+                {
+                    { "parentName",parent.tagName},
+                    { "id", parent.id },
+                    {"_id", parent._id}
+
+                };
+
+
+                BsonArray parentTags = new BsonArray();
+                parentTags.Add(parentTag);
+
+                BsonArray tagSynonyms = new BsonArray();
+                foreach (string tagSynonym in textBoxSynonyms.Text.Split(';'))
+                {
+                    if (tagSynonym.Length > 2)
+                        tagSynonyms.Add(tagSynonym);
+                }
+
+
+                try
+                {
+                    var update = Builders<TagsCollection>.Update
+                   .Set("tagName", textBoxTagName.Text)
+                   .Set("parentTags", parentTags)
+                   .Set("relativeImportance", textBoxRelativeImportance.Value.ToString())
+                   .Set("description", textBoxTagShortDescription.Text)
+                   .Set("tagSynonyms", tagSynonyms)
+                   .Set("tagInfo", CKEditorInformation.Text);
+
+
+                    await collection.UpdateOneAsync(filter, update);
+                    Response.Redirect("UserManaging.aspx?tab=tags", false);
+
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                }
+            }
+            else
+                Response.Write("Parent does not exist!");
         }
 
         async void InitializeTagData(string initTagId, string userId)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<TagsCollection>("Tags");
             //var documents = await collection.Find(new BsonDocument()).FirstAsync();
@@ -99,9 +136,9 @@ namespace MyTimelineASPTry
                 textBoxTagShortDescription.Text = documents.description;
                 CKEditorInformation.Text = documents.tagInfo;
 
-                if(documents.tagSynonyms != null)
-                foreach (string synonym in documents.tagSynonyms)
-                    textBoxSynonyms.Text += synonym + ";";
+                if (documents.tagSynonyms != null)
+                    foreach (string synonym in documents.tagSynonyms)
+                        textBoxSynonyms.Text += synonym + ";";
 
             }
             else
@@ -113,16 +150,17 @@ namespace MyTimelineASPTry
 
         protected async void buttonDeleteTag_Click(object sender, EventArgs e)
         {
-            MongoClient mclient = new MongoClient();
-            var db = mclient.GetDatabase("Timeline");
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
 
             var collection = db.GetCollection<TagsCollection>("Tags");
             var filter = Builders<TagsCollection>.Filter.Eq("id", tagId);
 
-           var result= await collection.DeleteOneAsync(filter);
+            var result = await collection.DeleteOneAsync(filter);
             Response.Redirect("UserManaging.aspx?tab=tags", false);
         }
 
-        
+
     }
 }

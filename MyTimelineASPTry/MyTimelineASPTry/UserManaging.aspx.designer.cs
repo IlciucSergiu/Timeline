@@ -49,13 +49,13 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.WebControls.Label LabelUsername;
         
         /// <summary>
-        /// imageProfile control.
+        /// profileImage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imageProfile;
+        protected global::System.Web.UI.HtmlControls.HtmlImage profileImage;
         
         /// <summary>
         /// labelReputation control.
@@ -65,6 +65,15 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label labelReputation;
+        
+        /// <summary>
+        /// documentsManaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentsManaging;
         
         /// <summary>
         /// labelNumeberOfDocuments control.
@@ -94,6 +103,15 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentsContainer;
         
         /// <summary>
+        /// tagsManaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tagsManaging;
+        
+        /// <summary>
         /// labelNumberOfTags control.
         /// </summary>
         /// <remarks>
@@ -121,6 +139,51 @@ namespace MyTimelineASPTry {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl tagsContainer;
         
         /// <summary>
+        /// categoriesManaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl categoriesManaging;
+        
+        /// <summary>
+        /// labelNumberOfCategories control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelNumberOfCategories;
+        
+        /// <summary>
+        /// buttonCreateCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonCreateCategory;
+        
+        /// <summary>
+        /// categoriesContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl categoriesContainer;
+        
+        /// <summary>
+        /// profileManaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl profileManaging;
+        
+        /// <summary>
         /// profileContent control.
         /// </summary>
         /// <remarks>
@@ -128,5 +191,50 @@ namespace MyTimelineASPTry {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl profileContent;
+        
+        /// <summary>
+        /// profileImageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage profileImageEdit;
+        
+        /// <summary>
+        /// textBoxProfileImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBoxProfileImage;
+        
+        /// <summary>
+        /// CKEditorProfileInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CKEditor.NET.CKEditorControl CKEditorProfileInfo;
+        
+        /// <summary>
+        /// buttonSaveChanges control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonSaveChanges;
+        
+        /// <summary>
+        /// buttonRunCommand control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonRunCommand;
     }
 }
