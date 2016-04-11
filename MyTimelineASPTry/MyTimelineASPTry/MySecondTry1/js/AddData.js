@@ -697,7 +697,7 @@ $(function () {
     $(".textBoxAddCategory").on('keyup focus', function () {
        
         if ($(".textBoxAddCategory").val() != "")
-            try {
+            try { 
                 var dataValue = { inputValue: $(".textBoxAddCategory").val() };
 
                 $.ajax({
