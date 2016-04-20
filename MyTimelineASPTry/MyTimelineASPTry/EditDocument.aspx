@@ -146,8 +146,8 @@
 
             <hr />
             <h2>Add video's</h2>
-            <p>Insert id of a youtube video or the entire link</p>
-            <asp:TextBox ID="textBoxVideoId" runat="server" Width="296px"></asp:TextBox>
+            <p>Insert the id of youtube videos separated by ';'</p>
+            <asp:TextBox ID="textBoxVideoId" runat="server" Width="317px" Height="47px"></asp:TextBox>
 
             <hr />
             <h2>Add images</h2>
