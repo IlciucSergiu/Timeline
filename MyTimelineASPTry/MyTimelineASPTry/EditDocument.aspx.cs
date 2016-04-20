@@ -202,7 +202,8 @@ namespace MyTimelineASPTry
 
                         if (item.videoLinks != null)
                         {
-                            textBoxVideoId.Text = item.videoLinks[0].ToString();
+                            foreach (string videoId in item.videoLinks)
+                                textBoxVideoId.Text += videoId+";" ;
                         }
                     }
                 }
@@ -237,7 +238,11 @@ namespace MyTimelineASPTry
             }
 
             BsonArray videoLinks = new BsonArray();
-            videoLinks.Add(textBoxVideoId.Text);
+            foreach(string videoId in textBoxVideoId.Text.Split(';'))
+            { 
+                if(videoId.Length > 4)
+            videoLinks.Add(videoId);
+            }
 
             var filter = Builders<IndividualData>.Filter.Eq("id", itemId);
 

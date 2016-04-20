@@ -405,9 +405,6 @@ function AddLinkItem() {
 
 $(function () {
 
-
-
-
     $(".checkContemporary").click(function () {
         // alert(document.getElementByClass('checkBoxContemporary').checked).toString();
         // alert(document.getElementById('checkBoxContemporary').checked).toString();
@@ -468,6 +465,8 @@ $(function () {
         yearRange: "1:c"
     });
     $(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
+
+
 
     $(".textBoxAddTag").on('keyup focus', function () {
         try {
@@ -850,38 +849,7 @@ $(function () {
         return false;
     });
 
-    changeImage(1);
 
-    countTimes = 1;
-    $('.documentSlideshow img').click(function () {
-
-        imagesLengt = 0;
-        $('.documentSlideshow img').each(function (e) {
-            imagesLengt++;
-        });
-
-        if (countTimes == imagesLengt)
-            countTimes = 1;
-        else
-            countTimes = countTimes + 1;
-
-        changeImage(countTimes);
-    });
-
-    $('#imagesCollection img').click(function () {
-
-        imageUrl = $(this).attr("src");
-        imagesLengt = 0;
-
-        $('#imagesCollection img').each(function (e) {
-            imagesLengt++;
-
-            if ($(this).attr("src") == imageUrl)
-                countTimes = imagesLengt;
-        });
-
-        changeImage(countTimes);
-    });
 
     $("#buttonSearchBook").click(function () {
 
@@ -934,10 +902,7 @@ $(function () {
 
 
 
-    $('.documentBook').on("click", function () {
 
-        BookImageClick(this);
-    });
 
     $('#selectedBookSelfLink').on("click", function () {
 
@@ -995,6 +960,44 @@ $(function () {
 
 
 });
+
+function setImagesEvent() {
+    changeImage(1);
+
+    countTimes = 1;
+
+    $('.documentSlideshow img').click(function () {
+
+        // alert("Changing 1");
+        imagesLengt = 0;
+        $('.documentSlideshow img').each(function (e) {
+            imagesLengt++;
+        });
+
+        if (countTimes == imagesLengt)
+            countTimes = 1;
+        else
+            countTimes = countTimes + 1;
+
+        changeImage(countTimes);
+    });
+
+    $('#imagesCollection img').click(function () {
+
+        // alert("Changing 2");
+        imageUrl = $(this).attr("src");
+        imagesLengt = 0;
+
+        $('#imagesCollection img').each(function (e) {
+            imagesLengt++;
+
+            if ($(this).attr("src") == imageUrl)
+                countTimes = imagesLengt;
+        });
+
+        changeImage(countTimes);
+    });
+}
 
 function SearchCategory(e) {
     //alert("pressed");
@@ -1181,30 +1184,6 @@ function BookImageClick(e) {
         }
 
     });
-
-    //return false;
-
-
-    //$.get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn, function (data) {
-
-    //    alert("get");
-
-    //    $("#booksOptions").html("");
-
-    //    var book = data.items[0];
-
-    //    //var title = (book["volumeInfo"]["title"]);
-
-    //    // alert(title);
-
-    //    $("#selectedBookImage").attr("src", book["volumeInfo"]["imageLinks"]["smallThumbnail"]);
-
-    //    $("#selectedBookTitle").text(book["volumeInfo"]["title"]);
-    //    $("#selectedBookAuthors").text(book["volumeInfo"]["authors"]);
-    //    $("#selectedBookDescription").text(book["volumeInfo"]["description"]);
-    //    $("#selectedBookPages").text("Pages: " + book["volumeInfo"]["pageCount"]);
-    //    $("#bookSelectedBook").css("display", "block");
-    //});
 
 
 
@@ -1503,7 +1482,46 @@ function VoteUp(userId1) {
         //alert(document.getElementById('hiddenId').value);
         $.ajax({
             type: "POST",
-            url: "WebFormTimeline.aspx/UpVoteDocument",
+            url: "WebMethods.aspx/UpVoteDocument",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            // async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                //alert("We returned: " + result.d);
+                if (result.d == "worked") {
+                    $(".labelVote").css("display", "block");
+                    $(".labelVote").css("color", "green");
+                    $(".labelVote").text("vote registered");
+                }
+                if (result.d == "already") {
+
+                    $(".labelVote").css("display", "block");
+                    $(".labelVote").css("color", "red");
+                    $(".labelVote").text("you have already voted");
+                }
+            }
+        });
+    }
+    catch (e) {
+        alert("Error" + e.message);
+    }
+}
+
+function VoteDown(userId1) {
+
+    //alert(userId1);
+
+    try {
+        var dataValue = { documentId: document.getElementById('hiddenId').value, userId: userId1  /*this.innerHTML*/ };
+        // alert("asdg");
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "WebMethods.aspx/DownVoteDocument",
             data: JSON.stringify(dataValue),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -1534,7 +1552,7 @@ function VoteUp(userId1) {
 
 function changeImage(numberDisplay) {
 
-
+    // alert("Changing");
     var count = 0;
     $('.documentSlideshow img').each(function (e) {
         count++;
@@ -1627,74 +1645,131 @@ function GetIndividualInfo(documentId) {
         },
         success: function (result) {
 
-            alert(result.d);
-
-            // $(".profileImage").attr("src", response.toString());
+            //alert(result.d);
 
             SetIndividualInfo(result.d);
+
 
         }
     });
 
-    //return response.toString();
+
 
 }
 
 
 function SetIndividualInfo(data) {
-
+    // alert(data.toString());
     try {
         data = JSON.parse(data);
     } catch (e) {
         alert(e);
     }
+
+    ResetFields();
+
     $(".labelName").text(data["name"].replace(',', ' ').replace('[', ' ').replace(']', ' '));
     $(".profileImage").attr("src", data["image"]);
     $(".labelDates").text(data["dates"]);
 
 
-    $(".divTags").html("");
-    if (data["tags"]!= null)
-    $.each(data["tags"], function (key, tag) {
-        //alert(tag);
-        $(".divTags").append("<a class=\"tagLinks\" runat=\"server\" >" + tag["tagName"] + "</a>  ");
 
-    });
 
-    $(".divCategories").html("");
+    if (data["tags"] != null)
+        $.each(data["tags"], function (key, tag) {
+            $(".divTags").append("<a class=\"tagLinks\" runat=\"server\" >" + tag["tagName"] + "</a>  ");
+
+        });
+
+
     if (data["categories"] != null)
         $.each(data["categories"], function (key, tag) {
-            //alert(categories);
+
             $(".divCategories").append("<a class=\"categoryLinks\" runat=\"server\" >" + tag["categoryName"] + "</a>  ");
 
         });
 
-    $("#additionalLinks").html("");
+
     if (data["links"] != null)
         $.each(data["links"], function (key, link) {
-            //alert(categories);
+
             $("#additionalLinks").append("<br /><a href=\"" + link + "\">" + link + "<a/>");
 
         });
-    
 
-    $("#additionalLinks").html("");
-    if (data["links"] != null)
-        $.each(data["links"], function (key, link) {
-            //alert(categories);
-            $("#additionalLinks").append("<div  id=\"player\"></div>");
 
-        });
-   
-    
+
+
+
     $("#htmlInfo").html(data["htmlInformation"]);
 
-    $(".labelViews").text("viewed " + data["timesViewed"]);
-   
+    $(".labelViews").text("viewed " + data["timesViewed"] + " times");
 
+
+    if (data["videos"] != "") {
+
+        addPlayer(data["videos"].toString());
+
+        $("#divNoVideo").css("display", "none");
+    }
+    else {
+        $("#divNoVideo").css("display", "block");
+    }
+
+
+
+    if (data["images"] != null) {
+        $.each(data["images"], function (key, image) {
+
+            $("#documentSlideshow").append("<img  class=\"slideImage\" src=\"" + image + "\"/>");
+            $("#imagesCollection").append("<img   class=\"imageCollection\" src=\"" + image + "\"/>");
+
+
+        });
+        setImagesEvent();
+        $("#divNoImage").css("display", "none");
+    }
+    else {
+        $("#divNoImage").css("display", "block");
+    }
+
+
+    if (data["books"] != null) {
+        $.each(data["books"], function (key, book) {
+
+            $("#booksContainer").append("<img  id=\"" + book["isbn"] + "\"  class=\"documentBook\" src=\"" + book["imageUrl"] + "\"/>");
+
+        });
+
+        $('.documentBook').on("click", function () {
+
+            BookImageClick(this);
+        });
+        $("#divNoBook").css("display", "none");
+    }
+    else {
+        $("#divNoBook").css("display", "block");
+    }
+
+    $("#individualInfo").css("display", "block");
+    $("#individualInfo").hide();
+    //$("#individualInfo").slideDown();
+    $("#individualInfo").fadeIn();
 }
 
+function ResetFields() {
 
+    $(".divTags").html("");
+    $(".divCategories").html("");
+    $("#additionalLinks").html("");
+    $("#imagesCollection").html("");
+    $("#documentSlideshow").html("");
+    $("#videosContainer").html("");
+    $("#booksContainer").html("");
+    $(".labelVote").html("");
+    $("#htmlInfo").html("");
+
+}
 
 
 $(function () {
@@ -1705,10 +1780,6 @@ $(function () {
 
     });
     $(".linkContact").click(function (e) {
-
-        // alert(this.innerHTML);
-
-
 
         try {
             var dataValue = { criteria: "persons" };
@@ -1733,81 +1804,83 @@ $(function () {
         }
     });
 
-
+    $("#videoAdd").click(function () {
+        addPlayer();
+        return;
+    });
 
 });
 
 
 
-// De pastrat
-//function SearchPersonalInfo(theId) {
+// Loading youtube video !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-//    alert(theId);
-//    try {
-//        var dataValue = { personId: theId};
-//        // alert("got here");
-//        $.ajax({
-//            type: "POST",
-//            url: "WebFormTimeline.aspx/SearchPersonalInfo",
-//            data: JSON.stringify(dataValue),
-//            contentType: 'application/json; charset=utf-8',
-//            dataType: 'json',
-//            // async: false,
-//            error: function (err) {
-//                alert("Errort: " + err.responseText);
-//            },
-//            success: function (result) {
-//                var jsonData = result.d;
-//                var jsonObject = jQuery.parseJSON("[" + jsonData + "]");
 
-//                alert("We returned: " + jsonObject.id);
-//            }
-//        });
-//    }
-//    catch (e) {
-//        alert("Error" + e.message);
-//    }
+// 2. This code loads the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
+
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+
+// 3. This function creates an <iframe> (and YouTube player)
+
+var player;
+
+//function onYouTubeIframeAPIReady() {
+//    player = new YT.Player('player', {
+//        height: '390',
+//        width: '640',
+
+//        videoId: 'VBEmqvVPOX4',
+//       playerVars: { 'autoplay': 0, 'playlist': listVideos},
+//        events: {
+//            //'onReady': onPlayerReady,
+//            // 'onStateChange': onPlayerStateChange
+//        }
+//    });
+
+
 //}
-function LoadVideo(videoId1) {
-    // 2. This code loads the IFrame Player API code asynchronously.
-    var tag = document.createElement('script');
 
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // 3. This function creates an <iframe> (and YouTube player)
-    //    after the API code downloads.
-    alert(videoId1);
-    var player;
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '390',
-            width: '640',
-            videoId: videoId1,
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
+
+// 4. The API will call this function when the video player is ready.
+function onPlayerReady(event) {
+    event.target.playVideo();
+}
+
+// 5. The API calls this function when the player's state changes.
+//    The function indicates that when playing a video (state=1),
+//    the player should play for six seconds and then stop.
+var done = false;
+function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING && !done) {
+        setTimeout(stopVideo, 6000);
+        done = true;
     }
+}
+function stopVideo() {
+    player.stopVideo();
+}
 
-    // 4. The API will call this function when the video player is ready.
-    function onPlayerReady(event) {
-        event.target.playVideo();
-    }
 
-    // 5. The API calls this function when the player's state changes.
-    //    The function indicates that when playing a video (state=1),
-    //    the player should play for six seconds and then stop.
-    var done = false;
-    function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) {
-            setTimeout(stopVideo, 6000);
-            done = true;
+function addPlayer(listVideos) {
+    // alert(listVideos);
+
+    $("#videosContainer").html("");
+    $("#videosContainer").html("<div  id=\"player\"></div> ");
+    player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+
+        //  videoId: '',
+        playerVars: { 'autoplay': 0, 'playlist': listVideos },
+        events: {
+            //'onReady': onPlayerReady,
+            // 'onStateChange': onPlayerStateChange
         }
-    }
-    function stopVideo() {
-        player.stopVideo();
-    }
+    });
+
 }

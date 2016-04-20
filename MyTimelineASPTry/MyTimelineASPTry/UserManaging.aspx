@@ -158,7 +158,7 @@
         <br />
         <br />
         
-        <asp:Button ID="buttonRunCommand" runat="server" OnClick="buttonRunCommand_Click" Text="Run comand" Visible="True" />
+      <!--  <asp:Button ID="buttonRunCommand" runat="server" OnClick="buttonRunCommand_Click" Text="Run comand" Visible="True" /> -->
         
     </form>
 </body>
