@@ -826,45 +826,7 @@ namespace MyTimelineASPTry
         }
 
 
-        [WebMethod]
-
-        public static string UpVoteDocument(string documentId, string userId)
-        {
-
-            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
-            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
-            var collection = db.GetCollection<IndividualData>("IndividualData");
-            var filter = Builders<IndividualData>.Filter.Eq("id", documentId);
-
-            bool notYet = true;
-            int pos;
-            collection.Find(filter).ForEachAsync(d =>
-            {
-                if (d.alreadyVoted != null)
-                {
-                    pos = Array.IndexOf(d.alreadyVoted.ToArray(), userId);
-
-                    if (pos != -1)
-                        notYet = false;
-                }
-            }).Wait();
-
-
-            if (notYet)
-            {
-                var update = Builders<IndividualData>.Update
-                    .Inc("votes", 1)
-                    .Push(p => p.alreadyVoted, userId);
-
-                collection.UpdateOneAsync(filter, update).Wait();
-                return "worked";
-            }
-            else
-            {
-                return "already";
-            }
-
-        }
+       
 
         protected void buttonSearchTag_Click(object sender, EventArgs e)
         {

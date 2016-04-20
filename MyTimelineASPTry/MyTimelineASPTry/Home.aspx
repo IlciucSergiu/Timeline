@@ -78,12 +78,7 @@
 
                 }
 
-                // if ('<%=setDate%>' == "True") {
-                //   alert(document.getElementById('hiddenFieldStartDate').value);
-                //    var timelineClone = tg1.data("timeline");
-                //   timelineClone.goTo(document.getElementById('hiddenFieldStartDate').value.toString());
-
-                //  }
+               
 
                 if ('<%=showIndividual%>' == "True")
                     $("#individualInfo").css("display", "block");
@@ -102,16 +97,31 @@
 
 
             $(function () {
-                $("#linkVoteUp").click(function (e) {
-                    //the user id is visible but only if logged in
-                    if ('<%= Session["userId"] %>' != "")
-                        VoteUp('<%= Session["userId"] %>');
-                    else {
-                        $(".labelVote").css("display", "block");
-                        $(".labelVote").css("color", "red");
-                        $(".labelVote").text("you need an acount to vote");
-                    }
-                });
+               
+                 $("#linkVoteUp").click(function (e) {
+        //the user id is visible but only if logged in
+        if ('<%= Session["userId"] %>' != "")
+            VoteUp('<%= Session["userId"] %>');
+        else {
+            $(".labelVote").css("display", "block");
+            $(".labelVote").css("color", "red");
+            $(".labelVote").text("you need an acount to vote");
+        }
+
+
+    });
+
+    $("#linkVoteDown").click(function (e) {
+        //the user id is visible but only if logged in
+        if ('<%= Session["userId"] %>' != "")
+            VoteDown('<%= Session["userId"] %>');
+        else {
+            $(".labelVote").css("display", "block");
+            $(".labelVote").css("color", "red");
+            $(".labelVote").text("you need an acount to vote");
+        }
+    });
+
                 var firstClick = false; var secondClick = false; var theId;
 
 
@@ -161,27 +171,25 @@
                 });
                 $(document).dblclick(function (e) {
 
+
                     if (firstClick) {
+                        //alert(theId);
                         secondClick = true;
                         document.getElementById('hiddenId').value = theId;
                         var tg_instance = tg1.data("timeline");
                         var startDate = tg_instance.getEventByID(theId).startdate;
-                        document.getElementById('hiddenFieldStartDate').value = startDate;
 
-
-                        // document.getElementById("buttonSearchId").click();
+                        GetIndividualInfo(theId);
                        
-                        
-                        $("#individualInfo").css("display", "block");
-                        var source = GetIndividualInfo(theId);
-                        
-
-                    }
+                      }
 
                 });
 
 
             });
+
+          
+           
 
         </script>
 
@@ -245,7 +253,7 @@
                     <br />
                     <br />
                     <a id="linkVoteUp" class="linkVoteUp">vote up</a>
-                    &nbsp;&nbsp; <a href="#" class="linkVoteDown">vote down</a><br />
+                    &nbsp;&nbsp; <a id="linkVoteDown" class="linkVoteDown">vote down</a><br />
                     <asp:Label ID="labelVote" runat="server" Text="voting status" CssClass="hide labelVote"></asp:Label>
                     <br />
 
@@ -282,11 +290,17 @@
 
                         <div id="documentSlideshow" class="documentSlideshow" runat="server">
                         </div>
-                        <div id="imagesCollection" runat="server">
+                        <div id="imagesCollection"  runat="server">
                         </div>
 
                     </div>
+                    <!-- <a id="videoAdd">add video</a> -->
                     <div id="documentVideos" class="Videos hide tab" runat="server">
+                        <div id="videosContainer">
+                             <div  id="player"></div> 
+                        </div>
+                      
+                       
                         <div id="divNoVideo" runat="server" >
                             <h2>Unfortunately there is no video for this document.</h2>
                             <h4>You can suggest some to the editor by sending him a message.<br />
@@ -353,65 +367,8 @@
             <asp:LinkButton ID="linkButtonCopyright" runat="server" CssClass="inFooter">Copyright</asp:LinkButton>
             <asp:LinkButton ID="linkButtonTermsAndConditions" runat="server" CssClass="inFooter">Terms and conditions</asp:LinkButton>
         </div>
-        <script>
-            //LoadVideo('<%= videoId %>');
-            // 2. This code loads the IFrame Player API code asynchronously.
-            var tag = document.createElement('script');
-
-            tag.src = "https://www.youtube.com/iframe_api";
-            var firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-            // 3. This function creates an <iframe> (and YouTube player)
-            //    after the API code downloads.
-            //alert(videoId1);
-            var listId = ['vwaA-dbVMW8', 'VBEmqvVPOX4', 'AEMd6NDT5Z8', '1UqQaizM15Q'];
-            var player;
-            function onYouTubeIframeAPIReady() {
-                player = new YT.Player('player', {
-                    height: '390',
-                    width: '640',
-
-                    videoId: '<%= videoId %>',
-                    playerVars: { 'autoplay': 0, 'playlist': listId },
-                    events: {
-                        //'onReady': onPlayerReady,
-                        // 'onStateChange': onPlayerStateChange
-                    }
-                });
-                // player.pauseVideo();
-                //player.loadPlaylist({
-                //    list: ["AEMd6NDT5Z8", "1UqQaizM15Q"],
-                //   // listType: String,
-                //    index: 0,
-                //    startSeconds: 0
-                //    //suggestedQuality: String
-                //});
-                //player.playVideo();
-            }
-
-
-
-            // 4. The API will call this function when the video player is ready.
-            function onPlayerReady(event) {
-                event.target.playVideo();
-            }
-
-            // 5. The API calls this function when the player's state changes.
-            //    The function indicates that when playing a video (state=1),
-            //    the player should play for six seconds and then stop.
-            var done = false;
-            function onPlayerStateChange(event) {
-                if (event.data == YT.PlayerState.PLAYING && !done) {
-                    setTimeout(stopVideo, 6000);
-                    done = true;
-                }
-            }
-            function stopVideo() {
-                player.stopVideo();
-            }
-        </script>
-
+        
+ 
 
 
 
