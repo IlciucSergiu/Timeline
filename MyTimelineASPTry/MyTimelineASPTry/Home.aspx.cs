@@ -34,8 +34,17 @@ namespace MyTimelineASPTry
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            if (!IsPostBack)
+            string searchQuery = Request.QueryString["q"];
+
+            if(searchQuery ==  "all")
                 LoadTimelineConcat();
+
+            if (searchQuery == null)
+                searchQuery = "category:Important events";
+
+            if (!IsPostBack)
+                QueryInterpretation(searchQuery);
+               // LoadTimelineConcat();
 
             sw.Stop();
             labelTime.Text = "Page Load : " + sw.Elapsed.TotalMilliseconds.ToString();
@@ -335,15 +344,17 @@ namespace MyTimelineASPTry
 
         protected void buttonSearchQuery_Click(object sender, EventArgs e)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
+
+            Response.Redirect("Home.aspx?q="+textBoxSearchQuery.Text+"");
+            //Stopwatch sw = new Stopwatch();
+            //sw.Start();
 
 
-            if (textBoxSearchQuery.Text != "")
-                QueryInterpretation(textBoxSearchQuery.Text);
+            //if (textBoxSearchQuery.Text != "")
+            //    QueryInterpretation(textBoxSearchQuery.Text);
 
-            sw.Stop();
-            labelTime.Text += "\r\n Search Query :" + sw.Elapsed.TotalMilliseconds.ToString();
+            //sw.Stop();
+            //labelTime.Text += "\r\n Search Query :" + sw.Elapsed.TotalMilliseconds.ToString();
 
 
         }
@@ -400,7 +411,7 @@ namespace MyTimelineASPTry
             }
             else if (criteria == "category")
             {
-                Response.Write("category");
+                //Response.Write("category");
                 List<DocumentInfo> responseList = SearchQueryByCategory(value);
                 ConcatenateList(responseList, value);
             }
@@ -739,7 +750,7 @@ namespace MyTimelineASPTry
            "\"id\": \"" + searchQuery + "\"," +
            "\"title\": \"" + searchQuery.First().ToString().ToUpper() + searchQuery.Substring(1) + "\"," +
            "\"initial_zoom\": \"40\"," +
-           //"\"focus_date\": \"1998-03-11 12:00:00\","+
+           
            "\"image_lane_height\": 50," +
            "\"events\":[" + jsString.TrimEnd(',') + "]" +
        "}]";
@@ -778,15 +789,7 @@ namespace MyTimelineASPTry
                    + d.importance + "\",\"description\" : \"" + d.description + "\",\"link\" : \""
                    + d.link + "\",\"image\" : \"" + d.image + "\"},").Wait();
 
-                //collection.Find(filter).ForEachAsync(d => { personData.id = d.id; 
-                //    personData.name = d.name; 
-                //    personData.nationality = d.nationality;
-                //    personData.profession = d.profession;
-                //    personData.religion = d.religion;
-                //    personData.image = d.image;
-                //}).Wait();
-
-
+                
 
 
                 //return jsString;
@@ -815,15 +818,10 @@ namespace MyTimelineASPTry
         protected void linkButtonLogout_Click(object sender, EventArgs e)
         {
             Session.Remove("userLogged");
-            Response.Redirect("WebFormTimeline.aspx", false);
+            Response.Redirect("Home.aspx", false);
         }
 
-        [System.Web.Services.WebMethod]
-        public static string LoadTimelineQuery(string query)
-        {
-            return "sergiu e samecher";
-
-        }
+     
 
 
        

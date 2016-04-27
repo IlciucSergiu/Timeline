@@ -29,7 +29,7 @@
 
 
             <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail" CssClass="linkMain" PostBackUrl="~/Home.aspx" />
-            
+
 
             <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader textBoxSearchQuery" Height="22px" Width="300px" BorderStyle="None" placeholder="search for events, persons or tags"></asp:TextBox>
             <asp:Button ID="buttonSearchQuery" runat="server" Text="Search" CssClass="inHeader searchButton" OnClick="buttonSearchQuery_Click" />
@@ -37,7 +37,7 @@
             <asp:Button ID="buttonWorkspace" runat="server" Text="Workspace" CssClass="inHeader" PostBackUrl="~/UserManaging.aspx" Visible="False" UseSubmitBehavior="False" />
             <asp:Button ID="buttonLoadTimeline" runat="server" Text="Load timeline" OnClick="buttonLoadTimeline_Click" CssClass="inHeader hideButton" />
             <asp:LinkButton ID="linkButtonLogout" runat="server" CssClass="linkLogout" OnClick="linkButtonLogout_Click" Visible="False">Logout</asp:LinkButton>
-            <asp:Button ID="buttonSearchTag" runat="server" Text="Search Tag" OnClick="buttonSearchTag_Click" style="display:none" />
+            <asp:Button ID="buttonSearchTag" runat="server" Text="Search Tag" OnClick="buttonSearchTag_Click" Style="display: none" />
 
         </div>
 
@@ -98,10 +98,10 @@
 
             $(function () {
                
-                 $("#linkVoteUp").click(function (e) {
-        //the user id is visible but only if logged in
-        if ('<%= Session["userId"] %>' != "")
-            VoteUp('<%= Session["userId"] %>');
+                $("#linkVoteUp").click(function (e) {
+                    //the user id is visible but only if logged in
+                    if ('<%= Session["userId"] %>' != "")
+                         VoteUp('<%= Session["userId"] %>');
         else {
             $(".labelVote").css("display", "block");
             $(".labelVote").css("color", "red");
@@ -109,11 +109,11 @@
         }
 
 
-    });
+                 });
 
-    $("#linkVoteDown").click(function (e) {
-        //the user id is visible but only if logged in
-        if ('<%= Session["userId"] %>' != "")
+                $("#linkVoteDown").click(function (e) {
+                    //the user id is visible but only if logged in
+                    if ('<%= Session["userId"] %>' != "")
             VoteDown('<%= Session["userId"] %>');
         else {
             $(".labelVote").css("display", "block");
@@ -142,31 +142,114 @@
                 //        //$(e.target).trigger("click");
                 //    }
                 //});
+               
+
+                var isOver=false;
+
+                $('div').mouseover(function (e) {
+                    if (e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner") {
+                        isOver = true;
+                       // console.log(isOver);
+                        var eventId = $(e.target).closest('div[id]').attr("id");
+                        eventId = eventId.replace("_modal", "");
+                        // alert(eventId);
+                        theId = eventId;
+                        e.stopPropagation();
+                      
+                        // $(e.target).trigger("click");
+
+                        setTimeout(function () {
+
+                            $("div").css("pointer-events", "auto");
+                            if (isOver == true && eventId==theId) {
+                               
+                                $(e.target).trigger("click");
+                                SetMod();
+                            }
+                          
+                        }, 900); 
+                        
+                    }
+                });
+
+              
+                try {
+
+                
+                    $('div').mouseout(function (e) {
+                        // alert("out");
+                        if (e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner") {
+
+                            isOver = false;
+                          //  console.log(isOver);
+                            setTimeout(function () {
+
+                                $("div").css("pointer-events", "auto");
+                                if (isOver == false) {
+                                    $(".tg-close-button").click();
+                                }
+
+                            }, 300);
+                           
+                           
+                            e.stopPropagation();
+                        }
+                    });
+                } catch (e) {
+                    alert(e.message);
+                }
+
+               function SetMod(){
+                $('#'+theId+"_modal").mouseenter(function (e) {
+                   
+                    isOver = true;
+                   // console.log(isOver);
+                        e.stopPropagation();
+                       
+                      
+                });
+
+                $('#' + theId + "_modal").mouseleave(function (e) {
+                   
+                    isOver = false;
+                   // console.log(isOver);
+                    setTimeout(function () {
+
+                        $("div").css("pointer-events", "auto");
+                        if (isOver == false) {
+                            $(".tg-close-button").click();
+                        }
+
+                    }, 300);
+
+                     e.stopPropagation();
 
 
-
-
+                });
+               }
+             
 
                 $('div').mousedown(function (e) {
-                    if (e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner" || e.target.className == "tg-event-hoverline") {
-                        firstClick = true;
+                    if (e.target.className == "timeglider-event-title" || e.target.className == "timeglider-event-spanner" ) {
+                       // firstClick = true;
                         var eventId = $(e.target).closest('div[id]').attr("id");
                         eventId = eventId.replace("_modal", "");
                         // alert(eventId);
                         theId = eventId;
                         e.stopPropagation();
                         $("div").css("pointer-events", "none");
-                        secondClick = false;
+                        GetIndividualInfo(theId);
+                       // secondClick = false;
 
-                        setTimeout(function () {
+                      //  setTimeout(function () {
 
-                            $("div").css("pointer-events", "auto");
-                            if (secondClick == false) {
+                       //     $("div").css("pointer-events", "auto");
+                      //      if (secondClick == false) {
                                 // alert("should of");
-                                $(e.target).trigger("click");
-                            }
-                            firstClick = false;
-                        }, 501);
+                        //        $(e.target).trigger("click");
+                       //     }
+                        //    firstClick = false;
+                      //  }, 501);
                     }
                 });
                 $(document).dblclick(function (e) {
@@ -181,10 +264,16 @@
 
                         GetIndividualInfo(theId);
                        
-                      }
+                    }
 
                 });
 
+
+                if(getParameterByName("doc") != "")
+                {
+                    // alert(getParameterByName("doc"));
+                    GetIndividualInfo(getParameterByName("doc"));
+                }
 
             });
 
@@ -280,7 +369,7 @@
 
                     <div id="documentImages" class="Images tab">
 
-                        <div id="divNoImage" runat="server" >
+                        <div id="divNoImage" runat="server">
                             <h2>Unfortunately there is no image for this document.</h2>
                             <h4>You can suggest some to the editor by sending him a message.<br />
                                 Click <a href="#improvePage" class="improvePage">improve page</a> to do so.</h4>
@@ -290,18 +379,18 @@
 
                         <div id="documentSlideshow" class="documentSlideshow" runat="server">
                         </div>
-                        <div id="imagesCollection"  runat="server">
+                        <div id="imagesCollection" runat="server">
                         </div>
 
                     </div>
                     <!-- <a id="videoAdd">add video</a> -->
                     <div id="documentVideos" class="Videos hide tab" runat="server">
                         <div id="videosContainer">
-                             <div  id="player"></div> 
+                            <div id="player"></div>
                         </div>
-                      
-                       
-                        <div id="divNoVideo" runat="server" >
+
+
+                        <div id="divNoVideo" runat="server">
                             <h2>Unfortunately there is no video for this document.</h2>
                             <h4>You can suggest some to the editor by sending him a message.<br />
                                 Click <a href="#improvePage" class="improvePage">improve page</a> to do so.</h4>
@@ -310,7 +399,7 @@
 
                     <div id="documentBooks" class="Books hide tab">
 
-                        <div id="divNoBook" runat="server" >
+                        <div id="divNoBook" runat="server">
                             <h2>Unfortunately there are no books for this document.</h2>
                             <h4>You can suggest some to the editor by sending him a message.<br />
                                 Click <a href="#improvePage" class="improvePage">improve page</a> to do so.</h4>
@@ -367,8 +456,8 @@
             <asp:LinkButton ID="linkButtonCopyright" runat="server" CssClass="inFooter">Copyright</asp:LinkButton>
             <asp:LinkButton ID="linkButtonTermsAndConditions" runat="server" CssClass="inFooter">Terms and conditions</asp:LinkButton>
         </div>
-        
- 
+
+
 
 
 

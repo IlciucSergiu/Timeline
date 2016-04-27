@@ -7,8 +7,6 @@ using System.Web.UI.WebControls;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Web.Services;
-
-
 using Google.API.Search;
 
 
@@ -21,45 +19,32 @@ namespace MyTimelineASPTry
             CKEditorInformation.ResizeEnabled = true;
             CKEditorInformation.ResizeMaxHeight = 500;
 
-            //if (setDate)
-            //{
-            //   startDatePicker.Value = ViewState["dateBirth"].ToString();
-            //   endDatePicker.Value = ViewState["dateDeath"].ToString();
-            //}
 
-            
-                hiddenId.Value = itemId;
-                InitializeItem(userId, itemId);
-            
+
+            hiddenId.Value = itemId;
+            InitializeItem(userId, itemId);
+
 
 
         }
         protected void Page_PreLoad(object sender, EventArgs e)
         {
-            
-                if (!IsPostBack)
-                {
-                    ViewState["itemId"] = Request.QueryString["itemId"];
-                  
-                }
-                itemId = ViewState["itemId"].ToString();
-                userId = Session["userId"].ToString();
-            
+
+            if (!IsPostBack)
+            {
+                ViewState["itemId"] = Request.QueryString["itemId"];
+
+            }
+            itemId = ViewState["itemId"].ToString();
+            userId = Session["userId"].ToString();
+
         }
 
         string userId, itemId;
-       // public bool setDate = false;
-       // string scope, cancelRequest;
-
-
-
-
-       
-
 
         protected async void InitializeItem(string initUserId, string initItemId)
         {
-            // setDate = true;
+
 
 
             MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
@@ -77,31 +62,33 @@ namespace MyTimelineASPTry
             }
 
 
-            if (!IsPostBack) {
-
-                 if (documents.startdate.IndexOf("-") == 0)
-            { startDateEra.Value = "BC";
-                startDatePicker.Value = documents.startdate.TrimStart('-');
-                ViewState["dateBirth"] = startDatePicker.Value;
-            }
-            else {
-                startDateEra.Value = "AD";
-                startDatePicker.Value = documents.startdate;
-            ViewState["dateBirth"] = startDatePicker.Value;
-            }
-
-            if (documents.startdate.IndexOf("-") == 0)
+            if (!IsPostBack)
             {
-                endDateEra.Value = "BC";
-                endDatePicker.Value = documents.enddate.TrimStart('-');
-                ViewState["dateDeath"] = endDatePicker.Value;
-            }
-            else {
-                endDateEra.Value = "AD";
-                endDatePicker.Value = documents.enddate;
-                ViewState["dateDeath"] = endDatePicker.Value;
-            }
-            
+
+                if (documents.startdate.IndexOf("-") == 0)
+                {
+                    startDateEra.Value = "BC";
+                    startDatePicker.Value = documents.startdate.TrimStart('-');
+                    ViewState["dateBirth"] = startDatePicker.Value;
+                }
+                else {
+                    startDateEra.Value = "AD";
+                    startDatePicker.Value = documents.startdate;
+                    ViewState["dateBirth"] = startDatePicker.Value;
+                }
+
+                if (documents.startdate.IndexOf("-") == 0)
+                {
+                    endDateEra.Value = "BC";
+                    endDatePicker.Value = documents.enddate.TrimStart('-');
+                    ViewState["dateDeath"] = endDatePicker.Value;
+                }
+                else {
+                    endDateEra.Value = "AD";
+                    endDatePicker.Value = documents.enddate;
+                    ViewState["dateDeath"] = endDatePicker.Value;
+                }
+
 
                 textBoxCompleteName.Text = completeName;
                 textBoxLink.Text = documents.link;
@@ -118,7 +105,7 @@ namespace MyTimelineASPTry
                     tagItem.Text = tag[0].ToString() + " " + tag[1].ToString();
                     tagItem.Value = tag[0].ToString() + "-" + tag[1].ToString();
                     listBoxTags.Items.Add(tagItem);
-                    //hiddenFieldTags.Value += tagItem.Value.ToString() + ";";
+
                 }
 
             listBoxCategories.Items.Clear();
@@ -126,12 +113,11 @@ namespace MyTimelineASPTry
                 foreach (var category in documents.categories)
                 {
                     ListItem categoryItem = new ListItem();
-                    categoryItem.Text = category[0].ToString() + " " + category[1].ToString();
+                    categoryItem.Text = category[0].ToString() + " - " + category[1].ToString();
                     categoryItem.Value = category[0].ToString() + "-" + category[1].ToString();
                     listBoxCategories.Items.Add(categoryItem);
 
-                    //nu cred ca e necesara
-                    //hiddenFieldTags.Value += categoryItem.Value.ToString() + ";";
+
                 }
 
             if (documents.owner == initUserId)
@@ -192,7 +178,7 @@ namespace MyTimelineASPTry
                         if (item.additionalLinks != null)
                             foreach (var links in item.additionalLinks)
                             {
-                                //listBoxLinks.Items.Add(links.ToString()); 
+
                                 hiddenFieldLinks.Value += links.ToString() + ";";
                             }
                         if (item.documentFeedback != null)
@@ -203,7 +189,7 @@ namespace MyTimelineASPTry
                         if (item.videoLinks != null)
                         {
                             foreach (string videoId in item.videoLinks)
-                                textBoxVideoId.Text += videoId+";" ;
+                                textBoxVideoId.Text += videoId + ";";
                         }
                     }
                 }
@@ -212,11 +198,7 @@ namespace MyTimelineASPTry
             {
                 Response.Redirect("Error.aspx", false);
             }
-            // }
-            // catch (Exception ex)
-            // {
-            //     Response.Redirect("Error.aspx?" + ex.Message, false);
-            //}
+
         }
 
         protected async void buttomSaveChanges_Click(object sender, EventArgs e)
@@ -238,10 +220,10 @@ namespace MyTimelineASPTry
             }
 
             BsonArray videoLinks = new BsonArray();
-            foreach(string videoId in textBoxVideoId.Text.Split(';'))
-            { 
-                if(videoId.Length > 4)
-            videoLinks.Add(videoId);
+            foreach (string videoId in textBoxVideoId.Text.Split(';'))
+            {
+                if (videoId.Length > 4)
+                    videoLinks.Add(videoId);
             }
 
             var filter = Builders<IndividualData>.Filter.Eq("id", itemId);
@@ -259,7 +241,7 @@ namespace MyTimelineASPTry
             var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
 
-           
+
 
             string endDate;
 
@@ -281,8 +263,8 @@ namespace MyTimelineASPTry
             if (startDateEra.Value == "BC")
                 startDate = "-" + startDate;
 
-            
-           
+
+
 
             BsonArray separatedNames = new BsonArray();
 
@@ -320,7 +302,7 @@ namespace MyTimelineASPTry
             var filter = Builders<IndividualData>.Filter.Eq("id", id);
             var count = collection.Find(filter).CountAsync();
 
-            // Response.Write(count.Result);
+
             if (Convert.ToInt32(count.Result) != 0)
                 return true;
             else
@@ -338,9 +320,9 @@ namespace MyTimelineASPTry
             Response.Redirect("UserManaging.aspx?tab=documents", false);
         }
 
-      
 
-       
+
+
 
         protected void buttonAddLink_Click(object sender, EventArgs e)
         {
@@ -375,6 +357,33 @@ namespace MyTimelineASPTry
 
             Response.Write(text);
             return text;
+        }
+
+        protected void buttonDeleteDocument_Click(object sender, EventArgs e)
+        {
+            // Response.Write(hiddenId.Value);
+            string id = hiddenId.Value;
+
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
+            var collectionDocuments = db.GetCollection<DocumentInfo>("DocumentsCollection");
+            var collectionIndividual = db.GetCollection<IndividualData>("IndividualData");
+            var collectionCategories = db.GetCollection<CategoriesCollection>("Categories");
+
+
+            var filterDocuments = Builders<DocumentInfo>.Filter.Eq("id", id);
+            var filterIndividual = Builders<IndividualData>.Filter.Eq("id", id);
+
+            collectionDocuments.DeleteOneAsync(filterDocuments).Wait();
+            collectionIndividual.DeleteOneAsync(filterIndividual).Wait();
+
+            var updateCategory = Builders<CategoriesCollection>.Update
+                       .Pull(p => p.documentsBelonging, new BsonDocument() { { "id", id } });
+
+            collectionCategories.UpdateManyAsync(_ => true, updateCategory).Wait();
+
+
+            Response.Redirect("UserManaging.aspx?tab=documents", false);
         }
 
         public void LoadFeedback(BsonArray documentFeedback)

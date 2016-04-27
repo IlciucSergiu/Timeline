@@ -100,13 +100,14 @@
 
 
 
-                    //try {
-                   <%-- function UpdHidTag(listString1) {
+                    
+                //  function UpdHidTag(listString1) {
 
-                        $('#' + '<%=hiddenFieldTags.ClientID %>').val(listString1);
+                  //      $('#' + '<=hiddenFieldTags.ClientID %>').val(listString1);
 
-                        return false;
-                    }--%>
+                  //      return false;
+                  //  } 
+                   
 
                     function UpdHidLink(listString1) {
                         //alert(listString1);
@@ -205,7 +206,7 @@
                 <asp:HiddenField ID="hiddenFieldLinks" runat="server" />
             </p>
 
-
+            <!--
             <hr />
             <h2>Add tags</h2>
             <div id="addTags">
@@ -228,7 +229,7 @@
 
             <br />
             <br />
-
+            -->
             <hr />
             <h2>Add categories</h2>
             <div id="addCategories">
@@ -250,12 +251,13 @@
             </div>
 
             <br />
+            
             <br />
             <input id="hiddenId" type="hidden" runat="server" />
             
             <asp:Button ID="buttomSaveChanges" runat="server" Text="Save" OnClick="buttomSaveChanges_Click" Width="83px" />
             <asp:Button ID="buttonCancel" runat="server" Text="Cancel" OnClick="buttonCancel_Click" CssClass="essentialButtons" />
-
+             <asp:Button ID="buttonDeleteDocument" runat="server" Text="Delete" OnClick="buttonDeleteDocument_Click" CssClass="essentialButtons"  OnClientClick="return ConfirmDelete();"/>
 
 
             <script>

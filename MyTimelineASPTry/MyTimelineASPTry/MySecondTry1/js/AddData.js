@@ -1,4 +1,47 @@
 ﻿
+function getParameterByName(name) {
+    var regexS = "[\\?&]" + name + "=([^&#]*)",
+  regex = new RegExp(regexS),
+  results = regex.exec(window.location.search);
+    if (results == null) {
+        return "";
+    } else {
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+}
+
+
+function DocumentExists(documentId) {
+    var response = false;
+    try {
+        var dataValue = { documentId: documentId };
+        // alert(JSON.stringify(dataValue));
+        //alert(document.getElementById('hiddenId').value);
+        $.ajax({
+            type: "POST",
+            url: "WebMethods.aspx/DocumentExists",
+            data: JSON.stringify(dataValue),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+             async: false,
+            error: function (err) {
+                alert("Errort: " + err.responseText);
+            },
+            success: function (result) {
+                // alert(result.d);
+                if (result.d == "True")
+                    response = true;
+                else
+                    response = false;
+            }
+        });
+    }
+    catch (e) {
+        alert("Error" + e.message);
+    }
+
+    return response;
+}
 
 function AddTagItem() {
 
@@ -7,7 +50,7 @@ function AddTagItem() {
     if (VerifyTagItem() && VerifyIfInList()) {
         if ($("#inputImportanceTag").val() != "") {
             // alert($("#inputImportanceTag").val());
-            var tagName = $(".textBoxAddTag").val().toString().toLowerCase();
+            var tagName = $(".textBoxAddTag").val().toString();
             $(".textBoxAddTag").val(null);
             var tagImportance = $("#inputImportanceTag").val();
 
@@ -129,7 +172,7 @@ function AddCategoryItem() {
             $("#inputImportanceCategory").val(null);
             try {
                 var categoryValue = categoryName + "-" + categoryImportance.toString();
-                $('.listBoxCategories').append("<option value=" + categoryValue.toString() + ">" + categoryName + " " + categoryImportance + "</option>");
+                $('.listBoxCategories').append("<option value=" + categoryValue.toString() + ">" + categoryName + " - " + categoryImportance + "</option>");
 
 
             }
@@ -179,7 +222,7 @@ function RemoveCategoryItem() {
     if ($(".listBoxCategories option:selected").text() != "") {
         var documentId = $("#hiddenId").val();
         //alert(documentId);
-        var categoryName = $(".listBoxCategories option:selected").text().split(' ')[0];
+        var categoryName = $(".listBoxCategories option:selected").text().split(' - ')[0];
         alert(categoryName + "   " + documentId);
 
         RemoveInCategoryCollection(categoryName, documentId);
@@ -230,7 +273,7 @@ function VerifyIfInList() {
     $(".listBoxTags option").each(function () {
 
         var listString = $(this).val().split('-');
-        if ($(".textBoxAddTag").val().toString().toLowerCase() == listString[0]) {
+        if ($(".textBoxAddTag").val().toString().toLowerCase() == listString[0].toLowerCase()) {
             $(".verifyTag").text("This tag already exists in list.");
             response = false;
         }
@@ -404,6 +447,24 @@ function AddLinkItem() {
 
 
 $(function () {
+
+    try {
+
+   
+    $('.userManagingTab').click(function (e) {
+
+        var tabName = $(this).text().toLowerCase();
+        // alert($(this).text());
+        $('.tabsContainer').each(function (i, obj) {
+            // alert($(this).attr('class'));
+            if ($(this).hasClass(tabName))
+                $(this).css("display", "block");
+            else
+                $(this).css("display", "none");
+        });
+
+
+    });
 
     $(".checkContemporary").click(function () {
         // alert(document.getElementByClass('checkBoxContemporary').checked).toString();
@@ -925,6 +986,25 @@ $(function () {
         }
     });
 
+    $(".textBoxUserId").on('keydown keypress', function (e) {
+        alert("pressed");
+        if (e.keyCode == 13) {
+             alert("pressed");
+            //document.getElementById().focus();
+            $(".loginButton").click();
+            return false;
+        }
+    });
+    //alert("pressed");
+    $(".textBoxPassword").on('keydown keypress', function (e) {
+        alert("pressed");
+        if (e.keyCode == 13) {
+           
+            $(".loginButton").click();
+            return false;
+        }
+    });
+
     $(".textBoxCompleteName").on('keyup focus', function () {
         try {
             var dataValue = { documentId: $(".textBoxCompleteName").val() };
@@ -958,7 +1038,9 @@ $(function () {
         }
     });
 
-
+    } catch (e) {
+        alert(e.message);
+    }
 });
 
 function setImagesEvent() {
@@ -1626,8 +1708,18 @@ function VerifyCategoryExistence(categoryName) {
 
 }
 
+function ConfirmDelete() {
+    //alert("asdf");
+    if (confirm("Are you shure you want to delete this document?"))
+    { }
+    else return false;
+}
+
+
+
 function GetIndividualInfo(documentId) {
 
+    if(DocumentExists(documentId)){
     var dataValue = { documentId: documentId };
     var response;
     $.ajax({
@@ -1648,14 +1740,13 @@ function GetIndividualInfo(documentId) {
             //alert(result.d);
 
             SetIndividualInfo(result.d);
-
-
-        }
+}
     });
 
 
-
+    }
 }
+
 
 
 function SetIndividualInfo(data) {
@@ -1668,87 +1759,92 @@ function SetIndividualInfo(data) {
 
     ResetFields();
 
-    $(".labelName").text(data["name"].replace(',', ' ').replace('[', ' ').replace(']', ' '));
-    $(".profileImage").attr("src", data["image"]);
-    $(".labelDates").text(data["dates"]);
+    try {
+        $(".labelName").text(data["name"].replace(',', ' ').replace('[', ' ').replace(']', ' '));
+        $(".profileImage").attr("src", data["image"]);
+        $(".labelDates").text(data["dates"]);
 
 
 
 
-    if (data["tags"] != null)
-        $.each(data["tags"], function (key, tag) {
-            $(".divTags").append("<a class=\"tagLinks\" runat=\"server\" >" + tag["tagName"] + "</a>  ");
+        //if (data["tags"] != null)
+        //    $.each(data["tags"], function (key, tag) {
+        //        $(".divTags").append("<a class=\"tagLinks\" runat=\"server\" >" + tag["tagName"] + "</a>  ");
 
-        });
-
-
-    if (data["categories"] != null)
-        $.each(data["categories"], function (key, tag) {
-
-            $(".divCategories").append("<a class=\"categoryLinks\" runat=\"server\" >" + tag["categoryName"] + "</a>  ");
-
-        });
+        //    });
 
 
-    if (data["links"] != null)
-        $.each(data["links"], function (key, link) {
+        if (data["categories"] != null)
+            $.each(data["categories"], function (key, tag) {
 
-            $("#additionalLinks").append("<br /><a href=\"" + link + "\">" + link + "<a/>");
+                $(".divCategories").append("<a class=\"categoryLinks\" runat=\"server\" >" + tag["categoryName"] + "</a>  ");
 
-        });
+            });
+        SetCategoryListener();
 
+        if (data["links"] != null)
+            $.each(data["links"], function (key, link) {
 
+                $("#additionalLinks").append("<br /><a href=\"" + link + "\">" + link + "<a/>");
+
+            });
 
 
 
-    $("#htmlInfo").html(data["htmlInformation"]);
-
-    $(".labelViews").text("viewed " + data["timesViewed"] + " times");
 
 
-    if (data["videos"] != "") {
+        $("#htmlInfo").html(data["htmlInformation"]);
 
-        addPlayer(data["videos"].toString());
+        $(".labelViews").text("viewed " + data["timesViewed"] + " times");
 
-        $("#divNoVideo").css("display", "none");
+
+        if (data["videos"] != null) {
+
+            addPlayer(data["videos"].toString());
+
+            $("#divNoVideo").css("display", "none");
+        }
+        else {
+            $("#divNoVideo").css("display", "block");
+        }
+
+
+
+        if (data["images"] != null) {
+            $.each(data["images"], function (key, image) {
+
+                $("#documentSlideshow").append("<img  class=\"slideImage\" src=\"" + image + "\"/>");
+                $("#imagesCollection").append("<img   class=\"imageCollection\" src=\"" + image + "\"/>");
+
+
+            });
+            setImagesEvent();
+            $("#divNoImage").css("display", "none");
+        }
+        else {
+            $("#divNoImage").css("display", "block");
+        }
+
+
+        if (data["books"] != null) {
+            $.each(data["books"], function (key, book) {
+
+                $("#booksContainer").append("<img  id=\"" + book["isbn"] + "\"  class=\"documentBook\" src=\"" + book["imageUrl"] + "\"/>");
+
+            });
+
+            $('.documentBook').on("click", function () {
+
+                BookImageClick(this);
+            });
+            $("#divNoBook").css("display", "none");
+        }
+        else {
+            $("#divNoBook").css("display", "block");
+        }
     }
-    else {
-        $("#divNoVideo").css("display", "block");
-    }
-
-
-
-    if (data["images"] != null) {
-        $.each(data["images"], function (key, image) {
-
-            $("#documentSlideshow").append("<img  class=\"slideImage\" src=\"" + image + "\"/>");
-            $("#imagesCollection").append("<img   class=\"imageCollection\" src=\"" + image + "\"/>");
-
-
-        });
-        setImagesEvent();
-        $("#divNoImage").css("display", "none");
-    }
-    else {
-        $("#divNoImage").css("display", "block");
-    }
-
-
-    if (data["books"] != null) {
-        $.each(data["books"], function (key, book) {
-
-            $("#booksContainer").append("<img  id=\"" + book["isbn"] + "\"  class=\"documentBook\" src=\"" + book["imageUrl"] + "\"/>");
-
-        });
-
-        $('.documentBook').on("click", function () {
-
-            BookImageClick(this);
-        });
-        $("#divNoBook").css("display", "none");
-    }
-    else {
-        $("#divNoBook").css("display", "block");
+    catch (e) {
+        alert(e.message);
     }
 
     $("#individualInfo").css("display", "block");
@@ -1771,8 +1867,18 @@ function ResetFields() {
 
 }
 
+function SetCategoryListener() {
+   
+    $(".categoryLinks").click(function (e) {
+        //alert("asdfd "+$(this).text());
+        //alert(window.location.origin);
+        window.location =window.location.origin+ "/Home.aspx?q=category:" + $(this).text();
+    });
+}
 
 $(function () {
+
+   
 
     $(".tagLinks").click(function (e) {
 

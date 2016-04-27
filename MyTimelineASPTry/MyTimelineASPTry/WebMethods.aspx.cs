@@ -18,6 +18,23 @@ namespace MyTimelineASPTry
 
         }
 
+        //Id valid
+        [WebMethod]
+        public static string DocumentExists(string documentId)
+        {
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
+
+            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+
+            var filter = Builders<DocumentInfo>.Filter.Regex("id", documentId);
+
+            bool exists=false;
+            collection.Find(filter).ForEachAsync(d => exists = true).Wait();
+
+            return exists.ToString();
+
+        }
 
         // Votare 0000000000000000000000000000000000000000000000000000000000000000
         [WebMethod]
@@ -176,7 +193,7 @@ namespace MyTimelineASPTry
 
 
 
-            var filterTag = Builders<TagsCollection>.Filter.Regex("tagName", tagName);
+            var filterTag = Builders<TagsCollection>.Filter.Eq("tagName", tagName);
             var updateTag = Builders<TagsCollection>.Update
                     // .Inc("votes", 1)
                     .Push(p => p.documentsBelonging, documentsBelonging);
@@ -200,7 +217,7 @@ namespace MyTimelineASPTry
 
             var collectionDocument = db.GetCollection<DocumentInfo>("DocumentsCollection");
 
-            var filter = Builders<DocumentInfo>.Filter.Regex("id", new BsonRegularExpression(documentId));
+            var filter = Builders<DocumentInfo>.Filter.Regex("id", documentId);
 
             DocumentInfo documentInfo = new DocumentInfo();
             collectionDocument.Find(filter).ForEachAsync(d =>
@@ -295,7 +312,7 @@ namespace MyTimelineASPTry
             collectionDocument.UpdateOneAsync(filter, updateDocument).Wait();
 
 
-
+            
 
             var collectionCategories = db.GetCollection<CategoriesCollection>("Categories");
 
