@@ -94,6 +94,24 @@ namespace MyTimelineASPTry {
         protected global::CKEditor.NET.CKEditorControl CKEditorCategoryInformation;
         
         /// <summary>
+        /// documentsBelonging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl documentsBelonging;
+        
+        /// <summary>
+        /// listBoxDocumentsBelongin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox listBoxDocumentsBelongin;
+        
+        /// <summary>
         /// buttonSaveCategoryChanges control.
         /// </summary>
         /// <remarks>

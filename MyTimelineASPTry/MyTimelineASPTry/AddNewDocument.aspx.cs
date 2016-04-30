@@ -30,14 +30,20 @@ namespace MyTimelineASPTry
         {
             MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
             var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
-            var collection = db.GetCollection<DocumentInfo>("DocumentsCollection");
+            var collectionDoc = db.GetCollection<DocumentInfo>("DocumentsCollection");
             // var individualData = db.GetCollection<IndividualData>("IndividualData");
-            var filter = Builders<DocumentInfo>.Filter.Eq(u => u.id, id);
+            var filterDoc = Builders<DocumentInfo>.Filter.Eq(u => u.id, id);
 
             bool valid = true;
-            collection.Find(filter).ForEachAsync(d =>valid=false).Wait();
+            collectionDoc.Find(filterDoc).ForEachAsync(d =>valid=false).Wait();
 
-           return valid;
+
+            var collectionCat = db.GetCollection<CategoriesCollection>("Categories");
+            var filterCat = Builders<CategoriesCollection>.Filter.Eq(u => u.id, id);
+            
+            collectionCat.Find(filterCat).ForEachAsync(d => valid = false).Wait();
+
+            return valid;
 
         }
 

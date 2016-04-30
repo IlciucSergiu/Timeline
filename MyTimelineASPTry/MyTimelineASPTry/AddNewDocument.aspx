@@ -60,7 +60,7 @@
                         </select>
              <input type="text" class="datepicker" id="endDatePicker" runat="server" placeholder="yyyy-mm-dd" />
          </p>
-                    &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" class="checkContemporary" /><br />
+                    &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="continuing" class="checkContemporary" /><br />
                     <br />
                 </div>
 

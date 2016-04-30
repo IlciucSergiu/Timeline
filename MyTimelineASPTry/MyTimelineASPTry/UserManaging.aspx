@@ -12,35 +12,12 @@
 
 </head>
 <body>
-   
+
     <script src="MySecondTry1/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
-     <script src="MySecondTry1/js/AddData.js"></script>
+    <script src="MySecondTry1/js/AddData.js"></script>
     <form id="form1" runat="server">
 
-        <script>
-            
 
-           
-         /*   $(function () {
-                try {
-                if (getParameterByName('tab') != null) {
-                    var tabName = getParameterByName('tab').toLowerCase();
-                    alert(tabName);
-                    $('.tabsContainer').each(function (i, obj) {
-                        // alert($(this).attr('class'));
-                        if ($(this).hasClass(tabName))
-                            $(this).css("display", "block");
-                        else
-                            $(this).css("display", "none");
-                    });
-                }
-                } catch (e) {
-                    alert(e.message);
-                }
-            });
-           */
-        </script>
-        
         <div id="header">
 
             <asp:ImageButton ID="ImageButton1" runat="server" Height="43px" Width="210px" AlternateText="Time Trail" OnClick="ImageButton1_Click" CssClass="linkMain" PostBackUrl="~/Home.aspx" />
@@ -68,7 +45,7 @@
                     <a class="userManagingTab">Documents</a>
                     <!-- <a class="userManagingTab">Tags</a> -->
                     <a class="userManagingTab">Categories</a>
-                    <a class="userManagingTab">Other</a>
+                    <!-- <a class="userManagingTab">Other</a> -->
                 </div>
 
                 <div id="documentsManaging" class="tabsContainer documents hide" runat="server">
@@ -133,11 +110,6 @@
 
         </div>
 
-        <br />
-        <br />
-        <br />
-
-        <!--  <asp:Button ID="buttonRunCommand" runat="server" OnClick="buttonRunCommand_Click" Text="Run comand" Visible="True" /> -->
 
     </form>
 </body>

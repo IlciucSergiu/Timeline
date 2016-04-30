@@ -63,7 +63,7 @@
              </select>
              <input type="text" id="endDatePicker" runat="server" placeholder="yyyy-mm-dd" />
          </p>
-                    &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="Contemporary" class="checkContemporary" /><br />
+                    &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="checkBoxContemporary" runat="server" Text="continuing" class="checkContemporary" /><br />
                     <br />
                 </div>
 
@@ -100,13 +100,6 @@
 
 
 
-                    
-                //  function UpdHidTag(listString1) {
-
-                  //      $('#' + '<=hiddenFieldTags.ClientID %>').val(listString1);
-
-                  //      return false;
-                  //  } 
                    
 
                     function UpdHidLink(listString1) {
@@ -132,6 +125,9 @@
                 </div>
             </div>
 
+            <br />
+            <br />
+            <h1>Detailed description</h1>
             <div id="ckEditor">
                 <CKEditor:CKEditorControl ID="CKEditorInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000"></CKEditor:CKEditorControl>
             </div>
@@ -231,7 +227,15 @@
             <br />
             -->
             <hr />
+            <h2>Create category</h2>
+            <p>You can create a category linked with this document, sharing the name and having some advantages.
+                <br />
+            <a id="newCategory" runat="server">Create category</a>
+                </p>
+
+            <hr />
             <h2>Add categories</h2>
+            <p>These are the categories that this document will be appended to.</p>
             <div id="addCategories">
                 <input id="hidden1" type="hidden" runat="server" />
                 <p>To see all categories check <a href="CategoriesMap.aspx">category map</a></p>
@@ -246,7 +250,7 @@
 
                 <br />
 
-                <asp:ListBox ID="listBoxCategories" runat="server" Height="67px" Width="161px" CssClass="listBoxCategories"></asp:ListBox>
+                <asp:ListBox ID="listBoxCategories" runat="server" Height="67px" Width="220px" CssClass="listBoxCategories"></asp:ListBox>
                 <br />
             </div>
 

@@ -67,6 +67,11 @@
             <CKEditor:CKEditorControl ID="CKEditorCategoryInformation" BasePath="/ckeditor/" runat="server" Height="350" Width="1000" placeholder="Importance"></CKEditor:CKEditorControl>
         </div>
         <br />
+
+        <h2>Documents belonging</h2>
+        <div id="documentsBelonging" runat="server">
+            <asp:ListBox ID="listBoxDocumentsBelongin" runat="server"></asp:ListBox>
+        </div>
         <br />
         <asp:Button ID="buttonSaveCategoryChanges" runat="server" Text="Save changes" OnClick="buttonSaveCategoryChanges_Click" />
        

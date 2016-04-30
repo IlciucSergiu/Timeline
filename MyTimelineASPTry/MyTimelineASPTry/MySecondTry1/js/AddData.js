@@ -23,7 +23,7 @@ function DocumentExists(documentId) {
             data: JSON.stringify(dataValue),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
-             async: false,
+            async: false,
             error: function (err) {
                 alert("Errort: " + err.responseText);
             },
@@ -80,6 +80,7 @@ function AddTagItem() {
                 alert(err.message);
             }
             return false;
+
         }
         else {
             $(".verifyTag").text("Invalid information.");
@@ -105,11 +106,11 @@ function InsertInTagCollection(tagName, documentId, relativeImportance) {
             // async: false,
             error: function (err) {
                 alert("Errort: " + err.responseText);
+                // return false;
             },
             success: function (result) {
                 alert("We returned: " + result.d);
-
-
+                //  return true;
             }
         });
     }
@@ -157,31 +158,41 @@ function AddCategoryItem() {
     $(".verifyCategory").text("");
     // VerifyIfInList();
     if (VerifyCategoryItem() && VerifyCategoryInList()) {
-        if ($("#inputImportanceCategory").val() != "") {
+        if ($("#inputImportanceCategory").val() > 0 && $("#inputImportanceCategory").val() < 101) {
             //  alert($("#inputImportanceCategory").val());
             var categoryName = $(".textBoxAddCategory").val().toString();
-            $(".textBoxAddCategory").val(null);
+
             var categoryImportance = $("#inputImportanceCategory").val();
 
 
             var documentId = $("#hiddenId").val();
             // alert(documentId);
 
-            InsertInCategoryCollection(categoryName, documentId, categoryImportance);
+            if (InsertInCategoryCollection(categoryName, documentId, categoryImportance)) {
 
-            $("#inputImportanceCategory").val(null);
-            try {
-                var categoryValue = categoryName + "-" + categoryImportance.toString();
-                $('.listBoxCategories').append("<option value=" + categoryValue.toString() + ">" + categoryName + " - " + categoryImportance + "</option>");
+                $("#inputImportanceCategory").val(null);
+                $(".textBoxAddCategory").val(null);
+                $(".verifyCategory").css("color", "green");
+                $(".verifyCategory").text(" inserted");
+                try {
+                    var categoryValue = categoryName + "-" + categoryImportance.toString();
+                    $('.listBoxCategories').append("<option value=" + categoryValue.toString() + ">" + categoryName + " - " + categoryImportance + "</option>");
 
 
+                }
+                catch (err) {
+                    alert(err.message);
+                }
+                return false;
             }
-            catch (err) {
-                alert(err.message);
+            else {
+                $("#inputImportanceCategory").css("color", "red");
+                $(".textBoxAddCategory").css("color", "red");
+                $(".verifyCategory").text("something went wrong!");
             }
-            return false;
         }
         else {
+            $(".verifyCategory").css("color", "red");
             $(".verifyCategory").text("Invalid information.");
         }
     }
@@ -191,31 +202,30 @@ function AddCategoryItem() {
 function InsertInCategoryCollection(categoryName, documentId, relativeImportance) {
 
     //alert(userId1);
+    var response = false;
 
-    try {
-        var dataValue = { documentId: documentId, categoryName: categoryName, relativeImportance: relativeImportance };
-        // alert(JSON.stringify(dataValue));
-        //alert(document.getElementById('hiddenId').value);
-        $.ajax({
-            type: "POST",
-            url: "WebMethods.aspx/InsertInCategoryCollection",
-            data: JSON.stringify(dataValue),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            // async: false,
-            error: function (err) {
-                alert("Errort: " + err.responseText);
-            },
-            success: function (result) {
-                alert("We returned: " + result.d);
+    var dataValue = { documentId: documentId, categoryName: categoryName, relativeImportance: relativeImportance };
+    // alert(JSON.stringify(dataValue));
+    //alert(document.getElementById('hiddenId').value);
+    $.ajax({
+        type: "POST",
+        url: "WebMethods.aspx/InsertInCategoryCollection",
+        data: JSON.stringify(dataValue),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: false,
+        error: function (err) {
+            // alert("Errort: " + err.responseText);
 
+        },
+        success: function (result) {
+            // alert("We returned: " + result.d);
+            response = true;
+        }
+    });
 
-            }
-        });
-    }
-    catch (e) {
-        alert("Error" + e.message);
-    }
+    return response;
+
 }
 
 function RemoveCategoryItem() {
@@ -223,12 +233,17 @@ function RemoveCategoryItem() {
         var documentId = $("#hiddenId").val();
         //alert(documentId);
         var categoryName = $(".listBoxCategories option:selected").text().split(' - ')[0];
-        alert(categoryName + "   " + documentId);
+       // alert(categoryName + "   " + documentId);
 
-        RemoveInCategoryCollection(categoryName, documentId);
-
-        $(".listBoxCategories option:selected").remove();
-
+        if (RemoveInCategoryCollection(categoryName, documentId)) {
+            $(".listBoxCategories option:selected").remove();
+            $(".verifyCategory").css("color", "green");
+            $(".verifyCategory").text(" removed");
+        }
+        else {
+            $(".verifyCategory").css("color", "red");
+            $(".verifyCategory").text(" something went wrong!");
+        }
     }
     else {
         $(".verifyCategory").text("No tag was selected.");
@@ -239,7 +254,7 @@ function RemoveCategoryItem() {
 function RemoveInCategoryCollection(categoryName, documentId) {
 
     //alert(userId1);
-
+    var response = false;
     try {
         var dataValue = { documentId: documentId, categoryName: categoryName };
         // alert(JSON.stringify(dataValue));
@@ -250,16 +265,17 @@ function RemoveInCategoryCollection(categoryName, documentId) {
             data: JSON.stringify(dataValue),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
-            // async: false,
+            async: false,
             error: function (err) {
-                alert("Errort: " + err.responseText);
+                //  alert("Errort: " + err.responseText);
+
             },
             success: function (result) {
-                alert("We returned: " + result.d);
-
-
+                // alert("We returned: " + result.d);
+                response = true;
             }
         });
+        return response;
     }
     catch (e) {
         alert("Error" + e.message);
@@ -450,273 +466,93 @@ $(function () {
 
     try {
 
-   
-    $('.userManagingTab').click(function (e) {
 
-        var tabName = $(this).text().toLowerCase();
-        // alert($(this).text());
-        $('.tabsContainer').each(function (i, obj) {
-            // alert($(this).attr('class'));
-            if ($(this).hasClass(tabName))
-                $(this).css("display", "block");
-            else
-                $(this).css("display", "none");
+        $('.userManagingTab').click(function (e) {
+
+            var tabName = $(this).text().toLowerCase();
+            // alert($(this).text());
+            $('.tabsContainer').each(function (i, obj) {
+                // alert($(this).attr('class'));
+                if ($(this).hasClass(tabName))
+                    $(this).css("display", "block");
+                else
+                    $(this).css("display", "none");
+            });
+
+
+        });
+
+        $(".checkContemporary").click(function () {
+            // alert(document.getElementByClass('checkBoxContemporary').checked).toString();
+            // alert(document.getElementById('checkBoxContemporary').checked).toString();
+            if (document.getElementById('checkBoxContemporary').checked) {
+                $("#dateDeath").prop('disabled', true);
+            }
+            else {
+                $("#dateDeath").prop('disabled', false);
+            }
+            //return false;
         });
 
 
-    });
+        $('#buttonRemoveTags').click(function () {
+            if ($(".listBoxTags option:selected").text() != "") {
+                var documentId = $("#hiddenId").val();
+                //alert(documentId);
+                var tagName = $(".listBoxTags option:selected").text().split(' ')[0];
+                //alert(tagName + "   " + documentId);
 
-    $(".checkContemporary").click(function () {
-        // alert(document.getElementByClass('checkBoxContemporary').checked).toString();
-        // alert(document.getElementById('checkBoxContemporary').checked).toString();
-        if (document.getElementById('checkBoxContemporary').checked) {
-            $("#dateDeath").prop('disabled', true);
+                RemoveInTagCollection(tagName, documentId);
+
+                $(".listBoxTags option:selected").remove();
+                var listString = "";
+                $(".listBoxTags option").each(function () {
+                    // alert($(this).val());
+                    listString += $(this).val() + ";";
+                    // Add $(this).val() to your list
+                });
+                // alert(listString);
+                UpdHidTag(listString);
+            }
+            else {
+                $(".verifyTag").text("No tag was selected.");
+            }
         }
-        else {
-            $("#dateDeath").prop('disabled', false);
-        }
-        //return false;
-    });
+        );
 
-
-    $('#buttonRemoveTags').click(function () {
-        if ($(".listBoxTags option:selected").text() != "") {
-            var documentId = $("#hiddenId").val();
-            //alert(documentId);
-            var tagName = $(".listBoxTags option:selected").text().split(' ')[0];
-            //alert(tagName + "   " + documentId);
-
-            RemoveInTagCollection(tagName, documentId);
-
-            $(".listBoxTags option:selected").remove();
+        $('#buttonRemoveLinks').click(function () {
+            $(".listBoxLinks option:selected").remove();
             var listString = "";
-            $(".listBoxTags option").each(function () {
+            $(".listBoxLinks option").each(function () {
                 // alert($(this).val());
                 listString += $(this).val() + ";";
                 // Add $(this).val() to your list
             });
-            // alert(listString);
-            UpdHidTag(listString);
-        }
-        else {
-            $(".verifyTag").text("No tag was selected.");
-        }
-    }
-    );
-
-    $('#buttonRemoveLinks').click(function () {
-        $(".listBoxLinks option:selected").remove();
-        var listString = "";
-        $(".listBoxLinks option").each(function () {
-            // alert($(this).val());
-            listString += $(this).val() + ";";
-            // Add $(this).val() to your list
+            //alert(listString);
+            UpdHidLink(listString);
         });
-        //alert(listString);
-        UpdHidLink(listString);
-    });
 
-    $(".datepicker").datepicker({
-        showOn: "button",
-        buttonImage: "MySecondTry1/timeglider/img/calendar_16.png",
-        buttonImageOnly: true,
-        buttonText: "Select date",
-        changeYear: true,
-        changeMonth: true,
-        yearRange: "1:c"
-    });
-    $(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
+        $(".datepicker").datepicker({
+            showOn: "button",
+            buttonImage: "MySecondTry1/timeglider/img/calendar_16.png",
+            buttonImageOnly: true,
+            buttonText: "Select date",
+            changeYear: true,
+            changeMonth: true,
+            yearRange: "1:c",
+            dateFormat: "yy-mm-dd"
+        });
+       // $(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
 
 
 
-    $(".textBoxAddTag").on('keyup focus', function () {
-        try {
-            var dataValue = { inputValue: $(".textBoxAddTag").val() };
-
-            $.ajax({
-                type: "POST",
-                url: "WebMethods.aspx/FindTagOptions",
-                data: JSON.stringify(dataValue),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-
-                error: function (err) {
-
-                    alert("Errort: " + err.responseText);
-                },
-                success: function (result) {
-
-                    var availableTags = result.d.split("{;}");
-                    $(".textBoxAddTag").autocomplete({
-                        source: availableTags
-                    });
-                }
-            });
-        }
-        catch (e) {
-            alert("Error" + e.message);
-        }
-    });
-
-    $(".textBoxImageLink").on('blur', function () {
-        // alert($(".textBoxImageLink").val());
-        $(".documentImage").attr("src", $(".textBoxImageLink").val())
-    });
-
-    $("#feedbackShow").click(function () {
-
-        if ($("#feedbackContent").css("display") == "none")
-            $("#feedbackContent").css("display", "block");
-        else
-            $("#feedbackContent").css("display", "none");
-
-    });
-
-    $(".improvePage").click(function () {
-
-        // 
-        if ($("#feedbackMessage").css("display") == "none") {
-            //alert("adgadsg");
-            $("#feedbackMessage").css("display", "block");
-        }
-        else {
-            $("#feedbackMessage").css("display", "none");
-        }
-
-        //return false;
-
-    });
-
-    $(".textBoxSearchQuery").on('keyup focus', function () {
-        try {
-            var dataValue = { inputValue: $(".textBoxSearchQuery").val() };
-
-            $.ajax({
-                type: "POST",
-                url: "WebMethods.aspx/FindTagOptions",
-                data: JSON.stringify(dataValue),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-
-                error: function (err) {
-
-                    // alert("Errort: " + err.responseText);
-                },
-                success: function (result) {
-
-                    var availableTags = result.d.split("{;}");
-                    $(".textBoxSearchQuery").autocomplete({
-                        source: availableTags
-                    });
-                }
-            });
-        }
-        catch (e) {
-            alert("Error" + e.message);
-        }
-    });
-
-
-
-
-    $(".textBoxAddParentTag").on('keyup focus', function () {
-        //alert("here");
-        if ($(".textBoxAddParentTag").val() != "")
+        $(".textBoxAddTag").on('keyup focus', function () {
             try {
-                var dataValue = { inputValue: $(".textBoxAddParentTag").val() };
+                var dataValue = { inputValue: $(".textBoxAddTag").val() };
 
                 $.ajax({
                     type: "POST",
-                    url: "AddNewTag.aspx/FindTagParentOptions",
-                    data: JSON.stringify(dataValue),
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-
-                    error: function (err) {
-
-                        alert("Errort: " + err.responseText);
-                    },
-                    success: function (result) {
-                        var arrayTagNames = [];
-                        var arrayTagId = [];
-                        var availableTags = result.d.split("{;}").forEach(function (item) {
-
-                            var array3 = item.split("{0}");
-
-                            arrayTagNames.push(array3[0]);
-                            arrayTagId.push(array3[1]);
-                        });
-
-
-                        $(".textBoxAddParentTag").autocomplete({
-                            source: arrayTagNames,
-                            select: function (event, ui) {
-                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
-
-                                // UpdHidId(parentId);
-                            }
-                        });
-                    }
-                });
-            }
-            catch (e) {
-                alert("Error" + e.message);
-            }
-    });
-
-    $(".textBoxAddParentCategory").on('keyup focus', function () {
-
-        if ($(".textBoxAddParentCategory").val() != "")
-            try {
-                var dataValue = { inputValue: $(".textBoxAddParentCategory").val() };
-
-                $.ajax({
-                    type: "POST",
-                    url: "AddNewCategory.aspx/FindCategoryParentOptions",
-                    data: JSON.stringify(dataValue),
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-
-                    error: function (err) {
-
-                        alert("Errort: " + err.responseText);
-                    },
-                    success: function (result) {
-                        var arrayTagNames = [];
-                        var arrayTagId = [];
-                        var availableTags = result.d.split("{;}").forEach(function (item) {
-
-                            var array3 = item.split("{0}");
-                            arrayTagNames.push(array3[0]);
-                            arrayTagId.push(array3[1]);
-                        });
-
-
-                        $(".textBoxAddParentCategory").autocomplete({
-                            source: arrayTagNames,
-                            select: function (event, ui) {
-                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
-
-                                // UpdHidId(parentId);
-                            }
-                        });
-                    }
-                });
-            }
-            catch (e) {
-                alert("Error" + e.message);
-            }
-    });
-
-    $(".textBoxEditParentCategory").on('keyup focus', function () {
-        //alert("here");
-        if ($(".textBoxEditParentCategory").val() != "")
-            try {
-                var dataValue = { inputValue: $(".textBoxEditParentCategory").val() };
-
-                $.ajax({
-                    type: "POST",
-                    url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                    url: "WebMethods.aspx/FindTagOptions",
                     data: JSON.stringify(dataValue),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
@@ -727,24 +563,9 @@ $(function () {
                     },
                     success: function (result) {
 
-                        var arrayTagNames = [];
-                        var arrayTagId = [];
-                        var availableTags = result.d.split("{;}").forEach(function (item) {
-
-                            var array3 = item.split("{0}");
-
-                            arrayTagNames.push(array3[0]);
-                            arrayTagId.push(array3[1]);
-                        });
-
-
-                        $(".textBoxEditParentCategory").autocomplete({
-                            source: arrayTagNames,
-                            select: function (event, ui) {
-                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
-
-                                //  UpdHidId(parentId);
-                            }
+                        var availableTags = result.d.split("{;}");
+                        $(".textBoxAddTag").autocomplete({
+                            source: availableTags
                         });
                     }
                 });
@@ -752,294 +573,490 @@ $(function () {
             catch (e) {
                 alert("Error" + e.message);
             }
-    });
+        });
 
-    $(".textBoxAddCategory").on('keyup focus', function () {
+        $(".textBoxImageLink").on('blur', function () {
+            // alert($(".textBoxImageLink").val());
+            $(".documentImage").attr("src", $(".textBoxImageLink").val())
+        });
 
-        if ($(".textBoxAddCategory").val() != "")
-            try {
-                var dataValue = { inputValue: $(".textBoxAddCategory").val() };
+        $("#feedbackShow").click(function () {
 
-                $.ajax({
-                    type: "POST",
-                    url: "AddNewCategory.aspx/FindCategoryParentOptions",
-                    data: JSON.stringify(dataValue),
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-
-                    error: function (err) {
-
-                        alert("Errort: " + err.responseText);
-                    },
-                    success: function (result) {
-
-                        var arrayTagNames = [];
-                        var arrayTagId = [];
-                        var availableTags = result.d.split("{;}").forEach(function (item) {
-
-                            var array3 = item.split("{0}");
-
-                            arrayTagNames.push(array3[0]);
-                            arrayTagId.push(array3[1]);
-                        });
-
-
-                        $(".textBoxAddCategory").autocomplete({
-                            source: arrayTagNames,
-                            select: function (event, ui) {
-                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
-                            }
-                        });
-                    }
-                });
-            }
-            catch (e) {
-                alert("Error" + e.message);
-            }
-    });
-
-    $(".textBoxEditParentTag").on('keydown keypress focus', function () {
-        //alert("here");
-        if ($(".textBoxEditParentTag").val() != "")
-            try {
-                var dataValue = { inputValue: $(".textBoxEditParentTag").val() };
-
-                $.ajax({
-                    type: "POST",
-                    url: "AddNewTag.aspx/FindTagParentOptions",
-                    data: JSON.stringify(dataValue),
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-
-                    error: function (err) {
-
-                        alert("Errort: " + err.responseText);
-                    },
-                    success: function (result) {
-                        var arrayTagNames = [];
-                        var arrayTagId = [];
-                        var availableTags = result.d.split("{;}").forEach(function (item) {
-
-                            var array3 = item.split("{0}");
-
-                            arrayTagNames.push(array3[0]);
-                            arrayTagId.push(array3[1]);
-                        });
-
-
-                        $(".textBoxEditParentTag").autocomplete({
-                            source: arrayTagNames,
-                            select: function (event, ui) {
-                                var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
-
-                                //  UpdHidId(parentId);
-
-
-                            }
-                        });
-                    }
-                });
-            }
-            catch (e) {
-                alert("Error" + e.message);
-            }
-    });
-
-    $(".textBoxAddParentTag").focusout(function () {
-        // alert($(".textBoxAddParentTag").val());
-        if (!VerifyTagExistence($(".textBoxAddParentTag").val())) {
-            // $("#verifyTag").css("display", "block");
-            $("#verifyTag").css("color", "red");
-            $("#verifyTag").text("This tag does not exist.");
-        }
-        else {
-            $("#verifyTag").text("");
-        }
-    });
-
-    $(".textBoxEditParentTag").focusout(function () {
-        // alert($(".textBoxAddParentTag").val());
-        if (!VerifyTagExistence($(".textBoxEditParentTag").val())) {
-            // $("#verifyTag").css("display", "block");
-            $("#verifyTag").css("color", "red");
-            $("#verifyTag").text("This tag does not exist.");
-        }
-        else {
-            $("#verifyTag").text("");
-        }
-    });
-
-    $(".textBoxTagName").focusout(function () {
-        // alert($(".textBoxAddParentTag").val());
-        if (VerifyTagExistence($(".textBoxTagName").val())) {
-            // $("#verifyTagName").css("display", "block");
-            $("#verifyTagName").css("color", "red");
-            $("#verifyTagName").text("This tag already exists.");
-        }
-        else {
-            // $("#verifyTagName").css("display", "none");
-            $("#verifyTagName").text("");
-        }
-    });
-
-    $(".textBoxCategoryName").focusout(function () {
-
-        if (VerifyCategoryExistence($(".textBoxCategoryName").val())) {
-
-            $("#verifyCategoryName").css("color", "red");
-            $("#verifyCategoryName").text("This category already exists.");
-        }
-        else {
-
-            $("#verifyCategoryName").css("color", "green");
-            $("#verifyCategoryName").text("v");
-
-        }
-    });
-
-    $("#additionalResources a.tab").click(function (e) {
-        // alert($(this).text());
-        tabName = $(this).text();
-        $('#additionalResources div.tab').each(function (i, obj) {
-            // alert($(this).attr('class'));
-            if ($(this).hasClass(tabName))
-                $(this).css("display", "block");
+            if ($("#feedbackContent").css("display") == "none")
+                $("#feedbackContent").css("display", "block");
             else
-                $(this).css("display", "none");
-        });
-        return false;
-    });
-
-
-
-    $("#buttonSearchBook").click(function () {
-
-        var query = $(".textBoxBook").val();
-        // alert(query);
-        $("#booksOptions").html("");
-
-        $("#buttonRemoveBook").css("display", "none");
-        $("#buttonAddThisBook").css("display", "block");
-        $("#bookSelectedBook").css("display", "none");
-
-
-        $.get("https://www.googleapis.com/books/v1/volumes?q=" + query, function (data) {
-
-
-            var book = data.items[0];
-
-            var title = (book["volumeInfo"]["title"]);
-
-            //alert(title);
-            // alert(JSON.stringify(data) + "asdgasd");
-
-            //$("#bookInfo").text(JSON.stringify(data.items));
-
-            $.each(data.items, function () {
-                book = this;
-                //alert(book["volumeInfo"]["title"]);
-
-                $("#booksOptions").append('<div id="' + book["volumeInfo"]["industryIdentifiers"][0]["identifier"] + '" class="divBookOption"><img class="bookOption" src="' + book["volumeInfo"]["imageLinks"]["smallThumbnail"] + '" class="divBookOption"  /></div>');
-
-            });
-
-            $('.divBookOption').on("click", function () {
-
-                BookImageClick(this);
-            });
-            $("#booksOptions").css("display", "flex");
+                $("#feedbackContent").css("display", "none");
 
         });
 
+        $(".improvePage").click(function () {
 
+            // 
+            if ($("#feedbackMessage").css("display") == "none") {
+                //alert("adgadsg");
+                $("#feedbackMessage").css("display", "block");
+            }
+            else {
+                $("#feedbackMessage").css("display", "none");
+            }
 
-    });
+            //return false;
 
+        });
 
-    $("#listBoxBooks").click(function (e) {
-        ListBookSelected(this);
-    });
+        $(".textBoxSearchQuery").on('keyup focus', function () {
+            try {
+                var dataValue = { inputValue: $(".textBoxSearchQuery").val() };
 
+                $.ajax({
+                    type: "POST",
+                    url: "WebMethods.aspx/FindTagOptions",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
 
+                    error: function (err) {
 
+                        // alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
 
-
-
-    $('#selectedBookSelfLink').on("click", function () {
-
-        var url = $("#selectedBookSelfLink").attr("href");
-        window.open(url);
-        return false;
-    });
-
-
-    $('.imageCollection').on("click", function () {
-        ImageLinkClick(this);
-    });
-
-    $("#textBoxSearchQuery").on('keydown keypress', function (e) {
-        if (e.keyCode == 13) {
-            // alert("pressed");
-            //document.getElementById().focus();
-            $(".searchButton").click();
-            return false;
-        }
-    });
-
-    $(".textBoxUserId").on('keydown keypress', function (e) {
-        alert("pressed");
-        if (e.keyCode == 13) {
-             alert("pressed");
-            //document.getElementById().focus();
-            $(".loginButton").click();
-            return false;
-        }
-    });
-    //alert("pressed");
-    $(".textBoxPassword").on('keydown keypress', function (e) {
-        alert("pressed");
-        if (e.keyCode == 13) {
-           
-            $(".loginButton").click();
-            return false;
-        }
-    });
-
-    $(".textBoxCompleteName").on('keyup focus', function () {
-        try {
-            var dataValue = { documentId: $(".textBoxCompleteName").val() };
-
-            $.ajax({
-                type: "POST",
-                url: "WebMethods.aspx/UniqueId",
-                data: JSON.stringify(dataValue),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                // async:false,
-                error: function (err) {
-
-                    alert("Errort: " + err.responseText);
-                },
-                success: function (result) {
-                    // alert(result.d);
-                    $("#uniqueIdCheck").text($(".textBoxCompleteName").val() + "  " + result.d);
-                    if (result.d.toString() == "true") {
-                        $("#uniqueIdCheck").text("");
+                        var availableTags = result.d.split("{;}");
+                        $(".textBoxSearchQuery").autocomplete({
+                            source: availableTags
+                        });
                     }
-                    else {
-                        $("#uniqueIdCheck").text("This name already exists. Make shure you don't refer to the same document.");
-                        $("#uniqueIdCheck").css("color", "red");
-                    }
+                });
+            }
+            catch (e) {
+                alert("Eror " + e.message);
+            }
+        });
+
+
+
+
+        $(".textBoxAddParentTag").on('keyup focus', function () {
+            //alert("here");
+            if ($(".textBoxAddParentTag").val() != "")
+                try {
+                    var dataValue = { inputValue: $(".textBoxAddParentTag").val() };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "AddNewTag.aspx/FindTagParentOptions",
+                        data: JSON.stringify(dataValue),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+
+                        error: function (err) {
+
+                            alert("Errort: " + err.responseText);
+                        },
+                        success: function (result) {
+                            var arrayTagNames = [];
+                            var arrayTagId = [];
+                            var availableTags = result.d.split("{;}").forEach(function (item) {
+
+                                var array3 = item.split("{0}");
+
+                                arrayTagNames.push(array3[0]);
+                                arrayTagId.push(array3[1]);
+                            });
+
+
+                            $(".textBoxAddParentTag").autocomplete({
+                                source: arrayTagNames,
+                                select: function (event, ui) {
+                                    var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+
+                                    // UpdHidId(parentId);
+                                }
+                            });
+                        }
+                    });
                 }
+                catch (e) {
+                    alert("Error" + e.message);
+                }
+        });
+
+        $(".textBoxAddParentCategory").on('keyup focus', function () {
+
+            if ($(".textBoxAddParentCategory").val() != "")
+                try {
+                    var dataValue = { inputValue: $(".textBoxAddParentCategory").val() };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                        data: JSON.stringify(dataValue),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+
+                        error: function (err) {
+
+                            alert("Errort: " + err.responseText);
+                        },
+                        success: function (result) {
+                            var arrayTagNames = [];
+                            var arrayTagId = [];
+                            var availableTags = result.d.split("{;}").forEach(function (item) {
+
+                                var array3 = item.split("{0}");
+                                arrayTagNames.push(array3[0]);
+                                arrayTagId.push(array3[1]);
+                            });
+
+
+                            $(".textBoxAddParentCategory").autocomplete({
+                                source: arrayTagNames,
+                                select: function (event, ui) {
+                                    var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+
+                                    // UpdHidId(parentId);
+                                }
+                            });
+                        }
+                    });
+                }
+                catch (e) {
+                    alert("Error" + e.message);
+                }
+        });
+
+        $(".textBoxEditParentCategory").on('keyup focus', function () {
+            //alert("here");
+            if ($(".textBoxEditParentCategory").val() != "")
+                try {
+                    var dataValue = { inputValue: $(".textBoxEditParentCategory").val() };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                        data: JSON.stringify(dataValue),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+
+                        error: function (err) {
+
+                            alert("Errort: " + err.responseText);
+                        },
+                        success: function (result) {
+
+                            var arrayTagNames = [];
+                            var arrayTagId = [];
+                            var availableTags = result.d.split("{;}").forEach(function (item) {
+
+                                var array3 = item.split("{0}");
+
+                                arrayTagNames.push(array3[0]);
+                                arrayTagId.push(array3[1]);
+                            });
+
+
+                            $(".textBoxEditParentCategory").autocomplete({
+                                source: arrayTagNames,
+                                select: function (event, ui) {
+                                    var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+
+                                    //  UpdHidId(parentId);
+                                }
+                            });
+                        }
+                    });
+                }
+                catch (e) {
+                    alert("Error" + e.message);
+                }
+        });
+
+        $(".textBoxAddCategory").on('keyup focus', function () {
+
+            if ($(".textBoxAddCategory").val() != "")
+                try {
+                    var dataValue = { inputValue: $(".textBoxAddCategory").val() };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "AddNewCategory.aspx/FindCategoryParentOptions",
+                        data: JSON.stringify(dataValue),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+
+                        error: function (err) {
+
+                            alert("Errort: " + err.responseText);
+                        },
+                        success: function (result) {
+
+                            var arrayTagNames = [];
+                            var arrayTagId = [];
+                            var availableTags = result.d.split("{;}").forEach(function (item) {
+
+                                var array3 = item.split("{0}");
+
+                                arrayTagNames.push(array3[0]);
+                                arrayTagId.push(array3[1]);
+                            });
+
+
+                            $(".textBoxAddCategory").autocomplete({
+                                source: arrayTagNames,
+                                select: function (event, ui) {
+                                    var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+                                }
+                            });
+                        }
+                    });
+                }
+                catch (e) {
+                    alert("Error" + e.message);
+                }
+        });
+
+        $(".textBoxEditParentTag").on('keydown keypress focus', function () {
+            //alert("here");
+            if ($(".textBoxEditParentTag").val() != "")
+                try {
+                    var dataValue = { inputValue: $(".textBoxEditParentTag").val() };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "AddNewTag.aspx/FindTagParentOptions",
+                        data: JSON.stringify(dataValue),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+
+                        error: function (err) {
+
+                            alert("Errort: " + err.responseText);
+                        },
+                        success: function (result) {
+                            var arrayTagNames = [];
+                            var arrayTagId = [];
+                            var availableTags = result.d.split("{;}").forEach(function (item) {
+
+                                var array3 = item.split("{0}");
+
+                                arrayTagNames.push(array3[0]);
+                                arrayTagId.push(array3[1]);
+                            });
+
+
+                            $(".textBoxEditParentTag").autocomplete({
+                                source: arrayTagNames,
+                                select: function (event, ui) {
+                                    var parentId = arrayTagId[$.inArray(ui.item.label, arrayTagNames)];
+
+                                    //  UpdHidId(parentId);
+
+
+                                }
+                            });
+                        }
+                    });
+                }
+                catch (e) {
+                    alert("Error" + e.message);
+                }
+        });
+
+        $(".textBoxAddParentTag").focusout(function () {
+            // alert($(".textBoxAddParentTag").val());
+            if (!VerifyTagExistence($(".textBoxAddParentTag").val())) {
+                // $("#verifyTag").css("display", "block");
+                $("#verifyTag").css("color", "red");
+                $("#verifyTag").text("This tag does not exist.");
+            }
+            else {
+                $("#verifyTag").text("");
+            }
+        });
+
+        $(".textBoxEditParentTag").focusout(function () {
+            // alert($(".textBoxAddParentTag").val());
+            if (!VerifyTagExistence($(".textBoxEditParentTag").val())) {
+                // $("#verifyTag").css("display", "block");
+                $("#verifyTag").css("color", "red");
+                $("#verifyTag").text("This tag does not exist.");
+            }
+            else {
+                $("#verifyTag").text("");
+            }
+        });
+
+        $(".textBoxTagName").focusout(function () {
+            // alert($(".textBoxAddParentTag").val());
+            if (VerifyTagExistence($(".textBoxTagName").val())) {
+                // $("#verifyTagName").css("display", "block");
+                $("#verifyTagName").css("color", "red");
+                $("#verifyTagName").text("This tag already exists.");
+            }
+            else {
+                // $("#verifyTagName").css("display", "none");
+                $("#verifyTagName").text("");
+            }
+        });
+
+        $(".textBoxCategoryName").focusout(function () {
+
+            if (VerifyCategoryExistence($(".textBoxCategoryName").val())) {
+
+                $("#verifyCategoryName").css("color", "red");
+                $("#verifyCategoryName").text("This category already exists.");
+            }
+            else {
+
+                $("#verifyCategoryName").css("color", "green");
+                $("#verifyCategoryName").text("v");
+
+            }
+        });
+
+        $("#additionalResources a.tab").click(function (e) {
+            // alert($(this).text());
+            tabName = $(this).text();
+            $('#additionalResources div.tab').each(function (i, obj) {
+                // alert($(this).attr('class'));
+                if ($(this).hasClass(tabName))
+                    $(this).css("display", "block");
+                else
+                    $(this).css("display", "none");
             });
-        }
-        catch (e) {
-            alert("Error" + e.message);
-        }
-    });
+            return false;
+        });
+
+
+
+        $("#buttonSearchBook").click(function () {
+
+            var query = $(".textBoxBook").val();
+            // alert(query);
+            $("#booksOptions").html("");
+
+            $("#buttonRemoveBook").css("display", "none");
+            $("#buttonAddThisBook").css("display", "block");
+            $("#bookSelectedBook").css("display", "none");
+
+
+            $.get("https://www.googleapis.com/books/v1/volumes?q=" + query, function (data) {
+
+
+                var book = data.items[0];
+
+                var title = (book["volumeInfo"]["title"]);
+
+                //alert(title);
+                // alert(JSON.stringify(data) + "asdgasd");
+
+                //$("#bookInfo").text(JSON.stringify(data.items));
+
+                $.each(data.items, function () {
+                    book = this;
+                    //alert(book["volumeInfo"]["title"]);
+
+                    $("#booksOptions").append('<div id="' + book["volumeInfo"]["industryIdentifiers"][0]["identifier"] + '" class="divBookOption"><img class="bookOption" src="' + book["volumeInfo"]["imageLinks"]["smallThumbnail"] + '" class="divBookOption"  /></div>');
+
+                });
+
+                $('.divBookOption').on("click", function () {
+
+                    BookImageClick(this);
+                });
+                $("#booksOptions").css("display", "flex");
+
+            });
+
+
+
+        });
+
+
+        $("#listBoxBooks").click(function (e) {
+            ListBookSelected(this);
+        });
+
+
+
+
+
+
+        $('#selectedBookSelfLink').on("click", function () {
+
+            var url = $("#selectedBookSelfLink").attr("href");
+            window.open(url);
+            return false;
+        });
+
+
+        $('.imageCollection').on("click", function () {
+            ImageLinkClick(this);
+        });
+
+        $("#textBoxSearchQuery").on('keydown keypress', function (e) {
+            if (e.keyCode == 13) {
+                // alert("pressed");
+                //document.getElementById().focus();
+                $(".searchButton").click();
+                return false;
+            }
+        });
+
+        $(".textBoxUserId").on('keydown keypress', function (e) {
+            alert("pressed");
+            if (e.keyCode == 13) {
+                alert("pressed");
+                //document.getElementById().focus();
+                $(".loginButton").click();
+                return false;
+            }
+        });
+        //alert("pressed");
+        $(".textBoxPassword").on('keydown keypress', function (e) {
+            alert("pressed");
+            if (e.keyCode == 13) {
+
+                $(".loginButton").click();
+                return false;
+            }
+        });
+
+        $(".textBoxCompleteName").on('keyup focus', function () {
+            try {
+                var dataValue = { documentId: $(".textBoxCompleteName").val() };
+
+                $.ajax({
+                    type: "POST",
+                    url: "WebMethods.aspx/UniqueId",
+                    data: JSON.stringify(dataValue),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    // async:false,
+                    error: function (err) {
+
+                        alert("Errort: " + err.responseText);
+                    },
+                    success: function (result) {
+                        // alert(result.d);
+                        $("#uniqueIdCheck").text($(".textBoxCompleteName").val() + "  " + result.d);
+                        if (result.d.toString() == "true") {
+                            $("#uniqueIdCheck").text("");
+                        }
+                        else {
+                            $("#uniqueIdCheck").text("This name already exists. Make shure you don't refer to the same document.");
+                            $("#uniqueIdCheck").css("color", "red");
+                        }
+                    }
+                });
+            }
+            catch (e) {
+                alert("Error" + e.message);
+            }
+        });
 
     } catch (e) {
-        alert(e.message);
+        //alert(e.message);
     }
 });
 
@@ -1719,29 +1736,29 @@ function ConfirmDelete() {
 
 function GetIndividualInfo(documentId) {
 
-    if(DocumentExists(documentId)){
-    var dataValue = { documentId: documentId };
-    var response;
-    $.ajax({
-        type: "POST",
-        url: "WebMethods.aspx/GetIndividualInfo",
-        data: JSON.stringify(dataValue),
-        //async: false,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
+    if (DocumentExists(documentId)) {
+        var dataValue = { documentId: documentId };
+        var response;
+        $.ajax({
+            type: "POST",
+            url: "WebMethods.aspx/GetIndividualInfo",
+            data: JSON.stringify(dataValue),
+            //async: false,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
 
-        error: function (err) {
-            alert(err.responseText);
-            console.log("A aparut o eroare: " + err.responseText);
-            // return false;
-        },
-        success: function (result) {
+            error: function (err) {
+                alert(err.responseText);
+                console.log("A aparut o eroare: " + err.responseText);
+                // return false;
+            },
+            success: function (result) {
 
-            //alert(result.d);
+                //alert(result.d);
 
-            SetIndividualInfo(result.d);
-}
-    });
+                SetIndividualInfo(result.d);
+            }
+        });
 
 
     }
@@ -1761,10 +1778,22 @@ function SetIndividualInfo(data) {
 
     try {
         $(".labelName").text(data["name"].replace(',', ' ').replace('[', ' ').replace(']', ' '));
+
         $(".profileImage").attr("src", data["image"]);
-        $(".labelDates").text(data["dates"]);
+        $("#labelStartDate").text(data["startDate"]);
+        if (data["endDate"] != "")
+        {
+            $("#labelDash").text(" - ");
+            $("#labelEndDate").text(data["endDate"]);
+        }
+       
+        if (data["ownCategory"] != null)
+        {
+            $("#collectionLink").attr("href", window.location.origin + "/Home.aspx?q=category:"+ data["ownCategory"]);
+        $("#collectionLink").text(data["ownCategory"] + " collection");
 
-
+        //window.location = window.location.origin + "/Home.aspx?q=category:" + $(this).text();
+        }
 
 
         //if (data["tags"] != null)
@@ -1798,35 +1827,16 @@ function SetIndividualInfo(data) {
         $(".labelViews").text("viewed " + data["timesViewed"] + " times");
 
 
-        if (data["videos"] != null) {
+       
 
-            addPlayer(data["videos"].toString());
+        var showTab = 0;
 
-            $("#divNoVideo").css("display", "none");
-        }
-        else {
-            $("#divNoVideo").css("display", "block");
-        }
+       
 
-
-
-        if (data["images"] != null) {
-            $.each(data["images"], function (key, image) {
-
-                $("#documentSlideshow").append("<img  class=\"slideImage\" src=\"" + image + "\"/>");
-                $("#imagesCollection").append("<img   class=\"imageCollection\" src=\"" + image + "\"/>");
-
-
-            });
-            setImagesEvent();
-            $("#divNoImage").css("display", "none");
-        }
-        else {
-            $("#divNoImage").css("display", "block");
-        }
-
+       
 
         if (data["books"] != null) {
+            ShowResourceTab("Books");
             $.each(data["books"], function (key, book) {
 
                 $("#booksContainer").append("<img  id=\"" + book["isbn"] + "\"  class=\"documentBook\" src=\"" + book["imageUrl"] + "\"/>");
@@ -1842,6 +1852,34 @@ function SetIndividualInfo(data) {
         else {
             $("#divNoBook").css("display", "block");
         }
+
+
+        if (data["videos"] != null & data["videos"] != "") {
+            ShowResourceTab("Videos");
+            addPlayer(data["videos"].toString());
+
+            $("#divNoVideo").css("display", "none");
+        }
+        else {
+            $("#divNoVideo").css("display", "block");
+        }
+
+
+        if (data["images"] != null) {
+            ShowResourceTab("Images");
+            $.each(data["images"], function (key, image) {
+
+                $("#documentSlideshow").append("<img  class=\"slideImage\" src=\"" + image + "\"/>");
+                $("#imagesCollection").append("<img   class=\"imageCollection\" src=\"" + image + "\"/>");
+
+
+            });
+            setImagesEvent();
+            $("#divNoImage").css("display", "none");
+        }
+        else {
+            $("#divNoImage").css("display", "block");
+        }
     }
     catch (e) {
         alert(e.message);
@@ -1853,9 +1891,20 @@ function SetIndividualInfo(data) {
     $("#individualInfo").fadeIn();
 }
 
+function ShowResourceTab(tabName) {
+
+$('#additionalResources div.tab').each(function (i, obj) {
+    // alert($(this).attr('class'));
+    if ($(this).hasClass(tabName))
+        $(this).css("display", "block");
+    else
+        $(this).css("display", "none");
+});
+}
+
 function ResetFields() {
 
-    $(".divTags").html("");
+   // $(".divTags").html("");
     $(".divCategories").html("");
     $("#additionalLinks").html("");
     $("#imagesCollection").html("");
@@ -1868,17 +1917,17 @@ function ResetFields() {
 }
 
 function SetCategoryListener() {
-   
+
     $(".categoryLinks").click(function (e) {
         //alert("asdfd "+$(this).text());
         //alert(window.location.origin);
-        window.location =window.location.origin+ "/Home.aspx?q=category:" + $(this).text();
+        window.location = window.location.origin + "/Home.aspx?q=category:" + $(this).text();
     });
 }
 
 $(function () {
 
-   
+
 
     $(".tagLinks").click(function (e) {
 

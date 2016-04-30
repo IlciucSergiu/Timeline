@@ -284,19 +284,28 @@ h3 {
     }
 
     .categoryLinks {
-    background: #A9DC5C;
+    /*background: #A9DC5C;
     margin: 2px 2px 2px 0;
     padding: 0px 4px 1px 3px;
     border: 1px solid #e1ecf4;
+
+        color: #A9DC5C;
+    */
+
+    font-size:large;
+    
 }
 
     .categoryLinks:hover {
         /*font-size:15px;
     font-weight:bold;
-    font-family:sans-serif;*/
+    font-family:sans-serif;
         background: #201E1B;
-        cursor: pointer;
+        
         color: #ffffff;
+            */
+
+        cursor: pointer;
     }
 
 #footer {
@@ -760,3 +769,36 @@ a:hover {
     top: 0px;
     left: 0px;
 }
+
+        #rightBox{
+
+            margin-top:50px;
+            margin-right:20px;
+            float:right;
+            width:300px;
+            border:thin solid;
+            border-color:black;
+        }
+
+        #collectionLink {
+            font-size:medium;
+           
+        }
+
+        #labelStartDate{
+            font-size:large;
+           color:#bac870;
+
+        }
+
+         #labelEndDate{
+            font-size:large;
+           color:#dc8c5d;
+
+        }
+
+          #labelDash{
+            font-size:large;
+          
+
+        }

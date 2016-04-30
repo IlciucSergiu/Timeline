@@ -9,11 +9,11 @@
 </head>
 <body>
       <script src="MySecondTry1/js/AddData.js"></script>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" defaultbutton="buttonSearchId">
        
         <div id="header">
            
-        <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail"  CssClass="linkMain" PostBackUrl="~/Home.aspx" />
+      <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail"  CssClass="linkMain" PostBackUrl="~/Home.aspx" TabIndex="2" /> 
            
         </div>
     <div id="loginDiv">

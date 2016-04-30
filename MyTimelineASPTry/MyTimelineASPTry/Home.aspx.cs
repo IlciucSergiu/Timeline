@@ -20,6 +20,8 @@ namespace MyTimelineASPTry
 {
     public partial class WebFormTimeline : System.Web.UI.Page
     {
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
             CKEditorFeedback.Toolbar = CKEditorFeedback.ToolbarBasic;
@@ -40,7 +42,10 @@ namespace MyTimelineASPTry
                 LoadTimelineConcat();
 
             if (searchQuery == null)
+            {
+                isFront = true;
                 searchQuery = "category:Important events";
+            }
 
             if (!IsPostBack)
                 QueryInterpretation(searchQuery);
@@ -52,6 +57,7 @@ namespace MyTimelineASPTry
 
         }
 
+        bool isFront = false;
         public static string jsonData { get; set; }
 
         public string jsString, videoId;
@@ -433,11 +439,7 @@ namespace MyTimelineASPTry
 
             List<DocumentInfo> searchResponse = new List<DocumentInfo>();
 
-            //searchResponse =  searchResponse.Union(SearchQueryByTag(searchQuery).Where(d => Convert.ToInt32(d.importance) > Convert.ToInt32(searchResponse.Find(f => f.id == d.id).importance))).ToList();
-            //searchResponse = searchResponse.Union(SearchQueryByName(searchQuery).Where(d => Convert.ToInt32(d.importance) > Convert.ToInt32(searchResponse.Find(f => f.id == d.id).importance))).ToList();
-            //searchResponse = searchResponse.Union(SearchQueryByDescription(searchQuery).Where(d => Convert.ToInt32(d.importance) > Convert.ToInt32(searchResponse.Find(f => f.id == d.id).importance))).ToList();
-            //searchResponse = searchResponse.Union(SearchQueryByInfo(searchQuery).Where(d => Convert.ToInt32(d.importance) > Convert.ToInt32(searchResponse.Find(f => f.id == d.id).importance))).ToList();
-
+           
             Stopwatch taskWatch = new Stopwatch();
             taskWatch.Start();
 
@@ -448,27 +450,27 @@ namespace MyTimelineASPTry
             Task taskCategory = Task.Run(() => searchResponse.AddRange(SearchQueryByCategory(searchQuery)));
 
           
-            Response.Write( "   <p> tasks sent in   " + taskWatch.Elapsed.TotalMilliseconds +"<p>");
+           // Response.Write( "   <p> tasks sent in   " + taskWatch.Elapsed.TotalMilliseconds +"<p>");
 
             taskName.Wait();
-            Response.Write("   <p> tasks name   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+           // Response.Write("   <p> tasks name   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
             taskTag.Wait();
-            Response.Write("   <p> tasks tag   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+           // Response.Write("   <p> tasks tag   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
             taskDescription.Wait();
-            Response.Write("   <p> tasks description   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+           // Response.Write("   <p> tasks description   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
             taskInfo.Wait();
-            Response.Write("   <p> tasks info   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+           // Response.Write("   <p> tasks info   " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
             taskCategory.Wait();
-            Response.Write("   <p> tasks category  " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+           // Response.Write("   <p> tasks category  " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
 
             searchResponse = searchResponse.GroupBy(item => item.id)
                    .Select(g => g.OrderByDescending(i => i.importance)
                    .First()).ToList();
-            Response.Write("   <p> Selected  " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
+           // Response.Write("   <p> Selected  " + taskWatch.Elapsed.TotalMilliseconds + "<p>");
 
             taskWatch.Stop();
             sw.Stop();
-            Response.Write(searchResponse.Count + "   and took   "+ sw.Elapsed.TotalMilliseconds);
+           // Response.Write(searchResponse.Count + "   and took   "+ sw.Elapsed.TotalMilliseconds);
 
             ConcatenateList(searchResponse.Take(100).ToList(),searchQuery);
         }
@@ -478,7 +480,7 @@ namespace MyTimelineASPTry
             if (theList.Count > 0)
             {
                 theList.ForEach(d => jsString += "{\"id\":\""
-            + ReplaceToHTML(d.id) + "\",\"title\" : \"" + ReplaceToHTML(d.title) + "\",\"startdate\" : \"" + d.startdate
+            + ReplaceToHTML(d.id) + "\",\"title\" : \"" + FormatTitle(ReplaceToHTML(d.title),20) + "\",\"startdate\" : \"" + d.startdate
             + "\",\"enddate\" : \"" + endDate(d.enddate) + "\",\"importance\" : \""
             + d.importance + "\",\"description\" : \"" + ReplaceToHTML(d.description) + "\",\"link\" : \""
             + ReplaceToHTML(d.link) + "\",\"image\" : \"" + ReplaceToHTML(d.image)  + "\"},");
@@ -486,13 +488,21 @@ namespace MyTimelineASPTry
                 if (title.Length > 20)
                     title = title.Substring(0, 20);
 
+                var first =new DocumentInfo();
 
-                var first = theList.First();
+                int initZoom = 20;
+                if (isFront)
+                {
+                    initZoom = 20;
+                   first = theList.OrderByDescending(o => o.startdate).First();
+                }
+                else
+                 first = theList.First();
 
                 jsonData = "[{" +
              "\"id\": \"" + title.Replace(' ', '_') + "\"," +
              "\"title\": \"" + title.First().ToString().ToUpper() + title.Substring(1) + "\"," +
-             "\"initial_zoom\": \"35\"," +
+             "\"initial_zoom\": \""+initZoom+"\"," +
              "\"focus_date\": \"" + first.startdate + " 12:00:00\"," +
              "\"image_lane_height\": 50," +
              "\"events\":[" + jsString.TrimEnd(',') + "]" +
@@ -504,6 +514,15 @@ namespace MyTimelineASPTry
             else return "None";
         }
 
+       
+
+        string FormatTitle(string theString, int lenght)
+        {
+            if (theString.Length > lenght)
+                theString = theString.Substring(0, lenght-3) + "...";
+
+            return theString;
+        }
 
 
 
@@ -541,6 +560,7 @@ namespace MyTimelineASPTry
 
             documentResponse.ForEach(d =>
             {
+                //Response.Write(categoryName);
                 d.importance = GetImportanceCategory(d.categories, categoryName);
 
             });
@@ -686,7 +706,9 @@ namespace MyTimelineASPTry
 
         static string GetImportanceCategory(BsonArray categories, string searchQuery)
         {
-            string theReturn = "";
+
+           
+            string theReturn = "40";
             foreach (BsonDocument categoryDocument in categories)
             {
                 var obj = JObject.Parse(categoryDocument.ToString());

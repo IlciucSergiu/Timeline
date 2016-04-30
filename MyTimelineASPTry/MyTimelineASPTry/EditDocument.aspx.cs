@@ -61,6 +61,7 @@ namespace MyTimelineASPTry
                 completeName += name + " ";
             }
 
+            newCategory.HRef = "~/AddNewCategory.aspx?n=" + completeName + "&id=" + itemId;
 
             if (!IsPostBack)
             {

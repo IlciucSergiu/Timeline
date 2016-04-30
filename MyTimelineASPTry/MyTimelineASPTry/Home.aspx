@@ -31,7 +31,7 @@
             <asp:ImageButton ID="ImageButton1" runat="server" Height="42px" Width="224px" AlternateText="Time Trail" CssClass="linkMain" PostBackUrl="~/Home.aspx" />
 
 
-            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader textBoxSearchQuery" Height="22px" Width="300px" BorderStyle="None" placeholder="search for events, persons or tags"></asp:TextBox>
+            <asp:TextBox ID="textBoxSearchQuery" runat="server" CssClass="inHeader textBoxSearchQuery" Height="22px" Width="300px" BorderStyle="None" placeholder="search for events, persons or collections"></asp:TextBox>
             <asp:Button ID="buttonSearchQuery" runat="server" Text="Search" CssClass="inHeader searchButton" OnClick="buttonSearchQuery_Click" />
             <asp:Button ID="buttonLogin" runat="server" Text="Login" OnClick="buttonLogin_Click" Width="88px" CssClass="inHeader" UseSubmitBehavior="False" />
             <asp:Button ID="buttonWorkspace" runat="server" Text="Workspace" CssClass="inHeader" PostBackUrl="~/UserManaging.aspx" Visible="False" UseSubmitBehavior="False" />
@@ -336,7 +336,10 @@
                 <div class="imageInline" id="labelsInfo">
 
                     <asp:Label ID="labelName" runat="server" CssClass="labelName essentialLabels" Width="300px" Font-Size="X-Large"></asp:Label><br />
-                    <asp:Label ID="labelDates" runat="server" Text="" CssClass="labelDates essentialLabels" Width="300px"></asp:Label><br />
+                    <!-- <asp:Label ID="labelDates" runat="server" Text="" CssClass="labelDates essentialLabels" Width="300px"></asp:Label> --><br />
+                    <label id="labelStartDate" class="essentialLabels"></label>
+                    <label id="labelDash"></label>
+                    <label id="labelEndDate"></label>
                     <br />
                     <asp:Label ID="labelNumberOfViews" runat="server" Text="Views" CssClass="labelViews"></asp:Label>
                     <br />
@@ -346,13 +349,19 @@
                     <asp:Label ID="labelVote" runat="server" Text="voting status" CssClass="hide labelVote"></asp:Label>
                     <br />
 
-                    <div id="divTags" runat="server" class="divTags essentialLabels"></div>
-                    <div id="divCategories" runat="server" class="divCategories essentialLabels"></div>
+                  <!--  <div id="divTags" runat="server" class="divTags essentialLabels"></div>
+                    
+                    -->
 
+                    <a id="collectionLink" runat="server" class="essentialLabels"></a>
 
                 </div>
 
-
+                <div id="rightBox">
+                    <h2>See also</h2>
+                    <hr />
+                <div id="divCategories" runat="server" class="divCategories essentialLabels"></div>
+                    </div>
             </div>
             <br />
             <div id="afterImage">

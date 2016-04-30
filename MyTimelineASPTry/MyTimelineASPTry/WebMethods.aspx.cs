@@ -531,7 +531,16 @@ namespace MyTimelineASPTry
                   GetTags(d.tags) +
                   GetCategories(d.categories) +
                 // " \"tags\":" + d.tags + "," +
-                   "\"dates\":\"" + d.startdate + "-" + d.enddate + "\",";
+                   "\"startDate\":\"" + d.startdate + "\"," +
+                    "\"endDate\":\"" + d.enddate + "\",";
+            }).Wait();
+
+            var collectionCat = db.GetCollection<CategoriesCollection>("Categories");
+
+            var filterCat = Builders<CategoriesCollection>.Filter.Eq(u => u.id, documentId);
+            collectionCat.Find(filterCat).ForEachAsync(d =>
+            {
+                data += "\"ownCategory\":\"" + d.categoryName + "\",";
             }).Wait();
 
 

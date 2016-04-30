@@ -131,6 +131,18 @@ namespace MyTimelineASPTry
                     foreach (string synonym in documents.categorySynonyms)
                         textBoxSynonyms.Text += synonym + ";";
 
+
+
+                if (documents.documentsBelonging != null)
+                    foreach (BsonDocument d in documents.documentsBelonging)
+                    {
+                        ListItem doc = new ListItem();
+                        doc.Value = d["id"].ToString();
+                        doc.Text = d["documentName"].ToString();
+
+                        listBoxDocumentsBelongin.Items.Add(doc);
+
+                    }
             }
             else
             {

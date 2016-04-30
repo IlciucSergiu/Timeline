@@ -14,9 +14,18 @@ namespace MyTimelineASPTry
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Request.QueryString["n"] != null && Request.QueryString["id"] != null)
+            {
+               
+                textBoxCategoryName.Text = Request.QueryString["n"].ToString();
+            
+                id = Request.QueryString["id"].ToString();
+           
+            }
         }
 
+        string id = "";
+        Random rand = new Random();
         protected  void buttonCreateCategory_Click(object sender, EventArgs e)
         {
 
@@ -57,7 +66,22 @@ namespace MyTimelineASPTry
                         categorySynonyms.Add(categorySynonym);
                 }
 
-                string id = "Category_"+textBoxCategoryName.Text.Replace(' ', '_') + "_" + Session["userId"].ToString().Substring(0, 5);
+
+              
+
+               
+                
+
+                if (id=="")
+                {  
+                 id = "Category_"+textBoxCategoryName.Text.Replace(' ', '_');
+                string salt = "";
+                while (!ValidId(id+salt))
+                    salt = "_" + rand.Next(1000, 9999).ToString();
+
+                id = id + salt;
+                }
+
                 string relativeImportance;
                 if (textBoxRelativeImportance.Value.ToString() != "")
                     relativeImportance = textBoxRelativeImportance.Value;
@@ -76,31 +100,41 @@ namespace MyTimelineASPTry
                 document.categoryInfo = CKEditorCategoryInformation.Text;
                 document.categorySynonyms = categorySynonyms;
                 document.dateAdded = DateTime.UtcNow;
+                document.documentsBelonging = new BsonArray();
 
                 if(textBoxParentName.Text != "")
                 {
                     document.parentCategories = parentCategories;
                 }
 
-            //    {
-
-
-            //    //{ "categoryName",textBoxCategoryName.Text},
-            //    //{ "id",id },
-            //    //{ "owner", Session["userId"].ToString() },
-            //    //{ "parentCategories", parentCategories },
-            //    //{ "relativeImportance", relativeImportance},
-            //    //{ "description", textBoxCategoryShortDescription.Text },
-            //    //{ "categoryInfo", CKEditorCategoryInformation.Text },
-            //    //{ "categorySynonyms", categorySynonyms},
-            //    //{ "dateAdded", DateTime.UtcNow}
-
-            //};
+            
                 collection.InsertOneAsync(document);
                 Response.Redirect("UserManaging.aspx?tab=categories", false);
             }
         }
 
+        bool ValidId(string id)
+        {
+            MongoClient mclient = new MongoClient(GlobalVariables.mongolabConection);
+            var db = mclient.GetDatabase(GlobalVariables.mongoDatabase);
+            var collectionCat = db.GetCollection<CategoriesCollection>("Categories");
+            var filterCat = Builders<CategoriesCollection>.Filter.Eq(u => u.id, id);
+
+            bool valid = true;
+            collectionCat.Find(filterCat).ForEachAsync(d => valid = false).Wait();
+
+
+
+            var collectionDoc = db.GetCollection<DocumentInfo>("DocumentsCollection");
+            var filterDoc = Builders<DocumentInfo>.Filter.Eq(u => u.id, id);
+
+           
+            collectionDoc.Find(filterDoc).ForEachAsync(d => valid = false).Wait();
+
+
+            return valid;
+
+        }
 
         [WebMethod]
         public static string FindCategoryParentOptions(string inputValue)

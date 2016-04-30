@@ -75,7 +75,7 @@ namespace MyTimelineASPTry
             var filter = Builders<UserData>.Filter.Eq("email", insert);
             var count = collection.Find(filter).CountAsync();
 
-            Response.Write(count.Result);
+           // Response.Write(count.Result);
             if (Convert.ToInt32(count.Result) != 0)
                 return true;
             else
